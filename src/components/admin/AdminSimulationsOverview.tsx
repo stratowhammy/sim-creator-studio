@@ -254,84 +254,53 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
   };
 
   return (
-    <div className="h-screen w-screen overflow-y-auto bg-slate-950 text-slate-100 font-sans select-text">
+    <div className="h-screen w-screen overflow-y-auto bg-base-100 text-base-content font-sans select-text">
       {/* ==================================================================== */}
-      {/* GLOBAL ADMIN MULTI-GAME HEADER                                       */}
+      {/* DAISYUI NAVBAR                                                       */}
       {/* ==================================================================== */}
-      <header className="sticky top-0 z-30 border-b border-amber-900/40 bg-slate-900/95 backdrop-blur px-6 py-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center">
-            <Terminal className="w-4 h-4 text-amber-400" />
+      <header className="navbar bg-base-200 border-b border-base-300 sticky top-0 z-30 px-4 sm:px-6 gap-2">
+        <div className="navbar-start gap-2">
+          <div className="w-8 h-8 rounded-lg bg-warning/20 text-warning flex items-center justify-center font-bold">
+            <Terminal className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-sm font-bold tracking-tight text-white">
-                Global Admin Command Center
-              </h1>
-              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                Multi-Game Overview
-              </span>
+              <h1 className="text-sm font-bold">Admin Overview</h1>
+              <span className="badge badge-sm badge-warning badge-outline">All Games</span>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Monitor running games, gift 'Sims' credits, curate AI Speech Styles, and manage user roles
-            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="navbar-end gap-2 flex-wrap">
           {/* TEST V4 PRO TOGGLE */}
           <button
             type="button"
             onClick={() => onToggleTestV4Pro(!testV4Pro)}
-            role="switch"
-            aria-checked={testV4Pro}
-            title={
-              testV4Pro
-                ? 'Active: DeepSeek prompts use deepseek-v4-pro. Click to revert to deepseek-flash.'
-                : 'Default: DeepSeek prompts use deepseek-flash. Toggle ON to test deepseek-v4-pro.'
-            }
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${
-              testV4Pro
-                ? 'bg-fuchsia-950/70 border-fuchsia-400/70 text-fuchsia-200 shadow-lg shadow-fuchsia-500/15 ring-1 ring-fuchsia-400/30'
-                : 'bg-slate-950 border-slate-700 text-slate-300 hover:border-slate-600'
-            }`}
+            className={`btn btn-sm ${testV4Pro ? 'btn-secondary' : 'btn-outline'}`}
           >
-            <Sparkles
-              className={`w-3.5 h-3.5 ${
-                testV4Pro ? 'text-fuchsia-300 animate-pulse' : 'text-slate-400'
-              }`}
-            />
-            <span>Test V4 Pro</span>
-            <span
-              className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase ${
-                testV4Pro
-                  ? 'bg-fuchsia-500 text-slate-950 font-bold'
-                  : 'bg-slate-800 text-slate-400'
-              }`}
-            >
-              {testV4Pro ? 'ON (v4-pro)' : 'OFF (flash)'}
-            </span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Test V4 Pro: {testV4Pro ? 'ON' : 'OFF'}</span>
           </button>
 
           <button
             onClick={onOpenStudio}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-purple-200 border border-purple-700/50 text-xs font-semibold transition-colors"
+            className="btn btn-sm btn-ghost gap-1"
           >
-            <Layers className="w-3.5 h-3.5 text-purple-400" />
-            Authoring Studio
+            <Layers className="w-3.5 h-3.5" />
+            Studio
           </button>
 
           <button
             onClick={onOpenProfile}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-colors"
+            className="btn btn-sm btn-ghost gap-1"
           >
-            <User className="w-3.5 h-3.5 text-sky-400" />
-            My Profile ({currentUser.simsBalance ?? 0} Sims)
+            <User className="w-3.5 h-3.5" />
+            Profile ({currentUser.simsBalance ?? 0} Sims)
           </button>
 
           <button
             onClick={onSignOut}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-rose-950/60 text-slate-300 hover:text-rose-200 border border-slate-800 hover:border-rose-700/50 text-xs font-medium transition-colors"
+            className="btn btn-sm btn-outline btn-error gap-1"
           >
             <LogOut className="w-3.5 h-3.5" />
             Sign Out
@@ -339,150 +308,81 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* ================================================================== */}
-        {/* PLATFORM KPI TELEMETRY BAR                                         */}
+        {/* QUICK STATS BAR                                                    */}
         {/* ================================================================== */}
-        <section className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
-          <div className="bg-slate-900/75 border border-slate-800 rounded-xl p-4">
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Active Games Running</span>
-              <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-            </div>
-            <div className="text-2xl font-bold text-emerald-300">
-              {activeSims.length}
-              <span className="text-xs font-normal text-slate-500 ml-1.5">
-                / {simList.length} total
-              </span>
-            </div>
+        <section className="stats shadow bg-base-200 border border-base-300 w-full grid grid-cols-2 md:grid-cols-4">
+          <div className="stat py-3 place-items-center">
+            <div className="stat-title text-xs">Active Games</div>
+            <div className="stat-value text-xl text-success">{activeSims.length}</div>
           </div>
 
-          <div className="bg-slate-900/75 border border-slate-800 rounded-xl p-4">
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Published in Collection</span>
-              <Coins className="w-3.5 h-3.5 text-amber-400" />
-            </div>
-            <div className="text-2xl font-bold text-amber-300">
-              {publishedCollectionSims.length}
-              <span className="text-xs font-normal text-slate-500 ml-1.5">
-                • {voices.length} voices
-              </span>
-            </div>
+          <div className="stat py-3 place-items-center">
+            <div className="stat-title text-xs">Library Games</div>
+            <div className="stat-value text-xl text-warning">{publishedCollectionSims.length}</div>
           </div>
 
-          <div className="bg-slate-900/75 border border-slate-800 rounded-xl p-4">
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Live Players in Rooms</span>
-              <Users className="w-3.5 h-3.5 text-sky-400" />
-            </div>
-            <div className="text-2xl font-bold text-sky-300">
-              {platformStats.onlineCount}
-            </div>
+          <div className="stat py-3 place-items-center">
+            <div className="stat-title text-xs">Players Online</div>
+            <div className="stat-value text-xl text-info">{platformStats.onlineCount}</div>
           </div>
 
-          <div className="bg-slate-900/75 border border-slate-800 rounded-xl p-4">
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Logged Interactions</span>
-              <MessageSquare className="w-3.5 h-3.5 text-purple-400" />
-            </div>
-            <div className="text-2xl font-bold text-purple-300">
-              {platformStats.totalInteractions}
-              {platformStats.pendingHails > 0 && (
-                <span className="text-xs font-normal text-amber-300 ml-1.5">
-                  ({platformStats.pendingHails} live)
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div
-            className={`rounded-xl p-4 border ${
-              testV4Pro
-                ? 'bg-fuchsia-950/35 border-fuchsia-500/50'
-                : 'bg-slate-900/75 border-slate-800'
-            }`}
-          >
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Active DeepSeek Model</span>
-              <Cpu
-                className={`w-3.5 h-3.5 ${
-                  testV4Pro ? 'text-fuchsia-400' : 'text-sky-400'
-                }`}
-              />
-            </div>
-            <div
-              className={`text-sm font-mono font-bold truncate pt-1 ${
-                testV4Pro ? 'text-fuchsia-300' : 'text-sky-300'
-              }`}
-            >
-              {testV4Pro ? DEEPSEEK_V4_PRO_MODEL : DEEPSEEK_FLASH_MODEL}
+          <div className="stat py-3 place-items-center">
+            <div className="stat-title text-xs">AI Model</div>
+            <div className="stat-value text-xs font-mono pt-1 text-primary">
+              {testV4Pro ? 'v4-pro' : 'flash'}
             </div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* WORKSPACE SECTION TABS                                             */}
+        {/* TABS                                                               */}
         {/* ================================================================== */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
-          <div className="flex flex-wrap items-center gap-2 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-3">
+          <div className="join">
             <button
               type="button"
               onClick={() => setActiveTab('SIMULATIONS')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-colors ${
-                activeTab === 'SIMULATIONS'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
+              className={`btn btn-sm join-item ${activeTab === 'SIMULATIONS' ? 'btn-primary' : 'btn-ghost'}`}
             >
               <Activity className="w-3.5 h-3.5" />
-              Running Simulations ({activeSims.length} Active)
+              Games ({activeSims.length})
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('ECONOMY_VOICES')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-colors ${
-                activeTab === 'ECONOMY_VOICES'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
+              className={`btn btn-sm join-item ${activeTab === 'ECONOMY_VOICES' ? 'btn-primary' : 'btn-ghost'}`}
             >
               <Coins className="w-3.5 h-3.5" />
-              'Sims' Gifting &amp; AI Speech Styles ({voices.length})
+              Credits &amp; Voices
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('ROLES')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-colors ${
-                activeTab === 'ROLES'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
+              className={`btn btn-sm join-item ${activeTab === 'ROLES' ? 'btn-primary' : 'btn-ghost'}`}
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              User Roles &amp; Permissions ({users.length} Accounts)
+              User Roles ({users.length})
             </button>
           </div>
 
           {activeTab === 'SIMULATIONS' && (
-            <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
+            <div className="join">
               {(
                 [
-                  { id: 'ACTIVE', label: `Active Running (${activeSims.length})` },
-                  { id: 'ALL', label: `All Games (${simList.length})` },
-                  { id: 'COMPLETED', label: `Completed (${completedSims.length})` },
+                  { id: 'ACTIVE', label: `Active (${activeSims.length})` },
+                  { id: 'ALL', label: `All (${simList.length})` },
+                  { id: 'COMPLETED', label: `Finished (${completedSims.length})` },
                 ] as const
               ).map((f) => (
                 <button
                   key={f.id}
                   type="button"
                   onClick={() => setSimFilter(f.id)}
-                  className={`px-3 py-1.5 rounded-lg font-semibold transition-colors ${
-                    simFilter === f.id
-                      ? 'bg-slate-800 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
+                  className={`btn btn-xs join-item ${simFilter === f.id ? 'btn-neutral' : 'btn-ghost'}`}
                 >
                   {f.label}
                 </button>
@@ -504,17 +404,17 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
             </div>
 
             {displayedSims.length === 0 ? (
-              <div className="rounded-2xl bg-slate-900/50 border border-slate-800 p-10 text-center space-y-2">
-                <Database className="w-8 h-8 text-slate-600 mx-auto" />
-                <div className="text-sm font-bold text-slate-300">
-                  No simulations match the selected status filter
+              <div className="card bg-base-200 border border-base-300 p-8 text-center space-y-2">
+                <Database className="w-8 h-8 opacity-40 mx-auto" />
+                <div className="text-sm font-bold">
+                  No games found
                 </div>
-                <p className="text-xs text-slate-500">
-                  Switch the filter above to view other simulations or compile a new scenario in the Authoring Studio.
+                <p className="text-xs text-base-content/60">
+                  Switch the filter above or create a new game in Studio.
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {displayedSims.map((sim) => {
                   const chars = Object.values(sim.characters).sort(
                     (a, b) => b.victoryPoints - a.victoryPoints
@@ -525,17 +425,6 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                     (g) => g.completedByPlayerIds.length > 0
                   ).length;
                   const onlinePlayers = getActivePlayersInSimulation(sim.id);
-                  const activePending = (sim.pendingEngagements ?? []).filter(
-                    (pe) =>
-                      pe.status === 'NOTIFYING' ||
-                      pe.status === 'FOCUSED' ||
-                      pe.status === 'QUEUED_MOMENTARILY'
-                  );
-                  const assignedSimAdmins = users.filter(
-                    (u) =>
-                      u.accountRole === 'SIMULATION_ADMIN' &&
-                      (u.managedSimulationIds ?? []).includes(sim.id)
-                  );
 
                   return (
                     <div
@@ -549,171 +438,96 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           onSelectGameAdmin(sim.id);
                         }
                       }}
-                      className="group cursor-pointer rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-amber-500/70 p-5 transition-all shadow-xl flex flex-col justify-between space-y-4"
+                      className="card bg-base-200 border border-base-300 hover:border-warning/70 p-5 transition-all shadow cursor-pointer flex flex-col justify-between space-y-3"
                     >
-                      <div className="space-y-3.5">
+                      <div className="space-y-3">
                         {/* Card Top Meta Row */}
                         <div className="flex items-start justify-between gap-3">
-                          <div className="space-y-1.5">
-                            <div className="flex items-center gap-2 flex-wrap">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5 flex-wrap">
                               {sim.status !== 'COMPLETED' ? (
-                                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/35">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                  Active Simulation
+                                <span className="badge badge-sm badge-success gap-1">
+                                  Active
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                                  <CheckCircle2 className="w-3 h-3 text-slate-400" />
+                                <span className="badge badge-sm badge-ghost gap-1">
                                   Completed
                                 </span>
                               )}
 
-                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">
-                                {sim.id}
-                              </span>
-
                               {sim.voiceStyle && (
-                                <span className="text-[10px] px-2 py-0.5 rounded bg-violet-950/60 text-violet-300 border border-violet-700/50 font-semibold">
-                                  Voice: {sim.voiceStyle.name}
-                                </span>
-                              )}
-
-                              {sim.publishedToCollection && (
-                                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/50 text-amber-300 border border-amber-700/50">
-                                  Play Cost: {sim.usageCostSims ?? 2} Sims (10%)
+                                <span className="badge badge-sm badge-secondary badge-outline">
+                                  {sim.voiceStyle.name}
                                 </span>
                               )}
 
                               {onlinePlayers.length > 0 && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/35">
+                                <span className="badge badge-sm badge-info badge-outline gap-1">
                                   <Eye className="w-3 h-3" />
                                   {onlinePlayers.length} Online
                                 </span>
                               )}
-
-                              {activePending.length > 0 && (
-                                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/45 animate-pulse">
-                                  <Bell className="w-3 h-3 text-amber-400" />
-                                  {activePending.length} Live Hail
-                                </span>
-                              )}
                             </div>
 
-                            <h2 className="text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
+                            <h2 className="text-base font-bold text-base-content mt-1">
                               {sim.title}
                             </h2>
                           </div>
 
-                          <div className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-right shrink-0">
-                            <div className="text-[10px] font-mono uppercase text-slate-400">
-                              Round / Tick
-                            </div>
-                            <div className="text-base font-bold font-mono text-amber-300">
-                              {sim.currentTurnOrTick}
-                            </div>
+                          <div className="badge badge-ghost font-mono text-xs py-2">
+                            Turn {sim.currentTurnOrTick}
                           </div>
                         </div>
 
-                        <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-base-content/70 line-clamp-2">
                           {sim.masterNarrative}
                         </p>
 
-                        {/* Telemetry Pill Metrics */}
-                        <div className="grid grid-cols-4 gap-2 text-center font-mono text-[11px]">
-                          <div className="bg-slate-950/90 border border-slate-800/90 rounded-lg py-2 px-2">
-                            <div className="text-[9px] uppercase text-slate-500">
-                              Complexity
-                            </div>
-                            <div className="font-bold text-purple-300">
-                              {sim.complexityTier ?? 'STANDARD'}
-                            </div>
+                        {/* Metric stats */}
+                        <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                          <div className="p-2 rounded bg-base-100 border border-base-300">
+                            <div className="text-[10px] opacity-60">Clues</div>
+                            <div className="font-bold text-primary">{cardsList.length}</div>
                           </div>
-                          <div className="bg-slate-950/90 border border-slate-800/90 rounded-lg py-2 px-2">
-                            <div className="text-[9px] uppercase text-slate-500">
-                              InfoCards
-                            </div>
-                            <div className="font-bold text-sky-300">
-                              {cardsList.length}
-                            </div>
+                          <div className="p-2 rounded bg-base-100 border border-base-300">
+                            <div className="text-[10px] opacity-60">Goals Solved</div>
+                            <div className="font-bold text-success">{solvedGoalsCount} / {goalsList.length}</div>
                           </div>
-                          <div className="bg-slate-950/90 border border-slate-800/90 rounded-lg py-2 px-2">
-                            <div className="text-[9px] uppercase text-slate-500">
-                              Goals Solved
-                            </div>
-                            <div className="font-bold text-emerald-300">
-                              {solvedGoalsCount} / {goalsList.length}
-                            </div>
-                          </div>
-                          <div className="bg-slate-950/90 border border-slate-800/90 rounded-lg py-2 px-2">
-                            <div className="text-[9px] uppercase text-slate-500">
-                              Interactions
-                            </div>
-                            <div className="font-bold text-amber-300">
-                              {sim.interactions.length}
-                            </div>
+                          <div className="p-2 rounded bg-base-100 border border-base-300">
+                            <div className="text-[10px] opacity-60">Actions</div>
+                            <div className="font-bold text-warning">{sim.interactions.length}</div>
                           </div>
                         </div>
 
-                        {/* Character Roster Standings Mini-Table */}
-                        <div className="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
-                          <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-slate-400">
-                            <span>Live Character Standings &amp; AP</span>
-                            <span>
-                              {assignedSimAdmins.length > 0
-                                ? `Sim Admin: ${assignedSimAdmins
-                                    .map((a) => `@${a.username}`)
-                                    .join(', ')}`
-                                : sim.creatorUsername
-                                ? `Creator: @${sim.creatorUsername}`
-                                : 'Sim Admin: Global Admin'}
-                            </span>
+                        {/* Characters mini table */}
+                        <div className="p-2.5 rounded-lg bg-base-100 border border-base-300 space-y-1.5">
+                          <div className="text-[10px] opacity-60 font-semibold uppercase">
+                            Characters ({chars.length})
                           </div>
                           <div className="grid grid-cols-2 gap-1.5 text-xs">
                             {chars.map((c) => (
                               <div
                                 key={c.playerId}
-                                className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800/70"
+                                className="flex items-center justify-between p-1.5 rounded bg-base-200"
                               >
-                                <div className="min-w-0 pr-2">
-                                  <div className="font-semibold text-slate-200 truncate text-[11px]">
-                                    {c.characterName}
-                                  </div>
-                                  <div className="text-[10px] text-slate-500 truncate">
-                                    {c.publicRole}
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-1.5 font-mono text-[10px] shrink-0">
-                                  <span className="text-amber-300 font-bold">
-                                    {c.victoryPoints} VP
-                                  </span>
-                                  <span className="text-slate-600">•</span>
-                                  <span className="text-emerald-400">
-                                    {c.actionPoints} AP
-                                  </span>
-                                </div>
+                                <span className="font-medium truncate">{c.characterName}</span>
+                                <span className="badge badge-xs badge-warning font-mono font-bold">
+                                  {c.victoryPoints} VP
+                                </span>
                               </div>
                             ))}
                           </div>
                         </div>
                       </div>
 
-                      {/* Footer Action Bar */}
-                      <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                          <Clock className="w-3.5 h-3.5 text-amber-400" />
-                          <span>
-                            {sim.interactions.length > 0
-                              ? `Last exchange on Turn ${
-                                  sim.interactions[sim.interactions.length - 1]
-                                    .tickOrTurn
-                                }`
-                              : 'Ready at Turn 0 — awaiting initial exchanges'}
-                          </span>
-                        </div>
-
-                        <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 group-hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow">
-                          Open Game Admin
-                          <ArrowRight className="w-3.5 h-3.5" />
+                      {/* Footer */}
+                      <div className="pt-2 border-t border-base-300 flex items-center justify-between text-xs">
+                        <span className="text-base-content/60 text-[11px]">
+                          Click to manage game
+                        </span>
+                        <span className="btn btn-warning btn-xs gap-1">
+                          Manage Game
+                          <ArrowRight className="w-3 h-3" />
                         </span>
                       </div>
                     </div>
@@ -748,45 +562,42 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
               </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Left: Admin Gift 'Sims' Credits Panel */}
-              <div className="lg:col-span-5 bg-slate-900/75 border border-slate-800 rounded-2xl p-5 space-y-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center">
-                    <Gift className="w-4 h-4 text-amber-400" />
-                  </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+              {/* Left: Gift Sims */}
+              <div className="lg:col-span-5 card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+                <div className="flex items-center gap-2">
+                  <Gift className="w-5 h-5 text-warning" />
                   <div>
-                    <h2 className="text-sm font-bold text-white">
-                      Gift 'Sims' Credits to Users
+                    <h2 className="text-sm font-bold">
+                      Gift Sims Credits
                     </h2>
-                    <p className="text-[11px] text-slate-400">
-                      Grant Sims for simulation authoring, V4 Pro compilation, custom voices, or collection unlocks
+                    <p className="text-xs text-base-content/70">
+                      Send Sims to any user account.
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      Recipient User Account
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold">
+                      Player
                     </label>
                     <select
                       value={giftRecipientId}
                       onChange={(e) => setGiftRecipientId(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                      className="select select-bordered select-sm w-full bg-base-100"
                     >
                       {users.map((u) => (
                         <option key={u.id} value={u.id}>
-                          {u.displayName} (@{u.username}) — Balance: {u.simsBalance ?? 0}{' '}
-                          Sims
+                          {u.displayName} (@{u.username}) — {u.simsBalance ?? 0} Sims
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      Sims Amount to Gift
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold">
+                      Amount
                     </label>
                     <div className="flex items-center gap-1.5 mb-2 flex-wrap">
                       {[25, 50, 100, 250, 500].map((preset) => (
@@ -794,13 +605,13 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           key={preset}
                           type="button"
                           onClick={() => setGiftAmount(preset)}
-                          className={`px-2.5 py-1 rounded-lg font-mono text-[11px] font-bold border transition-colors ${
+                          className={`btn btn-xs ${
                             giftAmount === preset
-                              ? 'bg-amber-500 text-slate-950 border-amber-400'
-                              : 'bg-slate-950 text-amber-300 border-slate-800 hover:border-amber-500/50'
+                              ? 'btn-warning'
+                              : 'btn-outline border-base-300'
                           }`}
                         >
-                          +{preset} Sims
+                          +{preset}
                         </button>
                       ))}
                     </div>
@@ -810,20 +621,20 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       step={1}
                       value={giftAmount}
                       onChange={(e) => setGiftAmount(Number(e.target.value))}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-amber-200 focus:outline-none focus:border-amber-500"
+                      className="input input-bordered input-sm w-full bg-base-100 font-mono"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      Optional Gift Note
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold">
+                      Note (Optional)
                     </label>
                     <input
                       type="text"
                       value={giftNote}
                       onChange={(e) => setGiftNote(e.target.value)}
-                      placeholder="e.g., Creator grant for Labyrinthine V4 Pro scenario"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
+                      placeholder="e.g. Reward for new game creation"
+                      className="input input-bordered input-sm w-full bg-base-100"
                     />
                   </div>
 
@@ -832,33 +643,29 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                     onClick={() =>
                       handleGiftSims(giftRecipientId, giftAmount, giftNote, false)
                     }
-                    className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow transition-colors"
+                    className="btn btn-warning btn-sm w-full gap-1"
                   >
                     <Gift className="w-4 h-4" />
-                    Gift +{giftAmount} Sims to Selected User
+                    Send +{giftAmount} Sims
                   </button>
                 </div>
 
-                {/* Live Wallet Standings Mini-List */}
-                <div className="pt-3 border-t border-slate-800 space-y-2">
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
-                    Current User 'Sims' Balances
+                {/* Balances Mini-List */}
+                <div className="pt-2 border-t border-base-300 space-y-1.5">
+                  <div className="text-[11px] font-semibold text-base-content/60">
+                    User Balances
                   </div>
-                  <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                  <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
                     {users.map((u) => (
                       <div
                         key={u.id}
-                        className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-slate-950/90 border border-slate-800/80 text-xs"
+                        className="card bg-base-100 border border-base-300 p-2 flex flex-row items-center justify-between text-xs"
                       >
                         <div>
-                          <span className="font-semibold text-slate-200">
-                            {u.displayName}
-                          </span>{' '}
-                          <span className="font-mono text-[10px] text-sky-400">
-                            @{u.username}
-                          </span>
+                          <span className="font-semibold">{u.displayName}</span>{' '}
+                          <span className="opacity-60 text-[10px]">@{u.username}</span>
                         </div>
-                        <span className="font-mono font-bold text-amber-300">
+                        <span className="font-mono font-bold text-warning">
                           {u.simsBalance ?? 0} Sims
                         </span>
                       </div>
@@ -867,131 +674,104 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                 </div>
               </div>
 
-              {/* Right: Add New Speech Style to Global Collection */}
-              <div className="lg:col-span-7 bg-slate-900/75 border border-slate-800 rounded-2xl p-5 space-y-4">
-                <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-violet-500/15 border border-violet-500/40 flex items-center justify-center">
-                      <Mic className="w-4 h-4 text-violet-400" />
-                    </div>
-                    <div>
-                      <h2 className="text-sm font-bold text-white">
-                        AI Speech Styles Collection ({voices.length} Styles)
-                      </h2>
-                      <p className="text-[11px] text-slate-400">
-                        Add new shared AI voices to the studio collection so all creators can apply them to simulations
-                      </p>
-                    </div>
+              {/* Right: Add New Speech Style */}
+              <div className="lg:col-span-7 card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+                <div className="flex items-center gap-2">
+                  <Mic className="w-5 h-5 text-secondary" />
+                  <div>
+                    <h2 className="text-sm font-bold">
+                      Story Voices ({voices.length})
+                    </h2>
+                    <p className="text-xs text-base-content/70">
+                      Available voice styles for games.
+                    </p>
                   </div>
                 </div>
 
                 <form
                   onSubmit={handleAddSpeechStyle}
-                  className="p-4 rounded-xl bg-slate-950/80 border border-violet-500/30 space-y-3 text-xs"
+                  className="card bg-base-100 border border-base-300 p-3 space-y-2 text-xs"
                 >
-                  <div className="text-xs font-bold text-violet-300 flex items-center gap-1.5">
+                  <div className="text-xs font-bold text-secondary flex items-center gap-1">
                     <Plus className="w-3.5 h-3.5" />
-                    Add New Single-Author Genre Speech Style to Global Collection
+                    Add New Voice Style
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <input
                       type="text"
                       value={newVoiceName}
                       onChange={(e) => setNewVoiceName(e.target.value)}
-                      placeholder="Speech Style Name (e.g., McCarthy Borderland Grit)"
-                      className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-400"
+                      placeholder="Voice Name (e.g. Gritty Noir)"
+                      className="input input-bordered input-sm bg-base-200"
                     />
                     <input
                       type="text"
                       value={newVoiceGenre}
                       onChange={(e) => setNewVoiceGenre(e.target.value)}
-                      placeholder="Genre (e.g., Frontier Neo-Western)"
-                      className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-400"
+                      placeholder="Genre (e.g. Mystery)"
+                      className="input input-bordered input-sm bg-base-200"
                     />
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <input
                       type="text"
                       value={newVoiceAuthor}
                       onChange={(e) => setNewVoiceAuthor(e.target.value)}
-                      placeholder="Focal Author (e.g., Cormac McCarthy)"
-                      className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-400"
+                      placeholder="Author (e.g. Raymond Chandler)"
+                      className="input input-bordered input-sm bg-base-200"
                     />
                     <input
                       type="text"
                       value={newVoiceTagline}
                       onChange={(e) => setNewVoiceTagline(e.target.value)}
-                      placeholder="Short Tagline (e.g., Stark paratactic cadence & desert fatalism)"
-                      className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-400"
+                      placeholder="Short description"
+                      className="input input-bordered input-sm bg-base-200"
                     />
                   </div>
                   <textarea
                     value={newVoiceDirective}
                     onChange={(e) => setNewVoiceDirective(e.target.value)}
                     rows={2}
-                    placeholder="Authorial Tone Directive: Describe how the AI should channel this author's syntax, rhythm, diction, and subtext..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-violet-400 resize-none"
+                    placeholder="Instructions for how characters should speak..."
+                    className="textarea textarea-bordered bg-base-200 text-xs resize-none"
                   />
-                  <div className="flex flex-col sm:flex-row gap-2.5">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       value={newVoiceSample}
                       onChange={(e) => setNewVoiceSample(e.target.value)}
-                      placeholder='Optional Sample Line (e.g., "He set the ledger on the pine plank and waited in the dust.")'
-                      className="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-violet-400"
+                      placeholder="Sample spoken sentence..."
+                      className="input input-bordered input-sm bg-base-200 flex-1"
                     />
                     <button
                       type="submit"
-                      className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors shadow"
+                      className="btn btn-primary btn-sm gap-1"
                     >
                       <Plus className="w-3.5 h-3.5" />
-                      Add to Collection
+                      Add Voice
                     </button>
                   </div>
                 </form>
 
-                {/* Collection Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-80 overflow-y-auto pr-1">
+                {/* Voices Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
                   {voices.map((v) => (
                     <div
                       key={v.id}
-                      className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5"
+                      className="card bg-base-100 border border-base-300 p-3 space-y-1"
                     >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold text-white">
-                          {v.name}
-                        </span>
-                        <span
-                          className={`text-[9px] font-mono px-2 py-0.5 rounded border shrink-0 ${
-                            v.source === 'ADMIN_ADDED'
-                              ? 'bg-amber-500/15 text-amber-300 border-amber-500/40'
-                              : 'bg-violet-500/15 text-violet-300 border-violet-500/30'
-                          }`}
-                        >
-                          {v.source === 'ADMIN_ADDED' ? 'ADMIN ADDED' : 'BUILT-IN'}
-                        </span>
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-xs font-bold">{v.name}</span>
+                        {v.authorInspiration && (
+                          <span className="badge badge-xs badge-ghost">
+                            {v.authorInspiration}
+                          </span>
+                        )}
                       </div>
-                      {(v.genre || v.authorInspiration) && (
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {v.genre && (
-                            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-sky-300 border border-slate-800">
-                              {v.genre}
-                            </span>
-                          )}
-                          {v.authorInspiration && (
-                            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-950/40 text-amber-200 border border-amber-500/30">
-                              Author: {v.authorInspiration}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      <p className="text-[11px] text-violet-200/90 font-medium">
+                      <p className="text-[11px] text-base-content/80">
                         {v.tagline}
                       </p>
-                      <p className="text-[10px] text-slate-400 line-clamp-2">
-                        {v.styleDirective}
-                      </p>
-                      <p className="text-[10px] italic text-slate-300 pt-1 border-t border-slate-800/80">
+                      <p className="text-[10px] italic text-base-content/60 line-clamp-1">
                         {v.sampleLine}
                       </p>
                     </div>
@@ -1002,13 +782,11 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
           </section>
         )}
 
-        {/* ================================================================== */}
-        {/* TAB 3: USER ROLES & ACCESS CONTROL (RBAC)                          */}
-        {/* ================================================================== */}
+        {/* TAB 3: USER ROLES */}
         {activeTab === 'ROLES' && (
-          <section className="space-y-5 pb-10">
+          <section className="space-y-4 pb-10">
             {/* Role Tiers Matrix */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {(
                 [
                   'PLAYER',
@@ -1021,19 +799,17 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                 return (
                   <div
                     key={roleKey}
-                    className="bg-slate-900/75 border border-slate-800 rounded-xl p-4 space-y-2"
+                    className="card bg-base-200 border border-base-300 p-3 space-y-1 shadow-sm"
                   >
                     <div className="flex items-center justify-between">
-                      <span
-                        className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${info.badgeClass}`}
-                      >
+                      <span className={`badge badge-sm ${info.badgeClass}`}>
                         {info.label}
                       </span>
-                      <span className="text-xs font-mono text-slate-400">
+                      <span className="text-xs font-mono opacity-60">
                         {users.filter((u) => u.accountRole === roleKey).length} users
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                    <p className="text-[11px] opacity-70">
                       {info.description}
                     </p>
                   </div>
@@ -1043,52 +819,36 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
 
             {roleFeedback && (
               <div
-                className={`p-3.5 rounded-xl border text-xs flex items-center justify-between ${
-                  roleFeedback.type === 'ok'
-                    ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200'
-                    : 'bg-rose-950/40 border-rose-500/50 text-rose-200'
+                className={`alert text-xs py-2 ${
+                  roleFeedback.type === 'ok' ? 'alert-success' : 'alert-error'
                 }`}
               >
                 <span>{roleFeedback.message}</span>
                 <button
                   type="button"
                   onClick={() => setRoleFeedback(null)}
-                  className="text-slate-400 hover:text-white ml-4"
+                  className="btn btn-ghost btn-xs btn-circle"
                 >
                   ✕
                 </button>
               </div>
             )}
 
-            {/* Accounts & Role Assignment Table */}
-            <div className="rounded-2xl bg-slate-900/70 border border-slate-800 overflow-hidden">
-              <div className="px-5 py-3.5 border-b border-slate-800 bg-slate-950/60 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <KeyRound className="w-4 h-4 text-amber-400" />
-                  <h2 className="text-sm font-bold text-white">
-                    Platform Accounts, 'Sims' Balances &amp; Role Assignments
-                  </h2>
-                </div>
-                <span className="text-[11px] text-slate-400">
-                  Changes apply immediately across active browser tabs
-                </span>
-              </div>
-
+            {/* Table */}
+            <div className="card bg-base-200 border border-base-300 overflow-hidden shadow">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="table table-zebra w-full text-xs">
                   <thead>
-                    <tr className="border-b border-slate-800 bg-slate-950/40 text-[11px] uppercase tracking-wider text-slate-400">
-                      <th className="py-3 px-4 font-semibold">User Account</th>
-                      <th className="py-3 px-4 font-semibold">'Sims' Wallet</th>
-                      <th className="py-3 px-4 font-semibold">Current Access Tier</th>
-                      <th className="py-3 px-4 font-semibold">Assign Role</th>
-                      <th className="py-3 px-4 font-semibold">
-                        Scoped Simulation (For Single-Sim Admin)
-                      </th>
-                      <th className="py-3 px-4 font-semibold text-right">Action</th>
+                    <tr className="text-[11px] uppercase opacity-70">
+                      <th>User</th>
+                      <th>Sims Wallet</th>
+                      <th>Role</th>
+                      <th>Assign Role</th>
+                      <th>Game Scope</th>
+                      <th className="text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/70">
+                  <tbody>
                     {users.map((u) => {
                       const effectiveRole = draftRoles[u.id] ?? u.accountRole;
                       const effectiveSimId =
@@ -1102,39 +862,26 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           effectiveSimId !== (u.managedSimulationIds?.[0] ?? ''));
 
                       return (
-                        <tr
-                          key={u.id}
-                          className="hover:bg-slate-800/30 transition-colors"
-                        >
-                          <td className="py-3.5 px-4">
-                            <div className="flex items-center gap-2.5">
+                        <tr key={u.id}>
+                          <td>
+                            <div className="flex items-center gap-2">
                               <div
-                                className={`w-8 h-8 rounded-lg bg-gradient-to-br ${u.avatarColor} flex items-center justify-center text-white font-bold text-xs shrink-0`}
+                                className={`w-7 h-7 rounded-lg bg-gradient-to-br ${u.avatarColor} flex items-center justify-center text-white font-bold text-xs shrink-0`}
                               >
-                                {u.displayName
-                                  .split(' ')
-                                  .map((n) => n[0])
-                                  .join('')
-                                  .slice(0, 2)
-                                  .toUpperCase()}
+                                {u.displayName.slice(0, 2).toUpperCase()}
                               </div>
                               <div>
-                                <div className="font-bold text-white flex items-center gap-1.5">
+                                <div className="font-bold flex items-center gap-1">
                                   <span>{u.displayName}</span>
-                                  <span className="text-[10px] font-mono text-sky-400">
-                                    @{u.username}
-                                  </span>
-                                </div>
-                                <div className="text-[11px] text-slate-400">
-                                  {u.email}
+                                  <span className="text-[10px] opacity-60">@{u.username}</span>
                                 </div>
                               </div>
                             </div>
                           </td>
 
-                          <td className="py-3.5 px-4">
+                          <td>
                             <div className="flex items-center gap-2">
-                              <span className="font-mono font-bold text-amber-300">
+                              <span className="font-mono font-bold text-warning">
                                 {u.simsBalance ?? 0} Sims
                               </span>
                               <button
@@ -1143,35 +890,24 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                   handleGiftSims(
                                     u.id,
                                     50,
-                                    'Quick +50 Sims Admin gift',
+                                    'Admin gift',
                                     true
                                   )
                                 }
-                                className="px-2 py-0.5 rounded bg-amber-500/15 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 text-[10px] font-bold transition-colors"
-                                title={`Gift +50 Sims to @${u.username}`}
+                                className="btn btn-warning btn-xs"
                               >
-                                +50 Gift
+                                +50
                               </button>
                             </div>
                           </td>
 
-                          <td className="py-3.5 px-4">
-                            <span
-                              className={`inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase px-2.5 py-0.5 rounded-full border ${currentInfo.badgeClass}`}
-                            >
+                          <td>
+                            <span className={`badge badge-xs ${currentInfo.badgeClass}`}>
                               {currentInfo.label}
                             </span>
-                            {u.accountRole === 'SIMULATION_ADMIN' &&
-                              u.managedSimulationIds?.[0] && (
-                                <div className="text-[11px] text-emerald-300 mt-1 font-medium">
-                                  Scope:{' '}
-                                  {simulations[u.managedSimulationIds[0]]?.title ??
-                                    u.managedSimulationIds[0]}
-                                </div>
-                              )}
                           </td>
 
-                          <td className="py-3.5 px-4">
+                          <td>
                             <select
                               value={effectiveRole}
                               onChange={(e) =>
@@ -1180,22 +916,16 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                   [u.id]: e.target.value as AccountRole,
                                 }))
                               }
-                              className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-amber-500"
+                              className="select select-bordered select-xs bg-base-100"
                             >
                               <option value="PLAYER">Player Only</option>
-                              <option value="STUDIO_CREATOR">
-                                Studio Creator (Studio + Player)
-                              </option>
-                              <option value="SIMULATION_ADMIN">
-                                Simulation Admin (Single Game)
-                              </option>
-                              <option value="ADMIN">
-                                Global Administrator (All Games + Studio)
-                              </option>
+                              <option value="STUDIO_CREATOR">Studio Creator</option>
+                              <option value="SIMULATION_ADMIN">Simulation Admin</option>
+                              <option value="ADMIN">Administrator</option>
                             </select>
                           </td>
 
-                          <td className="py-3.5 px-4">
+                          <td>
                             {effectiveRole === 'SIMULATION_ADMIN' ? (
                               <select
                                 value={effectiveSimId}
@@ -1205,35 +935,31 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                     [u.id]: e.target.value,
                                   }))
                                 }
-                                className="bg-slate-950 border border-emerald-700/70 rounded-lg px-2.5 py-1.5 text-xs text-emerald-200 focus:outline-none focus:border-emerald-400 w-full max-w-xs"
+                                className="select select-bordered select-xs bg-base-100 max-w-xs"
                               >
                                 {simList.map((sim) => (
                                   <option key={sim.id} value={sim.id}>
-                                    {sim.title} ({sim.id})
+                                    {sim.title}
                                   </option>
                                 ))}
                               </select>
                             ) : (
-                              <span className="text-[11px] text-slate-500 italic">
-                                {effectiveRole === 'ADMIN'
-                                  ? 'All running simulations'
-                                  : 'Not applicable'}
+                              <span className="text-[11px] opacity-50 italic">
+                                {effectiveRole === 'ADMIN' ? 'All games' : '—'}
                               </span>
                             )}
                           </td>
 
-                          <td className="py-3.5 px-4 text-right">
+                          <td className="text-right">
                             <button
                               type="button"
                               onClick={() => handleSaveUserRole(u)}
                               disabled={!hasUnsavedChange}
-                              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                                hasUnsavedChange
-                                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow'
-                                  : 'bg-slate-800/60 text-slate-500 cursor-not-allowed'
+                              className={`btn btn-xs ${
+                                hasUnsavedChange ? 'btn-primary' : 'btn-disabled'
                               }`}
                             >
-                              Save Role
+                              Save
                             </button>
                           </td>
                         </tr>

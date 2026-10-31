@@ -1231,17 +1231,14 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
     : null;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-slate-950 text-slate-100 font-sans">
-      {/* ==================================================================== */}
-      {/* PLAYER TERMINAL HEADER (Zero Server/Admin Telemetry)                  */}
-      {/* ==================================================================== */}
-      <header className="h-14 border-b border-slate-800 bg-slate-900/95 backdrop-blur px-5 flex items-center justify-between z-10 shrink-0">
-        <div className="flex items-center gap-3">
+    <div className="flex flex-col h-screen overflow-hidden bg-base-100 text-base-content font-sans">
+      {/* PLAYER NAVBAR */}
+      <header className="navbar bg-base-200 border-b border-base-300 px-4 min-h-14 justify-between z-10 shrink-0 gap-2">
+        <div className="flex items-center gap-2">
           {onBackToAdmin && (
             <button
               onClick={onBackToAdmin}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/90 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors mr-1"
-              title="Exit player view and return to Admin Dashboard"
+              className="btn btn-ghost btn-sm gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Admin
@@ -1253,68 +1250,49 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                 removeRoomPresence(state.id, playerId, tabIdRef.current);
                 onBackToProfile();
               }}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition-colors mr-1"
-              title="Leave simulation room and return to your User Profile"
+              className="btn btn-ghost btn-sm gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               My Profile
             </button>
           )}
           <div className="flex items-center gap-2">
-            <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
-            <span className="font-bold text-sm tracking-wide text-white">
+            <Radio className="w-3.5 h-3.5 text-success animate-pulse" />
+            <span className="font-bold text-sm truncate max-w-xs">
               {state.title}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold">
+            <span className="badge badge-xs badge-success">
               In Room
             </span>
             {state.voiceStyle && (
-              <span
-                className="hidden xl:inline-flex text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/30 font-semibold"
-                title={
-                  state.voiceStyle.authorInspiration
-                    ? `${state.voiceStyle.genre ?? 'Genre Voice'} · Style of ${state.voiceStyle.authorInspiration} — ${state.voiceStyle.tagline}`
-                    : state.voiceStyle.tagline
-                }
-              >
-                Voice: {state.voiceStyle.name}
+              <span className="badge badge-xs badge-secondary badge-outline hidden md:inline-flex">
+                {state.voiceStyle.name}
               </span>
             )}
           </div>
         </div>
 
-        {/* Active Player Persona Badge */}
-        <div className="flex items-center gap-2.5 bg-slate-950 px-3.5 py-1.5 rounded-lg border border-sky-900/60">
-          <User className="w-4 h-4 text-sky-400" />
-          <div className="text-xs">
-            <span className="font-bold text-white">{activeChar.characterName}</span>
-            <span className="text-slate-500 mx-1.5">•</span>
-            <span className="text-sky-300">{activeChar.publicRole}</span>
-          </div>
+        {/* Character Role Pill */}
+        <div className="badge badge-primary badge-outline py-2.5 px-3 gap-1.5 font-bold text-xs">
+          <User className="w-3.5 h-3.5" />
+          <span>{activeChar.characterName}</span>
+          <span className="opacity-60">•</span>
+          <span className="font-normal opacity-90">{activeChar.publicRole}</span>
         </div>
 
-        {/* Role Transfer Action */}
-        {currentUser && (
-          <div className="flex items-center gap-2">
+        {/* Actions & Status */}
+        <div className="flex items-center gap-2 text-xs">
+          {currentUser && (
             <button
               type="button"
               onClick={() => setShowTransferModal(true)}
-              className="flex items-center gap-1.5 bg-slate-950 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-amber-500/50 text-amber-300 font-semibold transition-colors text-xs"
-              title={`Transfer your role as ${activeChar.characterName} to another user`}
+              className="btn btn-outline btn-xs gap-1"
             >
-              <ArrowLeftRight className="w-3.5 h-3.5" />
+              <ArrowLeftRight className="w-3 h-3" />
               <span>Transfer Role</span>
             </button>
-            {getPendingInvitationForSeat(state.id, activeChar.playerId) && (
-              <span className="text-[10px] px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
-                Transfer pending: @{getPendingInvitationForSeat(state.id, activeChar.playerId)?.toUsername}
-              </span>
-            )}
-          </div>
-        )}
+          )}
 
-        {/* Personal Status Indicators + Character History Shortcut */}
-        <div className="flex items-center gap-2.5 text-xs">
           <button
             type="button"
             onClick={() =>
@@ -1324,35 +1302,25 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   : targetChar?.playerId ?? 'ALL'
               )
             }
-            className="flex items-center gap-1.5 bg-slate-950 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-sky-500/50 text-sky-300 font-semibold transition-colors"
-            title="View all interactions with any character over all rounds"
+            className="btn btn-ghost btn-xs gap-1"
           >
-            <History className="w-3.5 h-3.5" />
-            <span>Character History</span>
+            <History className="w-3 h-3" />
+            <span>History</span>
           </button>
 
-          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
-            <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-slate-400">Turn</span>
-            <span className="font-bold text-amber-300">
-              {state.currentTurnOrTick}
-            </span>
+          <div className="badge badge-ghost font-mono gap-1">
+            <Clock className="w-3 h-3" />
+            Turn {state.currentTurnOrTick}
           </div>
 
-          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
-            <Zap className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-slate-400">Actions</span>
-            <span className="font-bold text-emerald-400">
-              {activeChar.actionPoints}
-            </span>
+          <div className="badge badge-success badge-outline font-mono gap-1">
+            <Zap className="w-3 h-3" />
+            {activeChar.actionPoints} AP
           </div>
 
-          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
-            <Award className="w-3.5 h-3.5 text-sky-400" />
-            <span className="text-slate-400">Score</span>
-            <span className="font-bold text-sky-300">
-              {activeChar.victoryPoints} VP
-            </span>
+          <div className="badge badge-warning badge-outline font-mono gap-1">
+            <Award className="w-3 h-3" />
+            {activeChar.victoryPoints} VP
           </div>
         </div>
       </header>

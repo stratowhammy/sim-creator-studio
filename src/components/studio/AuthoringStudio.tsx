@@ -959,126 +959,107 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
   );
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-slate-100 overflow-y-auto p-6 font-sans">
+    <div className="flex flex-col h-full bg-base-100 text-base-content overflow-y-auto p-4 sm:p-6 font-sans">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800 mb-6">
-        <div className="flex items-start gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-base-300 mb-6">
+        <div className="flex items-center gap-3">
           {onExitStudio && (
             <button
               type="button"
               onClick={onExitStudio}
-              className="mt-0.5 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold transition-colors"
+              className="btn btn-ghost btn-sm gap-1"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-sky-400" />
+              <ArrowLeft className="w-3.5 h-3.5" />
               {exitLabel}
             </button>
           )}
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <Layers className="w-6 h-6 text-purple-400" />
-              <h1 className="text-xl font-bold tracking-tight text-white">
-                Simulation Authoring Studio
+              <Layers className="w-5 h-5 text-primary" />
+              <h1 className="text-lg font-bold tracking-tight">
+                Story Studio
               </h1>
-              <span className="text-xs px-2 py-0.5 rounded bg-purple-950/70 text-purple-300 border border-purple-800 font-mono">
-                Sims Compiler & Voice Engine
-              </span>
               {simulations && onSelectSimulation && (
                 <select
                   value={simulationState.id}
                   onChange={(e) => onSelectSimulation(e.target.value)}
-                  className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-200 focus:outline-none focus:border-purple-500"
+                  className="select select-bordered select-xs font-semibold"
                 >
                   {Object.values(simulations).map((s) => (
                     <option key={s.id} value={s.id}>
-                      Editing: {s.title}
+                      {s.title}
                     </option>
                   ))}
                 </select>
               )}
             </div>
-            <p className="text-xs text-slate-400 mt-1">
-              Scale clue complexity, toggle V4 Pro narrative synthesis, configure AI speech styles, and publish to the Available Simulations Collection to earn Sims royalties.
+            <p className="text-xs text-base-content/70 mt-0.5">
+              Write your story, pick characters, and let AI build secret clues.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {currentUser && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-950/40 border border-amber-500/40 text-xs">
-              <Coins className="w-4 h-4 text-amber-400" />
-              <span className="text-slate-300">Wallet:</span>
-              <span className="font-bold font-mono text-amber-300">
-                {currentUser.simsBalance ?? 0} Sims
-              </span>
+            <div className="badge badge-warning badge-outline font-mono gap-1 text-xs py-2 px-3">
+              <Coins className="w-3.5 h-3.5" />
+              <span>{currentUser.simsBalance ?? 0} Sims</span>
             </div>
           )}
 
           <button
             type="button"
             onClick={handleCreateNewSimulation}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-colors shadow"
-            title="Start a fresh simulation and author a new storyline from scratch"
+            className="btn btn-primary btn-sm gap-1"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Create New Simulation</span>
+            <span>New Game</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowLibraryModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 hover:bg-slate-800 text-purple-300 border border-purple-500/40 transition-colors"
-            title="Open library of storylines to edit or copy"
+            className="btn btn-outline btn-sm gap-1"
           >
-            <FolderOpen className="w-3.5 h-3.5 text-purple-400" />
-            <span>Storyline Library ({allSimulationsList.length})</span>
+            <FolderOpen className="w-3.5 h-3.5" />
+            <span>Library</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleMakeCopy()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 transition-colors"
-            title="Make an editable copy of this storyline"
+            className="btn btn-outline btn-sm gap-1"
           >
-            <Copy className="w-3.5 h-3.5 text-amber-400" />
-            <span>Make a Copy</span>
+            <Copy className="w-3.5 h-3.5" />
+            <span>Copy</span>
           </button>
 
           <button
             onClick={handleResetToHeliosPreset}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+            className="btn btn-ghost btn-sm gap-1"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            Load Station Helios Preset
+            <span>Reset Demo</span>
           </button>
 
           {onCreateSimulation && (
             <button
               onClick={handlePublishToCollection}
               disabled={!hasStoryBeenGenerated}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded bg-purple-600 hover:bg-purple-500 text-white transition-colors shadow disabled:opacity-40 disabled:cursor-not-allowed"
-              title={
-                !hasStoryBeenGenerated
-                  ? 'Please compile your storyline and character cast before publishing to the collection'
-                  : `Publish simulation to Available Simulations Collection so other users can unlock it for 10% Sims (paid to you)`
-              }
+              className="btn btn-secondary btn-sm gap-1"
             >
               <Globe className="w-3.5 h-3.5" />
-              Publish to Collection (Earn +{nominalCollectionPlayCostSims} Sims/Play)
+              <span>Publish</span>
             </button>
           )}
 
           <button
             onClick={onLaunchSimulation}
             disabled={!hasStoryBeenGenerated}
-            className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded bg-sky-500 hover:bg-sky-400 text-slate-950 transition-colors shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
-            title={
-              !hasStoryBeenGenerated
-                ? 'Please compile your storyline and character cast first before launching'
-                : 'Launch Simulation'
-            }
+            className="btn btn-primary btn-sm gap-1"
           >
-            <Play className="w-4 h-4 fill-current" />
-            Launch Simulation
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Play Game</span>
           </button>
         </div>
       </div>
@@ -1110,24 +1091,24 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       )}
 
       <div className="grid grid-cols-12 gap-6">
-        {/* Left Column: Sims Upgrades, Voices, Narrative Input & Invariants (Cols 1-7) */}
-        <div className="col-span-12 lg:col-span-7 space-y-6">
-          {/* 1. Sims Complexity & V4 Pro Narrative Engine Panel */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-4">
+        {/* Left Column: Story Settings & Narrative Input */}
+        <div className="col-span-12 lg:col-span-7 space-y-4">
+          {/* 1. Game Complexity & AI Model */}
+          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <Coins className="w-4 h-4 text-amber-400" />
-                <h2 className="text-sm font-semibold text-slate-100">
-                  1. Simulation Complexity &amp; V4 Pro Narrative Engine ('Sims' Credits)
+                <Coins className="w-4 h-4 text-warning" />
+                <h2 className="text-sm font-bold">
+                  1. Game Complexity &amp; AI Model
                 </h2>
               </div>
-              <span className="text-[11px] font-mono text-amber-300 bg-amber-950/40 px-2.5 py-0.5 rounded border border-amber-500/30">
-                Collection Royalty = 10% of Build Cost (+{nominalCollectionPlayCostSims} Sims / Unlock)
+              <span className="badge badge-sm badge-warning badge-outline font-mono">
+                +{nominalCollectionPlayCostSims} Sims / Unlock
               </span>
             </div>
 
             {/* Complexity Tier Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
               {(Object.keys(COMPLEXITY_TIER_CONFIG) as SimulationComplexityTier[]).map(
                 (tierKey) => {
                   const cfg = COMPLEXITY_TIER_CONFIG[tierKey];
@@ -1140,60 +1121,33 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         setComplexityTier(tierKey);
                         setPaidCurrentDraft(false);
                       }}
-                      className={`p-3 rounded-xl border text-left transition-all ${
-                        active
-                          ? 'bg-purple-950/50 border-purple-400 shadow-sm'
-                          : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
+                      className={`btn btn-sm h-auto py-2.5 flex-col items-start normal-case text-left ${
+                        active ? 'btn-primary' : 'btn-outline border-base-300'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-1 mb-1">
-                        <span className="text-xs font-bold text-white">
-                          {cfg.shortLabel}
-                        </span>
-                        <span
-                          className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded ${
-                            active
-                              ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40'
-                              : 'bg-slate-900 text-slate-300'
-                          }`}
-                        >
-                          {cfg.costSims} Sims
-                        </span>
+                      <div className="flex items-center justify-between w-full">
+                        <span className="font-bold text-xs">{cfg.shortLabel}</span>
+                        <span className="badge badge-xs font-mono">{cfg.costSims} Sims</span>
                       </div>
-                      <div className="text-[10px] font-mono text-purple-300 mb-1">
-                        {cfg.cardRange[0]}–{cfg.cardRange[1]} Clues • {cfg.goalsPerCharacter} Goal(s)/Role
+                      <div className="text-[10px] opacity-80 mt-0.5">
+                        {cfg.cardRange[0]}–{cfg.cardRange[1]} Clues
                       </div>
-                      <p className="text-[11px] text-slate-400 leading-snug">
-                        {cfg.description}
-                      </p>
                     </button>
                   );
                 }
               )}
             </div>
 
-            {/* V4 Pro Paid Toggle for Narrative Creation */}
-            <div
-              className={`p-3.5 rounded-xl border flex items-center justify-between gap-4 transition-all ${
-                useV4ProForCreation
-                  ? 'bg-fuchsia-950/35 border-fuchsia-500/60'
-                  : 'bg-slate-950/70 border-slate-800'
-              }`}
-            >
+            {/* V4 Pro Paid Toggle */}
+            <div className="flex items-center justify-between gap-4 p-2.5 rounded-lg bg-base-100 border border-base-300">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <Cpu className="w-4 h-4 text-fuchsia-400" />
-                  <span className="text-xs font-bold text-white">
-                    Toggle DeepSeek V4 Pro for Narrative Creation
-                  </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-200 border border-fuchsia-500/40">
-                    +{V4_PRO_CREATION_COST_SIMS} Sims
-                  </span>
+                  <Cpu className="w-3.5 h-3.5 text-secondary" />
+                  <span className="text-xs font-bold">Use AI Pro Model</span>
+                  <span className="badge badge-xs badge-secondary">+{V4_PRO_CREATION_COST_SIMS} Sims</span>
                 </div>
-                <p className="text-[11px] text-slate-400">
-                  Upgrades the Studio Atomizer &amp; Dossier Weaver from{' '}
-                  <code className="text-sky-300">deepseek-flash</code> to{' '}
-                  <code className="text-fuchsia-300">deepseek-v4-pro</code> when compiling your narrative.
+                <p className="text-[11px] text-base-content/70">
+                  Makes story writing smarter and more detailed.
                 </p>
               </div>
               <button
@@ -1204,35 +1158,26 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   setUseV4ProForCreation((prev) => !prev);
                   setPaidCurrentDraft(false);
                 }}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold border transition-all shrink-0 ${
-                  useV4ProForCreation
-                    ? 'bg-fuchsia-600 text-white border-fuchsia-400 shadow'
-                    : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'
-                }`}
+                className={`btn btn-xs ${useV4ProForCreation ? 'btn-secondary' : 'btn-ghost border-base-300'}`}
               >
-                {useV4ProForCreation ? 'V4 Pro: ON' : 'Use Flash (Default)'}
+                {useV4ProForCreation ? 'Pro: ON' : 'Pro: OFF'}
               </button>
             </div>
           </div>
 
-          {/* 2. Target Story Readability Level (Required Selection) */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-3.5">
+          {/* 2. Reading Level */}
+          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-sky-400" />
-                <h2 className="text-sm font-semibold text-slate-100">
-                  2. Target Story Readability Level
+                <BookOpen className="w-4 h-4 text-primary" />
+                <h2 className="text-sm font-bold">
+                  2. Reading Level
                 </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">
-                  Required Selection
-                </span>
               </div>
-              <span className="text-[11px] text-slate-400">
-                Calibrates vocabulary, sentence complexity, and syntax
-              </span>
+              <span className="badge badge-xs badge-ghost">Required</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
               {(Object.keys(READABILITY_CONFIG) as ReadabilityLevel[]).map(
                 (levelKey) => {
                   const cfg = READABILITY_CONFIG[levelKey];
@@ -1245,27 +1190,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         setReadabilityLevel(levelKey);
                         setPaidCurrentDraft(false);
                       }}
-                      className={`p-3 rounded-xl border text-left transition-all ${
-                        active
-                          ? 'bg-sky-950/60 border-sky-400 shadow-sm ring-1 ring-sky-500/30'
-                          : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
+                      className={`btn btn-sm h-auto py-2.5 flex-col items-start normal-case text-left ${
+                        active ? 'btn-primary' : 'btn-outline border-base-300'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-1 mb-1">
-                        <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                          {cfg.label}
-                          {active && <Check className="w-3.5 h-3.5 text-sky-400" />}
-                        </span>
-                        <span
-                          className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${cfg.badgeClass}`}
-                        >
-                          {cfg.gradeLevel}
-                        </span>
+                      <div className="flex items-center justify-between w-full">
+                        <span className="font-bold text-xs">{cfg.label}</span>
+                        <span className="badge badge-xs">{cfg.gradeLevel}</span>
                       </div>
-                      <div className="text-[10px] font-mono text-sky-300 mb-1">
-                        Target: {cfg.targetLexile}
-                      </div>
-                      <p className="text-[11px] text-slate-400 leading-snug">
+                      <p className="text-[10px] opacity-70 mt-0.5 line-clamp-1">
                         {cfg.description}
                       </p>
                     </button>
@@ -1275,25 +1208,21 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             </div>
           </div>
 
-          {/* 3. Simulation Character Seats & Credits (Default: 4, +10 Sims/extra) */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-3.5">
+          {/* 3. Number of Characters */}
+          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-2">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-purple-400" />
-                <h2 className="text-sm font-semibold text-slate-100">
-                  3. Simulation Character Seats &amp; Credits
+                <Users className="w-4 h-4 text-secondary" />
+                <h2 className="text-sm font-bold">
+                  3. Number of Characters
                 </h2>
               </div>
-              <span className="text-[11px] font-mono text-purple-300 bg-purple-950/40 px-2.5 py-0.5 rounded border border-purple-500/30">
-                Default: 4 Characters • +10 Sims per Additional Seat
+              <span className="badge badge-xs badge-ghost font-mono">
+                4 default • +10 Sims each extra
               </span>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Choose how many distinct character roles to generate for this scenario. Every character receives an asymmetric motive, hidden stats, guarded/shareable cards, and starting knowledge.
-            </p>
-
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <div className="grid grid-cols-6 gap-2">
               {[3, 4, 5, 6, 7, 8].map((count) => {
                 const active = characterCount === count;
                 const extraCost = Math.max(0, count - 4) * 10;
@@ -1305,57 +1234,42 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                       setCharacterCount(count);
                       setPaidCurrentDraft(false);
                     }}
-                    className={`p-2.5 rounded-xl border text-center transition-all ${
-                      active
-                        ? 'bg-purple-950/60 border-purple-400 shadow ring-1 ring-purple-500/30'
-                        : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
+                    className={`btn btn-sm h-auto py-2 flex-col items-center ${
+                      active ? 'btn-primary' : 'btn-outline border-base-300'
                     }`}
                   >
-                    <div className="text-base font-bold text-white mb-0.5">
-                      {count}
-                    </div>
-                    <div className="text-[10px] font-mono text-slate-400">
-                      {count === 4 ? 'Default' : `${count} Seats`}
-                    </div>
-                    <div
-                      className={`text-[10px] font-mono mt-1 ${
-                        extraCost > 0
-                          ? 'text-amber-300 font-bold'
-                          : 'text-slate-500'
-                      }`}
-                    >
-                      {extraCost > 0 ? `+${extraCost} Sims` : 'Included'}
-                    </div>
+                    <span className="text-sm font-bold">{count}</span>
+                    <span className="text-[10px] opacity-70">
+                      {extraCost > 0 ? `+${extraCost} Sims` : 'Free'}
+                    </span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* 4. AI Speech Styles / Voices Selector & Paid Custom Voice Builder */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-3.5">
+          {/* 4. AI Voice & Style */}
+          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <Mic className="w-4 h-4 text-violet-400" />
-                <h2 className="text-sm font-semibold text-slate-100">
-                  4. Simulation AI Voice &amp; Speech Style
+                <Mic className="w-4 h-4 text-secondary" />
+                <h2 className="text-sm font-bold">
+                  4. Story Voice &amp; Style
                 </h2>
               </div>
 
-              <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+              <div className="join">
                 <button
                   type="button"
                   onClick={() => {
                     setVoiceMode('COLLECTION');
                     setPaidCurrentDraft(false);
                   }}
-                  className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
-                    voiceMode === 'COLLECTION'
-                      ? 'bg-violet-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                  className={`join-item btn btn-xs ${
+                    voiceMode === 'COLLECTION' ? 'btn-primary' : 'btn-ghost'
                   }`}
                 >
-                  Speech Collection (+0 Sims)
+                  Standard Voices (Free)
                 </button>
                 <button
                   type="button"
@@ -1363,21 +1277,19 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     setVoiceMode('CUSTOM');
                     setPaidCurrentDraft(false);
                   }}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-md font-semibold transition-colors ${
-                    voiceMode === 'CUSTOM'
-                      ? 'bg-amber-500 text-slate-950'
-                      : 'text-amber-300 hover:text-amber-200'
+                  className={`join-item btn btn-xs ${
+                    voiceMode === 'CUSTOM' ? 'btn-secondary' : 'btn-ghost'
                   }`}
                 >
                   <Wand2 className="w-3 h-3" />
-                  Define Custom Style (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims)
+                  Custom Voice (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims)
                 </button>
               </div>
             </div>
 
             {voiceMode === 'COLLECTION' ? (
               <div className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-60 overflow-y-auto pr-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
                   {availableVoices.map((voice) => {
                     const isSelected = voice.id === activeCollectionVoice?.id;
                     return (
@@ -1388,38 +1300,24 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                           setSelectedVoiceId(voice.id);
                           setPaidCurrentDraft(false);
                         }}
-                        className={`p-3 rounded-xl border text-left transition-all ${
+                        className={`card bg-base-100 border p-3 text-left transition-all hover:border-primary/50 ${
                           isSelected
-                            ? 'bg-violet-950/50 border-violet-400'
-                            : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
+                            ? 'border-primary ring-1 ring-primary'
+                            : 'border-base-300'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 mb-1">
-                          <span className="text-xs font-bold text-white">
-                            {voice.name}
-                          </span>
-                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-violet-300 border border-slate-800 shrink-0">
-                            {voice.source === 'ADMIN_ADDED' ? 'ADMIN CURATED' : 'COLLECTION'}
-                          </span>
+                          <span className="text-xs font-bold">{voice.name}</span>
+                          {voice.authorInspiration && (
+                            <span className="badge badge-xs badge-ghost">
+                              {voice.authorInspiration}
+                            </span>
+                          )}
                         </div>
-                        {(voice.genre || voice.authorInspiration) && (
-                          <div className="flex flex-wrap items-center gap-1 mb-1.5">
-                            {voice.genre && (
-                              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-sky-300 border border-slate-800">
-                                {voice.genre}
-                              </span>
-                            )}
-                            {voice.authorInspiration && (
-                              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-950/40 text-amber-200 border border-amber-500/30">
-                                {voice.authorInspiration}
-                              </span>
-                            )}
-                          </div>
-                        )}
-                        <p className="text-[11px] text-slate-300 mb-1.5">
+                        <p className="text-[11px] text-base-content/80 mb-1">
                           {voice.tagline}
                         </p>
-                        <p className="text-[10px] italic text-slate-400 line-clamp-2">
+                        <p className="text-[10px] italic text-base-content/60 line-clamp-1">
                           {voice.sampleLine}
                         </p>
                       </button>
@@ -1427,268 +1325,254 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   })}
                 </div>
                 {activeCollectionVoice && (
-                  <div className="flex items-center justify-between gap-3 pt-1 text-[11px] text-slate-400">
+                  <div className="flex items-center justify-between gap-3 pt-1 text-xs text-base-content/70">
                     <span>
                       Selected Voice:{' '}
-                      <strong className="text-violet-300">
+                      <strong className="text-primary">
                         {activeCollectionVoice.name}
                       </strong>
                     </span>
                     <button
                       type="button"
                       onClick={handleApplyCollectionVoicePreview}
-                      className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-violet-200 font-semibold transition-colors"
+                      className="btn btn-xs btn-outline"
                     >
-                      Apply Collection Voice to Current Sim (0 Sims)
+                      Use in Current Game
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="p-3.5 rounded-xl bg-slate-950/80 border border-amber-500/30 space-y-2.5">
+              <div className="card bg-base-100 border border-secondary/30 p-3 space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-amber-300">
-                    Bespoke Creator Speech Style (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims Extra)
-                  </span>
-                  <span className="text-[11px] text-slate-400">
-                    Used across all AI dialogues, briefings &amp; dossiers
+                  <span className="font-bold text-secondary">
+                    Custom Author Style (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims)
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <input
                     type="text"
                     value={customVoiceName}
                     onChange={(e) => setCustomVoiceName(e.target.value)}
-                    placeholder="Style Name (e.g., Gibson Sprawl Chrome)"
-                    className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+                    placeholder="Style Name (e.g. Cyberpunk Noir)"
+                    className="input input-bordered input-sm bg-base-200"
                   />
                   <input
                     type="text"
                     value={customVoiceGenre}
                     onChange={(e) => setCustomVoiceGenre(e.target.value)}
-                    placeholder="Genre (e.g., Cyberpunk)"
-                    className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+                    placeholder="Genre (e.g. Sci-Fi)"
+                    className="input input-bordered input-sm bg-base-200"
                   />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <input
                     type="text"
                     value={customVoiceAuthor}
                     onChange={(e) => setCustomVoiceAuthor(e.target.value)}
-                    placeholder="Focal Author (e.g., William Gibson)"
-                    className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+                    placeholder="Author (e.g. William Gibson)"
+                    className="input input-bordered input-sm bg-base-200"
                   />
                   <input
                     type="text"
                     value={customVoiceTagline}
                     onChange={(e) => setCustomVoiceTagline(e.target.value)}
-                    placeholder="Short Tagline (e.g., Compressed neon sensory grit & street tech)"
-                    className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"
+                    placeholder="Short description"
+                    className="input input-bordered input-sm bg-base-200"
                   />
                 </div>
                 <textarea
                   value={customVoiceDirective}
                   onChange={(e) => setCustomVoiceDirective(e.target.value)}
                   rows={2}
-                  placeholder="Describe how the AI should tailor its tone around this author's prose rhythm, vocabulary, metaphors, and dialogue..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-400 resize-none"
+                  placeholder="Instructions for how the AI should write dialogue and story..."
+                  className="textarea textarea-bordered bg-base-200 text-xs resize-none"
                 />
                 <input
                   type="text"
                   value={customVoiceSample}
                   onChange={(e) => setCustomVoiceSample(e.target.value)}
-                  placeholder='Optional sample dialogue line (e.g., "Check the neural splice before you flatline my cred, choom.")'
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-amber-400"
+                  placeholder="Sample sentence spoken by a character..."
+                  className="input input-bordered input-sm bg-base-200"
                 />
               </div>
             )}
           </div>
 
-          {/* 5. Master Narrative Editor & Compile Action */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-3.5">
+          {/* 5. Story Title & Lore */}
+          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-sky-400" />
-                <h2 className="text-sm font-semibold text-slate-200">
-                  5. Scenario Title &amp; Master Narrative Lore Source
+                <FileText className="w-4 h-4 text-primary" />
+                <h2 className="text-sm font-bold">
+                  5. Story Title &amp; Lore
                 </h2>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   onClick={() => handleOpenRevisionModal('ALL')}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-violet-600/25 hover:bg-violet-600/40 text-violet-200 border border-violet-500/40 transition-colors shadow-sm"
-                  title="Prompt AI to revise, twist, or rewrite the storyline"
+                  className="btn btn-outline btn-sm gap-1"
                 >
-                  <Wand2 className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Prompt AI to Revise Storyline</span>
+                  <Wand2 className="w-3.5 h-3.5 text-secondary" />
+                  <span>Ask AI to Revise</span>
                 </button>
                 <button
                   onClick={handleRecompile}
                   disabled={isCompiling}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors disabled:opacity-50 shadow"
+                  className="btn btn-primary btn-sm gap-1"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   {isCompiling
-                    ? 'Dicing & Compiling Graph...'
-                    : `Spend ${totalCreationCostSims} Sims & Compile Graph`}
+                    ? 'Creating...'
+                    : `Create Story (${totalCreationCostSims} Sims)`}
                 </button>
               </div>
             </div>
 
-            <div className="px-3 py-2 rounded-lg bg-slate-950/90 border border-slate-800/90 flex flex-wrap items-center justify-between gap-2 text-[11px]">
-              <span className="text-slate-400">
-                Breakdown: <span className="text-slate-200">{buildCostBreakdownLabel()}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-base-content/70 p-2 rounded-lg bg-base-100 border border-base-300">
+              <span>
+                Cost: <span className="font-semibold text-base-content">{buildCostBreakdownLabel()}</span>
               </span>
-              <span className="font-mono text-emerald-300">
-                Published Play Cost (10%): {nominalCollectionPlayCostSims} Sims → Paid to You
+              <span className="badge badge-sm badge-success badge-outline">
+                Earn {nominalCollectionPlayCostSims} Sims per play
               </span>
             </div>
 
-            {/* Storyline Title Field with Revision Action */}
-            <div className="space-y-1.5">
+            {/* Storyline Title Field */}
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-slate-300">
-                  Scenario Storyline Title
+                <label className="text-xs font-semibold">
+                  Story Title
                 </label>
                 <button
                   type="button"
                   onClick={() => handleOpenRevisionModal('TITLE')}
-                  className="flex items-center gap-1 text-[11px] text-violet-300 hover:text-white px-2 py-0.5 rounded bg-violet-950/50 hover:bg-violet-900/60 border border-violet-500/30 transition-colors"
-                  title="Prompt AI to revise or brainstorm the title"
+                  className="btn btn-ghost btn-xs text-secondary gap-1"
                 >
-                  <Sparkles className="w-3 h-3 text-violet-400" />
-                  <span>Prompt AI to Revise Title</span>
+                  <Sparkles className="w-3 h-3" />
+                  Revise Title
                 </button>
               </div>
               <input
                 type="text"
                 value={scenarioTitle}
                 onChange={(e) => setScenarioTitle(e.target.value)}
-                placeholder="Enter storyline title (e.g., Sabotage at Station Helios)..."
-                className="w-full bg-slate-950/90 border border-slate-800 rounded-lg px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-sky-500"
+                placeholder="Story title (e.g. Mystery on Mars)..."
+                className="input input-bordered input-sm w-full bg-base-100 font-semibold"
               />
             </div>
 
-            {/* Master Narrative Lore Field with Revision Action */}
-            <div className="space-y-1.5">
+            {/* Master Narrative Lore Field */}
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-slate-300">
-                  Master Narrative Lore Source (Setting Background, Inciting Crisis &amp; Factions)
+                <label className="text-xs font-semibold">
+                  Story Lore &amp; Background
                 </label>
                 <button
                   type="button"
                   onClick={() => handleOpenRevisionModal('LORE')}
-                  className="flex items-center gap-1 text-[11px] text-violet-300 hover:text-white px-2 py-0.5 rounded bg-violet-950/50 hover:bg-violet-900/60 border border-violet-500/30 transition-colors"
-                  title="Prompt AI to rewrite or deepen this lore"
+                  className="btn btn-ghost btn-xs text-secondary gap-1"
                 >
-                  <Sparkles className="w-3 h-3 text-violet-400" />
-                  <span>Prompt AI to Revise Lore</span>
+                  <Sparkles className="w-3 h-3" />
+                  Revise Lore
                 </button>
               </div>
               <textarea
                 value={masterText}
                 onChange={(e) => setMasterText(e.target.value)}
                 rows={5}
-                className="w-full bg-slate-950/80 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-200 leading-relaxed focus:outline-none focus:border-sky-500 resize-none"
-                placeholder="Enter or paste your storyline lore here, or click 'Prompt AI to Revise Storyline' to brainstorm from a premise..."
+                className="textarea textarea-bordered w-full bg-base-100 text-xs leading-relaxed resize-none"
+                placeholder="Write your story setup here, or click 'Ask AI to Revise' to generate one..."
               />
             </div>
           </div>
         </div>
 
-        {/* Right Column: Character Dossier, Active Metadata & Hand Inspector (Cols 8-12) */}
+        {/* Right Column: Character Dossier & Inspector */}
         <div className="col-span-12 lg:col-span-5 space-y-4">
-          {/* Character Editor: Hidden/Locked Until Story Has Been Generated */}
           {!hasStoryBeenGenerated ? (
-            <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-6 text-center space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mx-auto text-purple-400">
+            <div className="card bg-base-200 border border-base-300 p-6 text-center shadow space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto text-primary">
                 <Lock className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-sm font-bold text-slate-100">
-                  Character Sheet Inspector Locked
+                <h3 className="text-sm font-bold">
+                  Character List Locked
                 </h3>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
-                  When designing a new simulation, the character editor and private dossiers remain locked until the story has been generated and approved.
+                <p className="text-xs text-base-content/70 max-w-sm mx-auto">
+                  Click "Create Story" above to build your characters, goals, and secret clues.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-lg bg-slate-950 border border-slate-800/80 max-w-sm mx-auto text-left space-y-2 text-xs">
-                <div className="flex items-center justify-between text-slate-400">
-                  <span>Selected Readability:</span>
-                  <span className="font-semibold text-sky-400">
+              <div className="card bg-base-100 border border-base-300 p-3 max-w-sm mx-auto text-left space-y-1.5 text-xs">
+                <div className="flex items-center justify-between text-base-content/70">
+                  <span>Reading Level:</span>
+                  <span className="font-semibold text-primary">
                     {READABILITY_CONFIG[readabilityLevel]?.label} ({READABILITY_CONFIG[readabilityLevel]?.gradeLevel})
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-slate-400">
-                  <span>Character Seats:</span>
-                  <span className="font-semibold text-purple-400">
+                <div className="flex items-center justify-between text-base-content/70">
+                  <span>Characters:</span>
+                  <span className="font-semibold text-secondary">
                     {characterCount} Characters
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-slate-400">
-                  <span>Storyline Lore:</span>
-                  <span className="font-mono text-amber-300">
-                    {masterText.trim()
-                      ? `${masterText.trim().length} chars (Ready to compile)`
-                      : 'Pending lore entry'}
+                <div className="flex items-center justify-between text-base-content/70">
+                  <span>Story Lore:</span>
+                  <span className="font-semibold">
+                    {masterText.trim() ? 'Ready' : 'Not entered yet'}
                   </span>
                 </div>
               </div>
-
-              <p className="text-[11px] text-slate-500 max-w-xs mx-auto">
-                Click <span className="text-amber-400 font-semibold">"Spend Sims &amp; Compile Graph"</span> or approve a revision prompt to cast your {characterCount} characters and generate their starting clues.
-              </p>
             </div>
           ) : (
-            <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
-              <div className="flex items-center justify-between mb-3">
+            <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-purple-400" />
-                  <h2 className="text-sm font-semibold text-slate-200">
-                    Character Sheet Inspector
+                  <Users className="w-4 h-4 text-primary" />
+                  <h2 className="text-sm font-bold">
+                    Characters ({Object.keys(simulationState.characters).length})
                   </h2>
                 </div>
               </div>
 
               {/* Character Selector Pills */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
+              <div className="grid grid-cols-2 gap-1.5">
                 {Object.values(simulationState.characters).map((char) => {
                   const seatInvite = getPendingInvitationForSeat(
                     simulationState.id,
                     char.playerId
                   );
+                  const isSelected = selectedCharacterId === char.playerId;
 
                   return (
                     <button
                       key={char.playerId}
                       onClick={() => setSelectedCharacterId(char.playerId)}
-                      className={`p-2 rounded-lg text-left transition-all border text-xs ${
-                        selectedCharacterId === char.playerId
-                          ? 'bg-sky-950/60 border-sky-500 text-sky-200'
-                          : 'bg-slate-950/50 border-slate-800 hover:border-slate-700 text-slate-400'
+                      className={`btn btn-sm h-auto py-2 flex-col items-start normal-case text-left ${
+                        isSelected
+                          ? 'btn-primary'
+                          : 'btn-outline border-base-300 bg-base-100'
                       }`}
                     >
-                      <div className="font-bold text-slate-100 flex items-center justify-between">
+                      <div className="font-bold text-xs flex items-center justify-between w-full">
                         <span className="truncate">{char.characterName}</span>
-                        <div className="flex items-center gap-1 shrink-0">
-                          {char.assignedUsername ? (
-                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono">
-                              @{char.assignedUsername}
-                            </span>
-                          ) : seatInvite ? (
-                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
-                              Invited
-                            </span>
-                          ) : char.isAiControlled ? (
-                            <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">
-                              AI
-                            </span>
-                          ) : null}
-                        </div>
+                        {char.assignedUsername ? (
+                          <span className="badge badge-xs badge-success">
+                            @{char.assignedUsername}
+                          </span>
+                        ) : seatInvite ? (
+                          <span className="badge badge-xs badge-warning">
+                            Invited
+                          </span>
+                        ) : char.isAiControlled ? (
+                          <span className="badge badge-xs badge-secondary">
+                            AI
+                          </span>
+                        ) : null}
                       </div>
-                      <div className="text-[11px] text-slate-400 truncate">
+                      <div className="text-[10px] opacity-70 truncate w-full">
                         {char.publicRole}
                       </div>
                     </button>
@@ -1698,33 +1582,32 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
               {selectedChar && (
                 <div className="space-y-3 text-xs">
-                  {/* Seat Assignment & Player Invite Card */}
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80 flex items-center justify-between gap-3">
+                  {/* Seat Assignment Card */}
+                  <div className="card bg-base-100 border border-base-300 p-3 flex flex-row items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">
-                        Permanent Seat Assignment
+                      <div className="text-[10px] text-base-content/60 font-medium">
+                        Player Seat
                       </div>
-                      <div className="flex items-center gap-2 flex-wrap">
+                      <div className="font-bold flex items-center gap-1.5 mt-0.5">
                         {selectedChar.assignedUserId ? (
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400">
-                            <UserCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                            <span>Assigned: @{selectedChar.assignedUsername}</span>
-                          </div>
+                          <span className="text-success flex items-center gap-1">
+                            <UserCheck className="w-3.5 h-3.5" />
+                            @{selectedChar.assignedUsername}
+                          </span>
                         ) : selectedChar.isAiControlled ? (
-                          <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-400">
-                            <Bot className="w-4 h-4 text-purple-400 shrink-0" />
-                            <span>AI Controlled Seat</span>
-                          </div>
+                          <span className="text-secondary flex items-center gap-1">
+                            <Bot className="w-3.5 h-3.5" />
+                            AI Controlled
+                          </span>
                         ) : (
-                          <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                            <User className="w-4 h-4 text-slate-500 shrink-0" />
-                            <span>Unoccupied Human Seat</span>
-                          </div>
+                          <span className="text-base-content/60 flex items-center gap-1">
+                            <User className="w-3.5 h-3.5" />
+                            Open Seat
+                          </span>
                         )}
                         {getPendingInvitationForSeat(simulationState.id, selectedChar.playerId) && (
-                          <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
-                            Invite pending: @
-                            {getPendingInvitationForSeat(simulationState.id, selectedChar.playerId)?.toUsername}
+                          <span className="badge badge-xs badge-warning">
+                            Invite pending
                           </span>
                         )}
                       </div>
@@ -1733,82 +1616,70 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     <button
                       type="button"
                       onClick={() => setInviteModalCharId(selectedChar.playerId)}
-                      className="px-2.5 py-1.5 rounded-lg bg-purple-600/90 hover:bg-purple-500 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow shrink-0"
-                      title="Search username database and send an invite to fill or take over this seat"
+                      className="btn btn-xs btn-primary gap-1"
                     >
-                      <UserPlus className="w-3.5 h-3.5" />
-                      <span>{selectedChar.assignedUserId ? 'Reassign / Transfer' : 'Invite User to Seat'}</span>
+                      <UserPlus className="w-3 h-3" />
+                      <span>{selectedChar.assignedUserId ? 'Reassign' : 'Invite Player'}</span>
                     </button>
                   </div>
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2 flex justify-between">
-                      <span>Hidden Stat Vector</span>
-                      <span className="text-amber-400">Server-Side Normalized</span>
+
+                  {/* Character Skills */}
+                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1.5">
+                    <div className="text-[11px] font-semibold text-base-content/70">
+                      Skills
                     </div>
-                    <div className="grid grid-cols-3 gap-2 font-mono text-[11px]">
-                      <div className="bg-slate-900 p-1.5 rounded">
-                        <span className="text-slate-400">Inquiry:</span>{' '}
-                        <span className="font-bold text-sky-400">
-                          {selectedChar.hiddenStats.inquiry.toFixed(2)}
-                        </span>
+                    <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                        <span className="opacity-70">Inquiry:</span>
+                        <span className="font-bold">{selectedChar.hiddenStats.inquiry.toFixed(1)}</span>
                       </div>
-                      <div className="bg-slate-900 p-1.5 rounded">
-                        <span className="text-slate-400">Coercion:</span>{' '}
-                        <span className="font-bold text-rose-400">
-                          {selectedChar.hiddenStats.coercion.toFixed(2)}
-                        </span>
+                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                        <span className="opacity-70">Pressure:</span>
+                        <span className="font-bold">{selectedChar.hiddenStats.coercion.toFixed(1)}</span>
                       </div>
-                      <div className="bg-slate-900 p-1.5 rounded">
-                        <span className="text-slate-400">Negotiation:</span>{' '}
-                        <span className="font-bold text-emerald-400">
-                          {selectedChar.hiddenStats.negotiation.toFixed(2)}
-                        </span>
+                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                        <span className="opacity-70">Bargain:</span>
+                        <span className="font-bold">{selectedChar.hiddenStats.negotiation.toFixed(1)}</span>
                       </div>
-                      <div className="bg-slate-900 p-1.5 rounded">
-                        <span className="text-slate-400">Deception:</span>{' '}
-                        <span className="font-bold text-purple-400">
-                          {selectedChar.hiddenStats.deception.toFixed(2)}
-                        </span>
+                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                        <span className="opacity-70">Trick:</span>
+                        <span className="font-bold">{selectedChar.hiddenStats.deception.toFixed(1)}</span>
                       </div>
-                      <div className="bg-slate-900 p-1.5 rounded">
-                        <span className="text-slate-400">Composure:</span>{' '}
-                        <span className="font-bold text-amber-400">
-                          {selectedChar.hiddenStats.composure.toFixed(2)}
-                        </span>
+                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                        <span className="opacity-70">Calm:</span>
+                        <span className="font-bold">{selectedChar.hiddenStats.composure.toFixed(1)}</span>
                       </div>
-                      <div className="bg-slate-900 p-1.5 rounded">
-                        <span className="text-slate-400">Insight:</span>{' '}
-                        <span className="font-bold text-teal-400">
-                          {selectedChar.hiddenStats.insight.toFixed(2)}
-                        </span>
+                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                        <span className="opacity-70">Insight:</span>
+                        <span className="font-bold">{selectedChar.hiddenStats.insight.toFixed(1)}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">
-                      Private Narrative Bio (Voice-Woven Output)
+                  {/* Character Secret Bio */}
+                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1">
+                    <span className="text-[11px] font-semibold text-base-content/70">
+                      Secret Bio
                     </span>
-                    <p className="text-slate-300 italic leading-relaxed text-xs">
+                    <p className="text-base-content/80 italic text-xs leading-relaxed">
                       "{selectedChar.privateNarrativeBio}"
                     </p>
                   </div>
 
-                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">
-                      Starting InfoCards ({charCards.length})
+                  {/* Starting Clues */}
+                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1.5">
+                    <span className="text-[11px] font-semibold text-base-content/70">
+                      Starting Clues ({charCards.length})
                     </span>
-                    <div className="space-y-1.5 max-h-40 overflow-y-auto">
+                    <div className="space-y-1 max-h-36 overflow-y-auto">
                       {charCards.map((c) => (
                         <div
                           key={c.id}
-                          className="p-1.5 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300 flex justify-between gap-2"
+                          className="p-1.5 rounded bg-base-200 text-xs flex justify-between items-center"
                         >
-                          <span className="font-semibold text-slate-200">
-                            {c.title}
-                          </span>
-                          <span className="font-mono text-slate-500 shrink-0">
-                            [{c.secrecy}]
+                          <span className="font-medium truncate">{c.title}</span>
+                          <span className="badge badge-xs badge-ghost shrink-0">
+                            {c.secrecy}
                           </span>
                         </div>
                       ))}
@@ -1821,24 +1692,20 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
         </div>
       </div>
 
-      {/* ================================================================== */}
-      {/* STORYLINE & SIMULATION LIBRARY MODAL                               */}
-      {/* ================================================================== */}
+      {/* STORY LIBRARY MODAL */}
       {showLibraryModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-          <div className="w-full max-w-4xl max-h-[90vh] bg-slate-900 border border-slate-800 rounded-2xl flex flex-col shadow-2xl overflow-hidden">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-4xl bg-base-200 border border-base-300 p-0 overflow-hidden">
             {/* Modal Header */}
-            <div className="p-5 border-b border-slate-800 flex items-center justify-between gap-4 bg-slate-950/70">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center">
-                  <FolderOpen className="w-5 h-5 text-purple-400" />
-                </div>
+            <div className="p-4 border-b border-base-300 flex items-center justify-between gap-4 bg-base-300/40">
+              <div className="flex items-center gap-2">
+                <FolderOpen className="w-5 h-5 text-primary" />
                 <div>
-                  <h2 className="text-base font-bold text-white">
-                    Storyline &amp; Simulation Library
+                  <h2 className="text-base font-bold">
+                    Story Library
                   </h2>
-                  <p className="text-xs text-slate-400">
-                    Browse, open to edit, or make a copy of any simulation storyline.
+                  <p className="text-xs text-base-content/70">
+                    Pick a story to edit or copy.
                   </p>
                 </div>
               </div>
@@ -1847,15 +1714,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 <button
                   type="button"
                   onClick={handleCreateNewSimulation}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors shadow"
+                  className="btn btn-primary btn-sm gap-1"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  <span>Create New Simulation</span>
+                  <span>New Story</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowLibraryModal(false)}
-                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="btn btn-ghost btn-sm btn-square"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -1863,80 +1730,54 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             </div>
 
             {/* Search & Filter Bar */}
-            <div className="p-4 border-b border-slate-800 bg-slate-900/50 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="relative w-full sm:w-72">
-                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+            <div className="p-3 border-b border-base-300 bg-base-100 flex flex-col sm:flex-row items-center justify-between gap-2">
+              <div className="relative w-full sm:w-64">
+                <Search className="w-4 h-4 text-base-content/50 absolute left-3 top-2" />
                 <input
                   type="text"
                   value={librarySearchQuery}
                   onChange={(e) => setLibrarySearchQuery(e.target.value)}
-                  placeholder="Search storylines by title or lore..."
-                  className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-purple-500"
+                  placeholder="Search stories..."
+                  className="input input-bordered input-sm pl-9 w-full bg-base-200"
                 />
               </div>
 
-              <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+              <div className="join">
                 <button
                   type="button"
                   onClick={() => setLibraryFilter('ALL')}
-                  className={`px-3 py-1 rounded-md font-semibold transition-colors ${
-                    libraryFilter === 'ALL'
-                      ? 'bg-purple-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                  className={`join-item btn btn-xs ${
+                    libraryFilter === 'ALL' ? 'btn-primary' : 'btn-ghost'
                   }`}
                 >
-                  All Storylines ({allSimulationsList.length})
+                  All ({allSimulationsList.length})
                 </button>
                 <button
                   type="button"
                   onClick={() => setLibraryFilter('MY_STORIES')}
-                  className={`px-3 py-1 rounded-md font-semibold transition-colors ${
-                    libraryFilter === 'MY_STORIES'
-                      ? 'bg-purple-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                  className={`join-item btn btn-xs ${
+                    libraryFilter === 'MY_STORIES' ? 'btn-primary' : 'btn-ghost'
                   }`}
                 >
-                  My Creations (
-                  {
-                    allSimulationsList.filter(
-                      (s) =>
-                        (currentUser?.id && s.creatorUserId === currentUser.id) ||
-                        (currentUser?.username &&
-                          s.creatorUsername === currentUser.username)
-                    ).length
-                  }
-                  )
+                  My Stories
                 </button>
                 <button
                   type="button"
                   onClick={() => setLibraryFilter('DEFAULT')}
-                  className={`px-3 py-1 rounded-md font-semibold transition-colors ${
-                    libraryFilter === 'DEFAULT'
-                      ? 'bg-purple-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                  className={`join-item btn btn-xs ${
+                    libraryFilter === 'DEFAULT' ? 'btn-primary' : 'btn-ghost'
                   }`}
                 >
-                  Default Scenarios (
-                  {
-                    allSimulationsList.filter(
-                      (s) =>
-                        s.id.startsWith('sim_helios') ||
-                        s.id.startsWith('sim_geneva') ||
-                        s.id.startsWith('sim_meridian') ||
-                        s.id.startsWith('sim_noir') ||
-                        s.id.startsWith('sim_fantasy')
-                    ).length
-                  }
-                  )
+                  Starter Stories
                 </button>
               </div>
             </div>
 
-            {/* Storyline Cards Grid */}
-            <div className="p-5 overflow-y-auto space-y-3 flex-1">
+            {/* Story Cards Grid */}
+            <div className="p-4 overflow-y-auto max-h-[60vh] space-y-2">
               {filteredLibrarySimulations.length === 0 ? (
-                <div className="p-8 text-center text-slate-500 text-xs">
-                  No storylines found matching your search.
+                <div className="p-8 text-center text-base-content/50 text-xs">
+                  No stories found.
                 </div>
               ) : (
                 filteredLibrarySimulations.map((sim) => {
@@ -1951,56 +1792,43 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   return (
                     <div
                       key={sim.id}
-                      className={`p-4 rounded-xl border transition-all ${
+                      className={`card bg-base-100 border p-3 transition-all ${
                         isCurrent
-                          ? 'bg-purple-950/25 border-purple-500/50 shadow-md'
-                          : 'bg-slate-950/70 border-slate-800 hover:border-slate-700'
+                          ? 'border-primary ring-1 ring-primary'
+                          : 'border-base-300'
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="space-y-1.5 flex-1 min-w-0">
+                        <div className="space-y-1 flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-sm font-bold text-white">
+                            <span className="text-sm font-bold">
                               {sim.title}
                             </span>
                             {isCurrent && (
-                              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">
-                                Active in Studio
+                              <span className="badge badge-xs badge-primary">
+                                Current
                               </span>
                             )}
                             {isBuiltIn && (
-                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
-                                Default Preset
-                              </span>
-                            )}
-                            {sim.creatorUsername && !isBuiltIn && (
-                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/40 text-amber-300 border border-amber-500/30">
-                                Creator: @{sim.creatorUsername}
+                              <span className="badge badge-xs badge-ghost">
+                                Starter
                               </span>
                             )}
                             {sim.voiceStyle && (
-                              <span className="text-[10px] px-2 py-0.5 rounded bg-violet-950/50 text-violet-300 border border-violet-700/40 font-semibold">
+                              <span className="badge badge-xs badge-secondary">
                                 {sim.voiceStyle.name}
                               </span>
                             )}
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-sky-300 border border-slate-800">
-                              {sim.complexityTier ?? 'STANDARD'}
-                            </span>
                           </div>
 
-                          <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                            {sim.masterNarrative ||
-                              'No master narrative drafted yet.'}
+                          <p className="text-xs text-base-content/70 line-clamp-1">
+                            {sim.masterNarrative || 'No story details yet.'}
                           </p>
 
-                          <div className="flex items-center gap-3 text-[11px] font-mono text-slate-500">
-                            <span>{Object.keys(sim.cards).length} Clue Cards</span>
+                          <div className="flex items-center gap-2 text-[11px] text-base-content/50">
+                            <span>{Object.keys(sim.cards).length} Clues</span>
                             <span>•</span>
-                            <span>{Object.keys(sim.goals).length} Goals</span>
-                            <span>•</span>
-                            <span>
-                              {Object.keys(sim.characters).length} Roles
-                            </span>
+                            <span>{Object.keys(sim.characters).length} Characters</span>
                           </div>
                         </div>
 
@@ -2008,27 +1836,22 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                           <button
                             type="button"
                             onClick={() => handleMakeCopy(sim)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-semibold transition-colors"
-                            title="Make an editable copy of this storyline"
+                            className="btn btn-outline btn-xs gap-1"
                           >
-                            <Copy className="w-3.5 h-3.5 text-amber-400" />
-                            <span>Make a Copy</span>
+                            <Copy className="w-3 h-3" />
+                            <span>Copy</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => handleOpenStorylineFromLibrary(sim)}
                             disabled={isCurrent}
-                            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                              isCurrent
-                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                                : 'bg-purple-600 hover:bg-purple-500 text-white shadow'
+                            className={`btn btn-xs ${
+                              isCurrent ? 'btn-disabled' : 'btn-primary'
                             }`}
                           >
-                            <Edit3 className="w-3.5 h-3.5" />
-                            <span>
-                              {isCurrent ? 'Currently Open' : 'Open & Edit'}
-                            </span>
+                            <Edit3 className="w-3 h-3" />
+                            <span>{isCurrent ? 'Open' : 'Edit'}</span>
                           </button>
                         </div>
                       </div>
@@ -2041,28 +1864,20 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
         </div>
       )}
 
-      {/* ================================================================== */}
-      {/* AI STORYLINE WORKSHOP & REVISION POPUP                             */}
-      {/* ================================================================== */}
+      {/* AI STORY REVISION MODAL */}
       {showRevisionModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-          <div className="w-full max-w-3xl max-h-[92vh] bg-slate-900 border border-violet-500/40 rounded-2xl flex flex-col shadow-2xl overflow-hidden">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-3xl bg-base-200 border border-base-300 p-0 overflow-hidden">
             {/* Header */}
-            <div className="p-5 border-b border-slate-800 flex items-center justify-between gap-4 bg-slate-950/80">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-violet-500/15 border border-violet-500/35 flex items-center justify-center">
-                  <Wand2 className="w-5 h-5 text-amber-400" />
-                </div>
+            <div className="p-4 border-b border-base-300 flex items-center justify-between gap-4 bg-base-300/40">
+              <div className="flex items-center gap-2">
+                <Wand2 className="w-5 h-5 text-secondary" />
                 <div>
-                  <h2 className="text-base font-bold text-white flex items-center gap-2">
-                    <span>AI Storyline Workshop &amp; Revision</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-violet-950/60 text-violet-300 border border-violet-500/30">
-                      DeepSeek {useV4ProForCreation ? 'V4 Pro' : 'Flash'}
-                    </span>
+                  <h2 className="text-base font-bold flex items-center gap-2">
+                    <span>Ask AI to Revise Story</span>
                   </h2>
-                  <p className="text-xs text-slate-400">
-                    Prompt the AI to modify, twist, deepen, or redirect your
-                    storyline in the active literary voice.
+                  <p className="text-xs text-base-content/70">
+                    Tell the AI what changes you want in your story.
                   </p>
                 </div>
               </div>
@@ -2073,74 +1888,53 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   setShowRevisionModal(false);
                   setRevisionResult(null);
                 }}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                className="btn btn-ghost btn-sm btn-square"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-5 overflow-y-auto space-y-4 flex-1">
+            <div className="p-4 overflow-y-auto max-h-[70vh] space-y-3">
               {!revisionResult ? (
                 /* PHASE 1: PROMPT INPUT */
-                <div className="space-y-4">
-                  {/* Current Storyline Context Card */}
-                  <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
-                    <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                      <span className="font-semibold uppercase tracking-wider font-mono">
-                        Current Storyline Under Revision
-                      </span>
-                      <div className="flex items-center gap-2 text-[10px] font-mono">
-                        <span className="text-sky-300 font-medium">
-                          {READABILITY_CONFIG[readabilityLevel]?.gradeLevel}
-                        </span>
-                        <span>•</span>
-                        <span className="text-purple-300 font-medium">
-                          {characterCount} Seats
-                        </span>
-                        <span>•</span>
-                        <span className="text-violet-300 font-medium">
-                          Voice: {activeCollectionVoice?.name ?? 'Direct Conversational'}
-                        </span>
-                      </div>
+                <div className="space-y-3">
+                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1 text-xs">
+                    <span className="font-semibold text-base-content/60">
+                      Current Story
+                    </span>
+                    <div className="font-bold text-sm">
+                      {scenarioTitle || 'Untitled Story'}
                     </div>
-                    <div className="font-bold text-white text-sm">
-                      {scenarioTitle || 'Untitled Simulation'}
-                    </div>
-                    <p className="text-slate-300 text-xs italic line-clamp-3 leading-relaxed">
-                      "
-                      {masterText ||
-                        'No master narrative entered yet. Describe your premise below to generate from scratch!'}
-                      "
+                    <p className="text-base-content/70 italic text-xs line-clamp-2">
+                      "{masterText || 'No story details yet.'}"
                     </p>
                   </div>
 
-                  {/* Prompt Instruction Area */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-200">
-                      How should the AI revise your storyline?
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold">
+                      What changes would you like?
                     </label>
                     <textarea
                       value={revisionUserPrompt}
                       onChange={(e) => setRevisionUserPrompt(e.target.value)}
                       rows={3}
-                      placeholder="e.g., Introduce a corporate espionage twist involving stolen cryogenic cores. Make the science officer secretly indebted to an outside syndicate, and elevate the urgency with a looming station lockdown..."
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-violet-500 resize-none"
+                      placeholder="e.g. Add a secret traitor, make the setting a snowy mountain lodge, and add more suspense..."
+                      className="textarea textarea-bordered w-full bg-base-100 text-xs resize-none"
                     />
                   </div>
 
-                  {/* Prompt Inspiration Chips */}
-                  <div className="space-y-1.5">
-                    <span className="text-[11px] font-mono text-slate-400">
-                      Quick Idea Presets (Click to Add):
+                  {/* Quick Ideas */}
+                  <div className="space-y-1">
+                    <span className="text-[11px] text-base-content/60">
+                      Quick ideas:
                     </span>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1">
                       {[
-                        'Add a corporate espionage twist involving stolen classified assets',
-                        'Heighten tension with a looming countdown and severe consequences',
-                        'Introduce a syndicate double agent operating under deep cover',
-                        'Make the conflict more morally ambiguous with conflicting loyalties',
-                        'Weave in an unexpected technical sabotage disguised as an accident',
-                        'Add a political blackmail conspiracy between rival leadership factions',
+                        'Add a secret traitor',
+                        'Add a ticking time bomb or countdown',
+                        'Make the mystery harder to solve',
+                        'Add a surprise family secret',
+                        'Change the setting to deep space',
                       ].map((chip) => (
                         <button
                           key={chip}
@@ -2150,7 +1944,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                               prev ? `${prev}. ${chip}` : chip
                             )
                           }
-                          className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-violet-500/40 transition-colors text-left"
+                          className="btn btn-xs btn-outline font-normal"
                         >
                           + {chip}
                         </button>
@@ -2159,68 +1953,44 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   </div>
 
                   {/* Action Row */}
-                  <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                    <div className="text-[11px] text-slate-400">
-                      Voice Tone:{' '}
-                      <strong className="text-violet-300">
-                        {activeCollectionVoice?.name}
-                      </strong>{' '}
-                      (
-                      {activeCollectionVoice?.authorInspiration ??
-                        'Iconic Author'}
-                      )
-                    </div>
+                  <div className="pt-2 border-t border-base-300 flex items-center justify-end">
                     <button
                       type="button"
                       onClick={handleExecuteStorylineRevision}
                       disabled={isRevisingStoryline || !revisionUserPrompt.trim()}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-colors shadow disabled:opacity-40"
+                      className="btn btn-primary btn-sm gap-1"
                     >
                       {isRevisingStoryline ? (
                         <>
                           <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                          <span>Regenerating Storyline with AI...</span>
+                          <span>Rewriting...</span>
                         </>
                       ) : (
                         <>
                           <Sparkles className="w-3.5 h-3.5" />
-                          <span>Submit Revision Prompt</span>
+                          <span>Rewrite Story</span>
                         </>
                       )}
                     </button>
                   </div>
                 </div>
               ) : (
-                /* PHASE 2: USER REVIEW & APPROVAL */
-                <div className="space-y-4">
-                  {/* AI Change Summary */}
-                  <div className="p-3.5 rounded-xl bg-violet-950/30 border border-violet-500/40 space-y-2">
-                    <div className="flex items-center gap-2 text-violet-300 text-xs font-bold">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>AI Revision Proposal Ready for Your Review</span>
+                /* PHASE 2: REVIEW & APPROVE */
+                <div className="space-y-3">
+                  <div className="card bg-base-100 border border-success/40 p-3 space-y-1">
+                    <div className="flex items-center gap-1.5 text-success text-xs font-bold">
+                      <CheckCircle className="w-4 h-4" />
+                      <span>Changes Ready for Review</span>
                     </div>
-                    <p className="text-xs text-slate-200 leading-relaxed">
+                    <p className="text-xs text-base-content/80">
                       {revisionResult.changeSummary}
                     </p>
-                    {revisionResult.keyElementsAdded.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {revisionResult.keyElementsAdded.map((elem, idx) => (
-                          <span
-                            key={idx}
-                            className="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-emerald-300 border border-emerald-500/30"
-                          >
-                            ✓ {elem}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </div>
 
-                  {/* Editable Revised Fields */}
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-slate-200">
-                        Revised Storyline Title (Review &amp; Edit)
+                      <label className="text-xs font-bold">
+                        New Title
                       </label>
                       <input
                         type="text"
@@ -2228,25 +1998,23 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         onChange={(e) =>
                           setEditableRevisedTitle(e.target.value)
                         }
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-violet-500"
+                        className="input input-bordered input-sm w-full bg-base-100 font-semibold"
                       />
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <label className="block text-xs font-bold text-slate-200">
-                          Revised Master Narrative Lore (Review &amp; Edit)
+                        <label className="text-xs font-bold">
+                          New Story Lore
                         </label>
                         <button
                           type="button"
                           onClick={() =>
                             setShowOriginalComparison((prev) => !prev)
                           }
-                          className="text-[11px] text-sky-400 hover:text-sky-300 underline"
+                          className="btn btn-ghost btn-xs text-secondary"
                         >
-                          {showOriginalComparison
-                            ? 'Hide Original Comparison'
-                            : 'Compare with Original'}
+                          {showOriginalComparison ? 'Hide Old' : 'Compare Old'}
                         </button>
                       </div>
                       <textarea
@@ -2254,54 +2022,52 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         onChange={(e) =>
                           setEditableRevisedLore(e.target.value)
                         }
-                        rows={6}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs font-mono text-slate-100 leading-relaxed focus:outline-none focus:border-violet-500 resize-none"
+                        rows={5}
+                        className="textarea textarea-bordered w-full bg-base-100 text-xs resize-none"
                       />
                     </div>
 
                     {showOriginalComparison && (
-                      <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1 text-xs">
-                        <span className="font-mono text-[10px] uppercase text-slate-500">
-                          Original Master Narrative
+                      <div className="card bg-base-100 border border-base-300 p-2 text-xs">
+                        <span className="text-[10px] text-base-content/50 uppercase">
+                          Old Story
                         </span>
-                        <p className="text-slate-400 text-xs italic leading-relaxed">
+                        <p className="text-base-content/70 italic text-xs">
                           "{masterText || 'None'}"
                         </p>
                       </div>
                     )}
                   </div>
 
-                  {/* Approval Action Buttons */}
-                  <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2.5">
+                  {/* Buttons */}
+                  <div className="pt-2 border-t border-base-300 flex items-center justify-between gap-2">
                     <button
                       type="button"
                       onClick={() => setRevisionResult(null)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors"
+                      className="btn btn-ghost btn-xs gap-1"
                     >
                       <ArrowLeft className="w-3.5 h-3.5" />
-                      <span>Tweak Prompt / Revise Again</span>
+                      <span>Change Prompt</span>
                     </button>
 
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={handleApproveStorylineToStudio}
-                        className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-semibold transition-colors border border-slate-700"
-                        title="Apply title and lore to studio fields without compiling immediately"
+                        className="btn btn-outline btn-sm gap-1"
                       >
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Approve &amp; Apply to Studio</span>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Accept Story</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={handleApproveAndDiceIntoCards}
                         disabled={isCompiling}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-colors shadow-lg disabled:opacity-40"
-                        title="Approve this storyline and immediately dice into clue cards and generate character dossiers"
+                        className="btn btn-primary btn-sm gap-1"
                       >
                         <Sparkles className="w-3.5 h-3.5" />
-                        <span>Approve &amp; Dice into Cards &amp; Characters</span>
+                        <span>Accept &amp; Create Characters</span>
                       </button>
                     </div>
                   </div>
@@ -2311,6 +2077,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           </div>
         </div>
       )}
+
       {/* User Seat Invite Modal */}
       {inviteModalCharId && currentUser && (
         <UserSeatInviteModal

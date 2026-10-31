@@ -619,38 +619,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-slate-950 text-slate-100 font-sans">
-      {/* ==================================================================== */}
-      {/* ADMIN COMMAND HEADER                                                 */}
-      {/* ==================================================================== */}
-      <header className="h-14 border-b border-amber-900/40 bg-slate-900 px-4 flex items-center justify-between gap-3 shrink-0">
-        <div className="flex items-center gap-2.5 min-w-0">
+    <div className="flex flex-col h-screen overflow-hidden bg-base-100 text-base-content font-sans">
+      {/* ADMIN NAVBAR */}
+      <header className="navbar bg-base-200 border-b border-base-300 px-4 min-h-14 justify-between gap-2 shrink-0">
+        <div className="flex items-center gap-2 min-w-0">
           {onBackToOverview && (
             <button
               type="button"
               onClick={onBackToOverview}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-950 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-bold transition-colors shrink-0"
-              title="Return to Global Admin Multi-Simulation Overview"
+              className="btn btn-ghost btn-sm gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              All Simulations
+              All Games
             </button>
           )}
 
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/15 border border-amber-500/40 shrink-0">
-            <Terminal className="w-4 h-4 text-amber-400" />
-            <span className="font-bold text-xs tracking-wider text-amber-300 uppercase font-mono">
-              {roleLabel || 'Admin Dashboard'}
-            </span>
+          <div className="badge badge-warning gap-1.5 font-bold text-xs py-2">
+            <Terminal className="w-3.5 h-3.5" />
+            <span>{roleLabel || 'Game Host'}</span>
           </div>
-
-          <span className="text-slate-700">|</span>
 
           {canSwitchSimulations && simulations && onSelectSimulation ? (
             <select
               value={state.id}
               onChange={(e) => onSelectSimulation(e.target.value)}
-              className="bg-slate-950 border border-slate-700 rounded-md px-2.5 py-1 text-xs font-semibold text-slate-200 focus:outline-none focus:border-amber-500"
+              className="select select-bordered select-xs font-semibold"
             >
               {Object.values(simulations).map((sim) => (
                 <option key={sim.id} value={sim.id}>
@@ -659,86 +652,49 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               ))}
             </select>
           ) : (
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-xs font-semibold text-slate-200 truncate">
-                {state.title}
-              </span>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-700/50 shrink-0">
-                Single-Sim Scope
-              </span>
-            </div>
+            <span className="text-xs font-bold truncate max-w-xs">
+              {state.title}
+            </span>
           )}
 
           <button
             onClick={handleToggleSimulationStatus}
-            className={`text-[10px] px-2 py-0.5 rounded border font-mono transition-colors shrink-0 ${
-              state.status === 'COMPLETED'
-                ? 'bg-slate-800 text-slate-300 border-slate-600 hover:bg-slate-700'
-                : 'bg-emerald-950/60 text-emerald-300 border-emerald-700/60 hover:bg-emerald-900/60'
+            className={`badge badge-sm font-mono cursor-pointer ${
+              state.status === 'COMPLETED' ? 'badge-ghost' : 'badge-success'
             }`}
-            title="Click to toggle simulation status between ACTIVE and COMPLETED on User Profiles"
           >
             {state.status}
           </button>
         </div>
 
-        {/* Global Turn, Test V4 Pro Toggle & Authoring Controls */}
+        {/* Global Turn & Controls */}
         <div className="flex items-center gap-2 shrink-0">
-          {/* TEST V4 PRO TOGGLE */}
           <button
             type="button"
             onClick={() => onToggleTestV4Pro(!testV4Pro)}
-            role="switch"
-            aria-checked={testV4Pro}
-            title={
-              testV4Pro
-                ? `Test V4 Pro ENABLED (${DEEPSEEK_V4_PRO_MODEL}). Click to switch back to ${DEEPSEEK_FLASH_MODEL}.`
-                : `Test V4 Pro OFF (using ${DEEPSEEK_FLASH_MODEL}). Click to toggle ${DEEPSEEK_V4_PRO_MODEL}.`
-            }
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-xs font-bold transition-all ${
-              testV4Pro
-                ? 'bg-fuchsia-950/80 border-fuchsia-400/80 text-fuchsia-200 shadow shadow-fuchsia-500/20 ring-1 ring-fuchsia-400/30'
-                : 'bg-slate-950 hover:bg-slate-800 border-slate-700 text-slate-300'
+            className={`btn btn-xs gap-1 ${
+              testV4Pro ? 'btn-secondary' : 'btn-outline border-base-300'
             }`}
           >
-            <Sparkles
-              className={`w-3.5 h-3.5 ${
-                testV4Pro ? 'text-fuchsia-300 animate-pulse' : 'text-slate-400'
-              }`}
-            />
-            <span>Test V4 Pro</span>
-            <span
-              className={`px-1.5 py-0.2 rounded text-[10px] font-mono uppercase ${
-                testV4Pro
-                  ? 'bg-fuchsia-500 text-slate-950 font-bold'
-                  : 'bg-slate-800 text-slate-400'
-              }`}
-            >
-              {testV4Pro ? 'ON' : 'OFF'}
-            </span>
+            <Sparkles className="w-3 h-3" />
+            <span>AI Pro: {testV4Pro ? 'ON' : 'OFF'}</span>
           </button>
 
-          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800 text-xs font-mono">
-            <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-slate-400">Turn:</span>
-            <span className="font-bold text-amber-300">{state.currentTurnOrTick}</span>
-            <span className="text-slate-700">|</span>
-            <span className="text-slate-400">Interactions:</span>
-            <span className="font-bold text-sky-400">{state.interactions.length}</span>
+          <div className="badge badge-sm badge-ghost font-mono gap-1">
+            <Clock className="w-3 h-3" />
+            Turn {state.currentTurnOrTick}
           </div>
 
           <button
             onClick={handleAdvanceTurn}
-            className="px-3 py-1.5 text-xs font-semibold rounded-md bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors"
-            title="Increment turn and refill all players to 3 Action Points"
+            className="btn btn-primary btn-sm"
           >
-            Advance Turn
+            Next Turn
           </button>
 
           <button
             onClick={handleResetScenario}
-            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
-            title="Reset simulation to Turn 0"
+            className="btn btn-ghost btn-sm gap-1"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset
@@ -747,9 +703,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {canUseStudio && (
             <button
               onClick={() => setAdminMode('STUDIO')}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-800 transition-colors"
+              className="btn btn-secondary btn-sm gap-1"
             >
-              <Layers className="w-3.5 h-3.5 text-sky-400" />
+              <Layers className="w-3.5 h-3.5" />
               Studio
             </button>
           )}
@@ -757,10 +713,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {onBackToProfile && (
             <button
               onClick={onBackToProfile}
-              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
-              title="Open your User Profile & Simulation History"
+              className="btn btn-ghost btn-sm gap-1"
             >
-              <User className="w-3.5 h-3.5 text-sky-400" />
+              <User className="w-3.5 h-3.5" />
               Profile
             </button>
           )}
@@ -768,8 +723,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {onSignOut && (
             <button
               onClick={onSignOut}
-              className="p-1.5 rounded-md text-slate-400 hover:text-rose-200 hover:bg-rose-950/50 border border-slate-800 transition-colors"
-              title="Sign Out / Switch Account"
+              className="btn btn-ghost btn-sm btn-square text-error"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -777,40 +731,36 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <button
             onClick={() => setShowApiKeyModal(true)}
-            className="p-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800 transition-colors"
-            title="Configure DeepSeek API Key"
+            className="btn btn-ghost btn-sm btn-square"
           >
             <Settings className="w-4 h-4" />
           </button>
         </div>
       </header>
 
-      {/* ==================================================================== */}
-      {/* PLAYER ROSTER BAR: AP Control + Open Exact Player Dashboard           */}
-      {/* ==================================================================== */}
-      <section className="px-4 py-2.5 border-b border-slate-800 bg-slate-900/50 shrink-0">
+      {/* PLAYER ROSTER BAR */}
+      <section className="px-4 py-2.5 border-b border-base-300 bg-base-200/50 shrink-0">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-sky-400" />
-            <span className="text-xs font-bold text-slate-200">
-              Character Seats ({Object.keys(state.characters).length})
+            <Users className="w-4 h-4 text-primary" />
+            <span className="text-xs font-bold">
+              Characters ({Object.keys(state.characters).length})
             </span>
-            <span className="text-[11px] text-slate-400">
+            <span className="text-xs text-base-content/60">
               • {Object.values(state.characters).filter((c) => c.isAiControlled).length} AI Controlled
             </span>
           </div>
           <button
             type="button"
             onClick={handleFillEmptySeatsWithAi}
-            className="px-2.5 py-1 rounded bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/30 text-[11px] font-semibold flex items-center gap-1.5 transition-colors"
-            title="Set unoccupied seats to be played by AI when not enough human players are available"
+            className="btn btn-xs btn-outline btn-secondary gap-1"
           >
-            <Bot className="w-3.5 h-3.5 text-purple-400" />
+            <Bot className="w-3 h-3" />
             Auto-Fill Empty Seats with AI
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
           {Object.values(state.characters).map((char) => {
             const isActing = actingPlayerId === char.playerId;
             const knownCount = Object.values(state.cards).filter((c) =>
@@ -820,167 +770,134 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             return (
               <div
                 key={char.playerId}
-                className={`rounded-lg border p-2.5 transition-all text-xs ${
+                className={`card bg-base-100 border p-2.5 shadow-sm transition-all text-xs ${
                   isActing
-                    ? 'bg-amber-950/25 border-amber-500/70 ring-1 ring-amber-500/30'
-                    : 'bg-slate-950/70 border-slate-800'
+                    ? 'border-primary ring-1 ring-primary'
+                    : 'border-base-300'
                 }`}
               >
-                <div className="flex items-start justify-between gap-2 mb-1.5">
+                <div className="flex items-start justify-between gap-2 mb-1">
                   <div className="min-w-0">
-                    <div className="font-bold text-slate-100 truncate flex items-center gap-1.5">
-                      <span>{char.characterName}</span>
+                    <div className="font-bold flex items-center gap-1.5 flex-wrap">
+                      <span className="truncate">{char.characterName}</span>
                       {isActing && (
-                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500 text-slate-950 font-mono font-bold uppercase">
-                          Acting
+                        <span className="badge badge-xs badge-primary">
+                          Testing
                         </span>
                       )}
                       {char.isAiControlled ? (
-                        <span
-                          className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono font-bold uppercase flex items-center gap-1"
-                          title="This character seat is actively controlled by AI"
-                        >
-                          <Bot className="w-2.5 h-2.5" /> AI
+                        <span className="badge badge-xs badge-secondary">
+                          AI
                         </span>
                       ) : (
-                        <span
-                          className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-mono font-semibold uppercase flex items-center gap-1"
-                          title="This character seat is reserved for human player occupancy"
-                        >
-                          <User className="w-2.5 h-2.5" /> Human
+                        <span className="badge badge-xs badge-ghost">
+                          Player
                         </span>
                       )}
                       {char.assignedUsername && (
-                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono">
+                        <span className="badge badge-xs badge-success">
                           @{char.assignedUsername}
                         </span>
                       )}
                       {getPendingInvitationForSeat(state.id, char.playerId) && (
-                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
-                          Invited @{getPendingInvitationForSeat(state.id, char.playerId)?.toUsername}
+                        <span className="badge badge-xs badge-warning">
+                          Invited
                         </span>
                       )}
                     </div>
-                    <div className="text-[10px] text-slate-400 truncate">
-                      {char.publicRole} • ID: <span className="font-mono">{char.playerId}</span>
+                    <div className="text-[11px] text-base-content/60 truncate">
+                      {char.publicRole}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1.5 font-mono text-[10px] shrink-0">
-                    <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-amber-300 font-bold">
+                  <div className="flex items-center gap-1 font-mono text-[10px] shrink-0">
+                    <span className="badge badge-xs badge-warning font-bold">
                       {char.victoryPoints} VP
                     </span>
-                    <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-emerald-400 font-bold">
+                    <span className="badge badge-xs badge-success font-bold">
                       {char.actionPoints} AP
                     </span>
                     <button
                       onClick={() => handleGrantActionPoint(char.playerId)}
-                      className="p-0.5 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700"
-                      title="Grant +1 Action Point for testing"
+                      className="btn btn-ghost btn-xs btn-square"
+                      title="Add 1 Action Point"
                     >
                       <Plus className="w-3 h-3" />
                     </button>
                   </div>
                 </div>
 
-                {/* Server-Side Hidden Stat Vector */}
-                <div className="grid grid-cols-6 gap-1 font-mono text-[9px] bg-slate-900/90 p-1 rounded border border-slate-800/80 mb-2 text-center">
-                  <div title="Inquiry">
-                    <span className="text-slate-500 block">INQ</span>
-                    <span className="text-sky-400 font-bold">
-                      {char.hiddenStats.inquiry.toFixed(2)}
-                    </span>
+                {/* Character Skills */}
+                <div className="grid grid-cols-6 gap-1 text-[9px] bg-base-200 p-1 rounded mb-2 text-center">
+                  <div>
+                    <span className="opacity-60 block">INQ</span>
+                    <span className="font-bold">{char.hiddenStats.inquiry.toFixed(1)}</span>
                   </div>
-                  <div title="Coercion">
-                    <span className="text-slate-500 block">COE</span>
-                    <span className="text-rose-400 font-bold">
-                      {char.hiddenStats.coercion.toFixed(2)}
-                    </span>
+                  <div>
+                    <span className="opacity-60 block">PRS</span>
+                    <span className="font-bold">{char.hiddenStats.coercion.toFixed(1)}</span>
                   </div>
-                  <div title="Negotiation">
-                    <span className="text-slate-500 block">NEG</span>
-                    <span className="text-emerald-400 font-bold">
-                      {char.hiddenStats.negotiation.toFixed(2)}
-                    </span>
+                  <div>
+                    <span className="opacity-60 block">BAR</span>
+                    <span className="font-bold">{char.hiddenStats.negotiation.toFixed(1)}</span>
                   </div>
-                  <div title="Deception">
-                    <span className="text-slate-500 block">DEC</span>
-                    <span className="text-purple-400 font-bold">
-                      {char.hiddenStats.deception.toFixed(2)}
-                    </span>
+                  <div>
+                    <span className="opacity-60 block">TRK</span>
+                    <span className="font-bold">{char.hiddenStats.deception.toFixed(1)}</span>
                   </div>
-                  <div title="Composure">
-                    <span className="text-slate-500 block">CMP</span>
-                    <span className="text-amber-400 font-bold">
-                      {char.hiddenStats.composure.toFixed(2)}
-                    </span>
+                  <div>
+                    <span className="opacity-60 block">CAL</span>
+                    <span className="font-bold">{char.hiddenStats.composure.toFixed(1)}</span>
                   </div>
-                  <div title="Insight">
-                    <span className="text-slate-500 block">INS</span>
-                    <span className="text-teal-400 font-bold">
-                      {char.hiddenStats.insight.toFixed(2)}
-                    </span>
+                  <div>
+                    <span className="opacity-60 block">INS</span>
+                    <span className="font-bold">{char.hiddenStats.insight.toFixed(1)}</span>
                   </div>
                 </div>
 
-                {/* Action Bar: Act on Behalf, Toggle AI Controller, Open Exact Player Dashboard */}
-                <div className="flex items-center gap-1.5 flex-wrap">
+                {/* Action Bar */}
+                <div className="flex items-center gap-1 flex-wrap">
                   <button
                     onClick={() => handleSelectActingPlayer(char.playerId)}
-                    className={`flex-1 min-w-[90px] py-1 px-2 rounded text-[11px] font-semibold flex items-center justify-center gap-1 transition-colors ${
-                      isActing
-                        ? 'bg-amber-500 text-slate-950 font-bold'
-                        : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
+                    className={`btn btn-xs flex-1 ${
+                      isActing ? 'btn-primary' : 'btn-outline border-base-300'
                     }`}
-                    title={`Control ${char.characterName} and spend their Action Points to test`}
                   >
                     <UserCheck className="w-3 h-3" />
-                    {isActing ? `Acting (${knownCount} cards)` : 'Act As (Test AP)'}
+                    {isActing ? `Active (${knownCount})` : 'Select'}
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleToggleAiControl(char.playerId)}
-                    className={`py-1 px-2 rounded text-[11px] font-semibold flex items-center gap-1 border transition-colors ${
-                      char.isAiControlled
-                        ? 'bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border-purple-500/40'
-                        : 'bg-slate-900 hover:bg-slate-800 text-slate-400 border-slate-800'
-                    }`}
-                    title={
-                      char.isAiControlled
-                        ? 'Currently AI controlled. Click to switch to human player seat.'
-                        : 'Currently human player seat. Click to set this character to be played by AI.'
-                    }
+                    className="btn btn-xs btn-ghost"
                   >
                     <Bot className="w-3 h-3" />
-                    {char.isAiControlled ? 'AI' : 'Set AI'}
+                    {char.isAiControlled ? 'AI' : 'Human'}
                   </button>
 
                   <button
                     onClick={() => onOpenPlayerView(char.playerId)}
-                    className="py-1 px-2 rounded text-[11px] font-semibold bg-sky-600 hover:bg-sky-500 text-white flex items-center gap-1 transition-colors"
-                    title={`Open ${char.characterName}'s exact Player Dashboard`}
+                    className="btn btn-xs btn-info"
                   >
                     <Eye className="w-3 h-3" />
-                    Player View
+                    View
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setInviteModalCharId(char.playerId)}
-                    className="py-1 px-2 rounded text-[11px] font-semibold bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 flex items-center gap-1 transition-colors"
-                    title={`Search username database and invite a player to fill or take over ${char.characterName}'s seat`}
+                    className="btn btn-xs btn-outline border-base-300"
                   >
                     <UserPlus className="w-3 h-3" />
-                    {char.assignedUserId ? 'Transfer' : 'Invite'}
+                    {char.assignedUserId ? 'Reassign' : 'Invite'}
                   </button>
 
                   <button
                     onClick={() => handleOpenPlayerInNewTab(char.playerId)}
-                    className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition-colors"
-                    title={`Open ${char.characterName}'s Player Dashboard in a new tab`}
+                    className="btn btn-xs btn-ghost btn-square"
                   >
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-3 h-3" />
                   </button>
                 </div>
               </div>

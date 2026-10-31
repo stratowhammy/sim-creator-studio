@@ -1,8 +1,10 @@
 @import "tailwindcss";
+@plugin "daisyui";
+@import "daisyui/themes.css";
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 antialiased font-sans select-none;
+    @apply bg-base-100 text-base-content antialiased font-sans select-none;
   }
 }
 

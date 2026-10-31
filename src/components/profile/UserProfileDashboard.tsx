@@ -357,56 +357,46 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
     : null;
 
   return (
-    <div className="h-screen w-screen overflow-y-auto bg-slate-950 text-slate-100 font-sans select-text">
+    <div className="h-screen w-screen overflow-y-auto bg-base-100 text-base-content font-sans select-text">
       {/* ==================================================================== */}
-      {/* TOP NAVIGATION HEADER                                                */}
+      {/* DAISYUI NAVBAR HEADER                                                */}
       {/* ==================================================================== */}
-      <header className="sticky top-0 z-20 min-h-14 py-2 border-b border-slate-800 bg-slate-900/95 backdrop-blur px-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+      <header className="navbar bg-base-200 border-b border-base-300 sticky top-0 z-20 px-4 sm:px-6 gap-2">
+        <div className="navbar-start gap-2">
           {onOpenLandingPage && (
             <button
               type="button"
               onClick={onOpenLandingPage}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-medium transition-colors"
-              title="Visit Sim Creator Studio Landing Page"
+              className="btn btn-ghost btn-sm gap-1"
             >
-              <Home className="w-3.5 h-3.5 text-sky-400" />
-              Landing Page
+              <Home className="w-3.5 h-3.5 text-primary" />
+              Home
             </button>
           )}
-          <div className="w-8 h-8 rounded-lg bg-sky-500/15 border border-sky-500/40 flex items-center justify-center">
-            <Radio className="w-4 h-4 text-sky-400" />
-          </div>
-          <div>
-            <span className="font-bold text-sm tracking-tight text-white">
-              Sim Creator Studio
-            </span>
-            <span className="text-slate-600 mx-2">•</span>
-            <span className="text-xs text-slate-400">
-              Operative Dossier &amp; Simulation Hub
-            </span>
-          </div>
+          <span className="font-bold text-sm tracking-tight hidden sm:inline-block">
+            Sim Creator Studio
+          </span>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="navbar-end gap-2 flex-wrap">
           {/* SIMS WALLET BADGE BUTTON */}
           <button
             type="button"
             onClick={() => setShowSimsWalletModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-200 border border-amber-500/40 text-xs font-bold transition-colors"
-            title="View your 'Sims' Credit Balance & Ledger"
+            className="btn btn-sm btn-outline btn-warning gap-1 font-mono"
+            title="View your Sims credits"
           >
-            <Coins className="w-3.5 h-3.5 text-amber-400" />
-            <span className="font-mono">{user.simsBalance ?? 0} Sims</span>
+            <Coins className="w-3.5 h-3.5" />
+            <span>{user.simsBalance ?? 0} Sims</span>
           </button>
 
           {canAccessGlobalAdminOverview(user) && onOpenAdminDashboard && (
             <button
               onClick={onOpenAdminDashboard}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/50 text-xs font-bold transition-colors"
+              className="btn btn-sm btn-warning gap-1"
             >
-              <Terminal className="w-3.5 h-3.5 text-amber-400" />
-              Global Admin Overview
+              <Terminal className="w-3.5 h-3.5" />
+              Admin Overview
             </button>
           )}
 
@@ -415,34 +405,34 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
             onOpenAssignedSimAdmin && (
               <button
                 onClick={() => onOpenAssignedSimAdmin(managedSimId)}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-500/50 text-xs font-bold transition-colors"
+                className="btn btn-sm btn-success gap-1"
               >
-                <Terminal className="w-3.5 h-3.5 text-emerald-400" />
-                Run Simulation: {managedSimTitle}
+                <Terminal className="w-3.5 h-3.5" />
+                Run Game
               </button>
             )}
 
           {canAccessAuthoringStudio(user) && onOpenAuthoringStudio && (
             <button
               onClick={onOpenAuthoringStudio}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border border-purple-500/50 text-xs font-bold transition-colors"
+              className="btn btn-sm btn-secondary gap-1"
             >
-              <Layers className="w-3.5 h-3.5 text-purple-400" />
-              Open Authoring Studio
+              <Layers className="w-3.5 h-3.5" />
+              Create Game
             </button>
           )}
 
           <button
             onClick={handleOpenEditModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition-colors"
+            className="btn btn-sm btn-ghost gap-1"
           >
-            <Edit3 className="w-3.5 h-3.5 text-sky-400" />
-            Manage Profile
+            <Edit3 className="w-3.5 h-3.5" />
+            Profile
           </button>
 
           <button
             onClick={onSignOut}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-rose-950/60 text-slate-300 hover:text-rose-200 border border-slate-800 hover:border-rose-700/50 text-xs font-medium transition-colors"
+            className="btn btn-sm btn-outline btn-error gap-1"
           >
             <LogOut className="w-3.5 h-3.5" />
             Sign Out
@@ -473,57 +463,55 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
           </div>
         )}
 
-        {/* 1. USER PROFILE HERO & CAREER METRICS */}
-        <section className="rounded-2xl bg-slate-900/70 border border-slate-800 p-6 shadow-xl">
+        {/* 1. USER PROFILE HERO & STATS */}
+        <section className="card bg-base-200 border border-base-300 p-6 shadow">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-start gap-4">
               <div
-                className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${user.avatarColor} flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0`}
+                className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${user.avatarColor} flex items-center justify-center text-white font-bold text-xl shadow shrink-0`}
               >
                 {initials}
               </div>
 
               <div className="space-y-1.5">
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  <h1 className="text-xl font-bold text-white">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="text-xl font-bold">
                     {user.displayName}
                   </h1>
-                  <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-sky-300 border border-slate-700">
+                  <span className="badge badge-sm badge-ghost font-mono">
                     @{user.username}
                   </span>
-                  <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                  <span className="badge badge-sm badge-primary badge-outline">
                     {user.callsign}
                   </span>
-                  <span
-                    className={`text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${roleInfo.badgeClass}`}
-                  >
+                  <span className={`badge badge-sm ${roleInfo.badgeClass}`}>
                     {roleInfo.label}
                   </span>
                   {user.accountRole === 'SIMULATION_ADMIN' &&
                     managedSimTitle && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-200 border border-emerald-700/50">
-                        Scoped: {managedSimTitle}
+                      <span className="badge badge-sm badge-success badge-outline">
+                        {managedSimTitle}
                       </span>
                     )}
                 </div>
 
-                <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-                  {user.bio || 'No biography set yet.'}
+                <p className="text-xs text-base-content/70 max-w-2xl leading-relaxed">
+                  {user.bio || 'Player in Sim Creator Studio.'}
                 </p>
 
-                <div className="flex items-center gap-4 text-[11px] text-slate-400 pt-0.5 flex-wrap">
+                <div className="flex items-center gap-4 text-xs text-base-content/60 pt-0.5 flex-wrap">
                   <span className="flex items-center gap-1">
-                    <User className="w-3.5 h-3.5 text-slate-500" />
+                    <User className="w-3.5 h-3.5" />
                     {user.email}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                    <Calendar className="w-3.5 h-3.5" />
                     Joined {user.createdAt}
                   </span>
                   {totalRoyaltiesEarned > 0 && (
-                    <span className="flex items-center gap-1 text-emerald-300 font-semibold">
-                      <Coins className="w-3.5 h-3.5 text-emerald-400" />
-                      +{totalRoyaltiesEarned} Sims earned from published simulations
+                    <span className="badge badge-sm badge-success badge-outline gap-1">
+                      <Coins className="w-3 h-3" />
+                      +{totalRoyaltiesEarned} Sims earned
                     </span>
                   )}
                 </div>
@@ -531,79 +519,79 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
             </div>
 
             {/* Career & Sims Stat Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 shrink-0">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setShowSimsWalletModal(true)}
-                className="bg-amber-950/35 hover:bg-amber-950/55 border border-amber-500/40 rounded-xl px-4 py-3 text-center transition-colors"
+                className="card bg-base-100 border border-warning/40 hover:border-warning p-3 text-center transition-all cursor-pointer shadow-sm"
               >
-                <div className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wider text-amber-200/80 mb-1">
-                  <Coins className="w-3.5 h-3.5 text-amber-400" />
-                  'Sims' Credits
+                <div className="text-[10px] uppercase font-bold text-warning mb-1 flex items-center justify-center gap-1">
+                  <Coins className="w-3.5 h-3.5" />
+                  Sims
                 </div>
-                <div className="text-lg font-bold font-mono text-amber-300">
+                <div className="text-base font-bold font-mono text-warning">
                   {user.simsBalance ?? 0}
                 </div>
               </button>
 
-              <div className="bg-slate-950/90 border border-slate-800 rounded-xl px-4 py-3 text-center">
-                <div className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wider text-slate-400 mb-1">
-                  <Trophy className="w-3.5 h-3.5 text-amber-400" />
-                  Total VP
+              <div className="card bg-base-100 border border-base-300 p-3 text-center shadow-sm">
+                <div className="text-[10px] uppercase font-semibold text-base-content/60 mb-1 flex items-center justify-center gap-1">
+                  <Trophy className="w-3.5 h-3.5 text-warning" />
+                  Points
                 </div>
-                <div className="text-lg font-bold text-amber-300">
+                <div className="text-base font-bold">
                   {totalVictoryPoints.toLocaleString()}
                 </div>
               </div>
 
-              <div className="bg-slate-950/90 border border-slate-800 rounded-xl px-4 py-3 text-center">
-                <div className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wider text-slate-400 mb-1">
-                  <Play className="w-3.5 h-3.5 text-emerald-400" />
-                  Active Rooms
+              <div className="card bg-base-100 border border-base-300 p-3 text-center shadow-sm">
+                <div className="text-[10px] uppercase font-semibold text-base-content/60 mb-1 flex items-center justify-center gap-1">
+                  <Play className="w-3.5 h-3.5 text-success" />
+                  Active
                 </div>
-                <div className="text-lg font-bold text-emerald-300">
+                <div className="text-base font-bold text-success">
                   {activeSimulations.length}
                 </div>
               </div>
 
-              <div className="bg-slate-950/90 border border-slate-800 rounded-xl px-4 py-3 text-center">
-                <div className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wider text-slate-400 mb-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />
-                  Completed
+              <div className="card bg-base-100 border border-base-300 p-3 text-center shadow-sm">
+                <div className="text-[10px] uppercase font-semibold text-base-content/60 mb-1 flex items-center justify-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-info" />
+                  Done
                 </div>
-                <div className="text-lg font-bold text-sky-300">
+                <div className="text-base font-bold text-info">
                   {completedSimulations.length}
                 </div>
               </div>
 
-              <div className="bg-slate-950/90 border border-slate-800 rounded-xl px-4 py-3 text-center">
-                <div className="flex items-center justify-center gap-1 text-[10px] uppercase tracking-wider text-slate-400 mb-1">
-                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                  Best Score
+              <div className="card bg-base-100 border border-base-300 p-3 text-center shadow-sm">
+                <div className="text-[10px] uppercase font-semibold text-base-content/60 mb-1 flex items-center justify-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-secondary" />
+                  Best
                 </div>
-                <div className="text-lg font-bold text-purple-300">
-                  {highestVp.toLocaleString()} VP
+                <div className="text-base font-bold text-secondary">
+                  {highestVp.toLocaleString()}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* PENDING SEAT INVITATIONS & ROLE OFFERS */}
+        {/* PENDING SEAT INVITATIONS */}
         {pendingInvites.length > 0 && (
-          <section className="space-y-3 p-5 rounded-2xl bg-amber-950/20 border border-amber-500/40">
+          <section className="card bg-base-200 border border-warning/40 p-4 shadow space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Mail className="w-5 h-5 text-amber-400 animate-bounce" />
+                <Mail className="w-5 h-5 text-warning" />
                 <div>
-                  <h2 className="text-base font-bold text-white flex items-center gap-2">
-                    Pending Seat Invitations &amp; Role Offers
-                    <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500 text-slate-950">
+                  <h2 className="text-base font-bold flex items-center gap-2">
+                    Game Invites
+                    <span className="badge badge-sm badge-warning">
                       {pendingInvites.length}
                     </span>
                   </h2>
-                  <p className="text-xs text-amber-200/80 mt-0.5">
-                    You have been invited to occupy or take over a character seat. Accepting will permanently assign this role to your account.
+                  <p className="text-xs text-base-content/70">
+                    You were invited to play a character.
                   </p>
                 </div>
               </div>
@@ -611,19 +599,19 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
 
             {inviteActionFeedback && (
               <div
-                className={`p-3 rounded-xl text-xs flex items-center justify-between ${
+                className={`p-3 rounded-lg text-xs flex items-center justify-between ${
                   inviteActionFeedback.type === 'ok'
-                    ? 'bg-emerald-950/70 border border-emerald-500/50 text-emerald-200'
-                    : 'bg-rose-950/70 border border-rose-500/50 text-rose-200'
+                    ? 'bg-success/20 text-success'
+                    : 'bg-error/20 text-error'
                 }`}
               >
                 <span>{inviteActionFeedback.msg}</span>
                 <button
                   type="button"
                   onClick={() => setInviteActionFeedback(null)}
-                  className="text-slate-400 hover:text-white ml-2"
+                  className="btn btn-ghost btn-xs btn-circle"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3 h-3" />
                 </button>
               </div>
             )}
@@ -632,45 +620,43 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
               {pendingInvites.map((invite) => (
                 <div
                   key={invite.id}
-                  className="p-4 rounded-xl bg-slate-900/90 border border-amber-500/30 flex flex-col justify-between gap-3 shadow-md"
+                  className="card bg-base-100 border border-base-300 p-3 flex flex-col justify-between gap-2 shadow-sm"
                 >
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                        {invite.inviteType === 'ROLE_TRANSFER' ? 'Role Transfer' : 'Seat Invitation'}
+                      <span className="badge badge-xs badge-warning">
+                        {invite.inviteType === 'ROLE_TRANSFER' ? 'Role Transfer' : 'Invite'}
                       </span>
-                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
+                      <span className="text-[10px] text-base-content/60">
                         {new Date(invite.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <div className="text-sm font-bold text-white">
+                    <div className="text-sm font-bold">
                       {invite.simulationTitle}
                     </div>
-                    <div className="text-xs text-slate-300 flex items-center gap-1.5">
-                      <Shield className="w-3.5 h-3.5 text-sky-400" />
-                      Character: <strong className="text-sky-300">{invite.characterName}</strong>
+                    <div className="text-xs text-base-content/70">
+                      Character: <strong className="text-primary">{invite.characterName}</strong>
                     </div>
-                    <div className="text-[11px] text-slate-400">
-                      Offered by: <span className="text-slate-200 font-mono">@{invite.fromUsername}</span>
+                    <div className="text-[11px] text-base-content/50">
+                      From: @{invite.fromUsername}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
+                  <div className="flex items-center gap-2 pt-2 border-t border-base-300">
                     <button
                       type="button"
                       onClick={() => handleAcceptInvite(invite.id)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors"
+                      className="btn btn-success btn-xs flex-1 gap-1"
                     >
-                      <Check className="w-3.5 h-3.5" />
-                      Accept Role
+                      <Check className="w-3 h-3" />
+                      Accept
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeclineInvite(invite.id)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs border border-slate-700 transition-colors"
+                      className="btn btn-ghost btn-xs flex-1 gap-1"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-3 h-3" />
                       Decline
                     </button>
                   </div>
@@ -680,18 +666,18 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
           </section>
         )}
 
-        {/* 2. CURRENTLY ACTIVE SIMULATIONS (Click to Enter Room) */}
+        {/* 2. CURRENTLY ACTIVE GAMES */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2">
                 <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
-                <h2 className="text-base font-bold text-white">
-                  Active Simulation Rooms ({activeSimulations.length})
+                <h2 className="text-base font-bold">
+                  Active Games ({activeSimulations.length})
                 </h2>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Click any active simulation below to enter its live room as your assigned character. While inside a room, you can respond directly or pick suggested responses within 30 seconds of any incoming conversation.
+              <p className="text-xs text-base-content/70 mt-0.5">
+                Click any game below to enter and play.
               </p>
             </div>
 
@@ -704,10 +690,10 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                 }
                 setShowEnrollModal(true);
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-sky-300 border border-slate-800 text-xs font-semibold transition-colors shrink-0"
+              className="btn btn-sm btn-outline btn-primary gap-1"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              Enroll / Change Role
+              Enroll / Switch Role
             </button>
           </div>
 
@@ -743,66 +729,61 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                         onEnterSimulation(part.simulationId, part.characterId);
                       }
                     }}
-                    className="group cursor-pointer rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-sky-500/70 p-5 transition-all shadow-lg flex flex-col justify-between"
+                    className="card bg-base-200 border border-base-300 hover:border-primary shadow cursor-pointer transition-all"
                   >
-                    <div className="space-y-3">
+                    <div className="card-body p-5 space-y-3">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            <span className="badge badge-sm badge-success gap-1">
                               Active Room
                             </span>
                             {liveSim?.voiceStyle && (
-                              <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/30 font-semibold">
-                                <Mic className="w-2.5 h-2.5" />
+                              <span className="badge badge-sm badge-outline badge-secondary">
                                 {liveSim.voiceStyle.name}
                               </span>
                             )}
                             {activePlayersInRoom.length > 0 && (
-                              <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30">
+                              <span className="badge badge-sm badge-info badge-outline gap-1">
                                 <Users className="w-3 h-3" />
                                 {activePlayersInRoom.length} online
                               </span>
                             )}
                             {pendingHailsCount > 0 && (
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/50 animate-pulse">
-                                <Bell className="w-3 h-3 text-amber-400" />
-                                {pendingHailsCount} Incoming Hail
+                              <span className="badge badge-sm badge-warning animate-pulse gap-1">
+                                <Bell className="w-3 h-3" />
+                                {pendingHailsCount} Incoming
                               </span>
                             )}
                           </div>
 
-                          <h3 className="text-base font-bold text-white mt-2 group-hover:text-sky-300 transition-colors">
+                          <h3 className="card-title text-base mt-2">
                             {part.simulationTitle}
                           </h3>
                         </div>
 
-                        <div className="text-right shrink-0 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
-                          <div className="text-[10px] text-slate-400">
-                            Earned VP
-                          </div>
-                          <div className="text-sm font-bold text-sky-300">
-                            {part.victoryPointsEarned.toLocaleString()} VP
-                          </div>
+                        <div className="text-right shrink-0">
+                          <span className="badge badge-ghost font-mono text-xs">
+                            {part.victoryPointsEarned} VP
+                          </span>
                         </div>
                       </div>
 
-                      <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-base-content/70 line-clamp-2">
                         {part.scenarioSummary}
                       </p>
 
                       {/* Assigned Role Strip */}
-                      <div className="p-3 rounded-xl bg-slate-950/90 border border-slate-800/90 flex items-center justify-between gap-2 text-xs">
+                      <div className="p-3 rounded-xl bg-base-300 border border-base-300 flex items-center justify-between gap-2 text-xs">
                         <div className="flex items-center gap-2 min-w-0">
-                          <Shield className="w-4 h-4 text-sky-400 shrink-0" />
+                          <Shield className="w-4 h-4 text-primary shrink-0" />
                           <div className="truncate">
-                            <span className="text-slate-400">Your Role: </span>
-                            <strong className="text-white">
+                            <span className="text-base-content/60">Your Role: </span>
+                            <strong>
                               {part.characterName}
                             </strong>
-                            <span className="text-slate-500 mx-1.5">•</span>
-                            <span className="text-sky-300">
+                            <span className="mx-1 text-base-content/40">•</span>
+                            <span className="text-primary font-medium">
                               {part.publicRole}
                             </span>
                           </div>
@@ -818,71 +799,55 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                                 characterId: part.characterId,
                               });
                             }}
-                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 border border-slate-700 hover:border-amber-500/50 text-[11px] font-semibold transition-colors shrink-0"
-                            title="Transfer this seat to another user by username"
+                            className="btn btn-xs btn-outline btn-warning gap-1"
+                            title="Transfer this seat to another user"
                           >
-                            <ArrowRightLeft className="w-3 h-3 text-amber-400" />
-                            <span>Transfer Role</span>
+                            <ArrowRightLeft className="w-3 h-3" />
+                            Transfer
                           </button>
                         )}
                       </div>
-                    </div>
 
-                    <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-3 text-slate-400">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-amber-400" />
-                          Round{' '}
-                          <strong className="text-slate-200">
-                            {part.roundsParticipated}
-                          </strong>
+                      <div className="card-actions justify-between items-center pt-2 border-t border-base-300">
+                        <span className="text-xs text-base-content/60">
+                          Round {part.roundsParticipated} {liveChar && `• ${liveChar.actionPoints} AP`}
                         </span>
-                        {liveChar && (
-                          <span className="flex items-center gap-1">
-                            <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                            <strong className="text-emerald-300">
-                              {liveChar.actionPoints}
-                            </strong>{' '}
-                            AP ready
-                          </span>
-                        )}
-                      </div>
 
-                      <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-500 group-hover:bg-sky-400 text-slate-950 font-bold text-xs transition-colors">
-                        Enter Simulation
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
+                        <span className="btn btn-primary btn-xs gap-1">
+                          Play Game
+                          <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div className="rounded-2xl bg-slate-900/40 border border-slate-800 p-8 text-center space-y-2">
-              <Compass className="w-8 h-8 text-slate-600 mx-auto" />
-              <div className="text-sm font-semibold text-slate-300">
-                No Active Simulations
+            <div className="card bg-base-200 border border-base-300 p-8 text-center space-y-2">
+              <Compass className="w-8 h-8 text-base-content/40 mx-auto" />
+              <div className="text-sm font-semibold">
+                No Active Games
               </div>
-              <p className="text-xs text-slate-500">
-                Unlock a scenario from the Available Simulations Collection below to enter a live simulation room.
+              <p className="text-xs text-base-content/60">
+                Pick a game from the library below to start playing.
               </p>
             </div>
           )}
         </section>
 
-        {/* 3. AVAILABLE SIMULATIONS COLLECTION ('SIMS' CREATOR ECONOMY) */}
+        {/* 3. AVAILABLE GAMES LIBRARY */}
         <section className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-amber-400" />
-                <h2 className="text-base font-bold text-white">
-                  Available Simulations Collection ({publishedCollectionSimulations.length})
+                <h2 className="text-base font-bold">
+                  Game Library ({publishedCollectionSimulations.length})
                 </h2>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Unlock community &amp; studio simulations for a nominal{' '}
-                <strong className="text-amber-300">10% of the creator's 'Sims' cost</strong>. 100% of your unlock fee is credited directly to the creator!
+              <p className="text-xs text-base-content/70 mt-0.5">
+                Unlock games created by the community with your Sims credits.
               </p>
             </div>
           </div>
@@ -899,87 +864,65 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
               return (
                 <div
                   key={`collection_${sim.id}`}
-                  className="rounded-2xl bg-slate-900/75 border border-slate-800 hover:border-amber-500/50 p-5 flex flex-col justify-between transition-all space-y-4"
+                  className="card bg-base-200 border border-base-300 shadow hover:border-warning/50 transition-all"
                 >
-                  <div className="space-y-2.5">
+                  <div className="card-body p-4 space-y-3">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-purple-950/70 text-purple-300 border border-purple-700/50">
+                      <span className="badge badge-sm badge-secondary">
                         {sim.complexityTier ?? 'STANDARD'}
                       </span>
-                      {sim.createdWithV4Pro && (
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-fuchsia-950/70 text-fuchsia-300 border border-fuchsia-700/50">
-                          V4 Pro Authored
-                        </span>
-                      )}
                       {isCreator ? (
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-950/70 text-emerald-300 border border-emerald-700/50">
-                          Your Work (+{sim.totalRoyaltiesEarnedSims ?? 0} Sims Earned)
+                        <span className="badge badge-sm badge-success">
+                          Your Game
                         </span>
                       ) : isUnlocked ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-sky-950/70 text-sky-300 border border-sky-700/50">
+                        <span className="badge badge-sm badge-info badge-outline gap-1">
                           <Unlock className="w-2.5 h-2.5" />
                           Unlocked
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-950/70 text-amber-300 border border-amber-600/50">
+                        <span className="badge badge-sm badge-warning gap-1">
                           <Lock className="w-2.5 h-2.5" />
-                          {playCost} Sims (10%)
+                          {playCost} Sims
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-sm font-bold text-white leading-snug">
+                    <h3 className="card-title text-sm">
                       {sim.title}
                     </h3>
 
                     {sim.voiceStyle && (
-                      <div className="inline-flex items-center gap-1.5 text-[11px] text-violet-300 bg-violet-950/40 px-2.5 py-1 rounded-lg border border-violet-800/50">
-                        <Mic className="w-3 h-3 text-violet-400 shrink-0" />
-                        <span className="truncate">
-                          Voice: <strong>{sim.voiceStyle.name}</strong>
-                        </span>
+                      <div className="text-[11px] text-secondary font-medium">
+                        Voice: {sim.voiceStyle.name}
                       </div>
                     )}
 
-                    <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                    <p className="text-xs text-base-content/70 line-clamp-3">
                       {sim.masterNarrative}
                     </p>
-                  </div>
 
-                  <div className="pt-3 border-t border-slate-800/80 space-y-2.5">
-                    <div className="flex items-center justify-between text-[11px] text-slate-400">
-                      <span>
-                        By{' '}
-                        <strong className="text-slate-200">
-                          @{sim.creatorUsername ?? 'studio'}
-                        </strong>
-                      </span>
-                      <span className="font-mono text-[10px] text-slate-500">
-                        Creator Paid: {creatorPaid} Sims
-                      </span>
+                    <div className="card-actions justify-end pt-2 border-t border-base-300">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenCollectionModal(sim)}
+                        className={`btn btn-sm w-full ${
+                          isUnlocked ? 'btn-outline btn-primary' : 'btn-warning'
+                        }`}
+                      >
+                        {isUnlocked ? (
+                          <>
+                            <Play className="w-3.5 h-3.5" />
+                            Play Game
+                          </>
+                        ) : (
+                          <>
+                            <Coins className="w-3.5 h-3.5" />
+                            Unlock for {playCost} Sims
+                          </>
+                        )}
+                      </button>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleOpenCollectionModal(sim)}
-                      className={`w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors ${
-                        isUnlocked
-                          ? 'bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700'
-                          : 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow'
-                      }`}
-                    >
-                      {isUnlocked ? (
-                        <>
-                          <Play className="w-3.5 h-3.5" />
-                          Choose Role &amp; Play (Unlocked)
-                        </>
-                      ) : (
-                        <>
-                          <Coins className="w-3.5 h-3.5" />
-                          Unlock &amp; Play for {playCost} Sims
-                        </>
-                      )}
-                    </button>
                   </div>
                 </div>
               );
@@ -987,22 +930,22 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
           </div>
         </section>
 
-        {/* 4. ALL PARTICIPATED SIMULATIONS & VICTORY POINTS RECORD */}
+        {/* 4. GAME HISTORY */}
         <section className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <History className="w-4 h-4 text-purple-400" />
-                <h2 className="text-base font-bold text-white">
-                  Simulation Participation &amp; Victory Point History
+                <History className="w-4 h-4 text-primary" />
+                <h2 className="text-base font-bold">
+                  Game History
                 </h2>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Complete record of every simulation you have participated in, your assigned role, and Victory Points earned.
+              <p className="text-xs text-base-content/70 mt-0.5">
+                Past games you joined and points earned.
               </p>
             </div>
 
-            <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs self-start">
+            <div className="join">
               {(
                 [
                   { id: 'ALL', label: `All (${participations.length})` },
@@ -1012,17 +955,15 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                   },
                   {
                     id: 'COMPLETED',
-                    label: `Completed (${completedSimulations.length})`,
+                    label: `Finished (${completedSimulations.length})`,
                   },
                 ] as const
               ).map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setHistoryFilter(tab.id)}
-                  className={`px-3 py-1.5 rounded-lg font-semibold transition-colors ${
-                    historyFilter === tab.id
-                      ? 'bg-slate-800 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                  className={`btn btn-xs join-item ${
+                    historyFilter === tab.id ? 'btn-primary' : 'btn-ghost'
                   }`}
                 >
                   {tab.label}
@@ -1031,26 +972,20 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
             </div>
           </div>
 
-          <div className="rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden">
+          <div className="card bg-base-200 border border-base-300 overflow-hidden shadow">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+              <table className="table table-zebra w-full text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 bg-slate-950/70 text-[11px] uppercase tracking-wider text-slate-400">
-                    <th className="py-3.5 px-4 font-semibold">Simulation</th>
-                    <th className="py-3.5 px-4 font-semibold">
-                      Character &amp; Role
-                    </th>
-                    <th className="py-3.5 px-4 font-semibold">Status</th>
-                    <th className="py-3.5 px-4 font-semibold">Rounds</th>
-                    <th className="py-3.5 px-4 font-semibold text-right">
-                      Victory Points
-                    </th>
-                    <th className="py-3.5 px-4 font-semibold text-right">
-                      Action
-                    </th>
+                  <tr className="text-xs uppercase text-base-content/70">
+                    <th>Game</th>
+                    <th>Character</th>
+                    <th>Status</th>
+                    <th>Rounds</th>
+                    <th className="text-right">Victory Points</th>
+                    <th className="text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/70">
+                <tbody>
                   {filteredParticipations.map((part) => {
                     const isLivePlayable = Boolean(
                       simulations[part.simulationId]
@@ -1068,13 +1003,13 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                             setSelectedPastDebrief(part);
                           }
                         }}
-                        className="hover:bg-slate-800/40 cursor-pointer transition-colors"
+                        className="hover cursor-pointer"
                       >
-                        <td className="py-3.5 px-4">
-                          <div className="font-bold text-slate-100">
+                        <td>
+                          <div className="font-bold">
                             {part.simulationTitle}
                           </div>
-                          <div className="text-[11px] text-slate-400 line-clamp-1 max-w-md mt-0.5">
+                          <div className="text-[11px] text-base-content/60 line-clamp-1 max-w-md">
                             {part.outcomeSummary || part.scenarioSummary}
                           </div>
                         </td>
@@ -1133,31 +1068,29 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
         </section>
       </main>
 
-      {/* ==================================================================== */}
-      {/* MODAL: UNLOCK / PLAY COLLECTION SIMULATION                           */}
-      {/* ==================================================================== */}
+      {/* MODAL: UNLOCK / PLAY GAME */}
       {collectionTargetSim && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-md bg-base-200 border border-base-300 p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-base-300 pb-3">
               <div className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-amber-400" />
-                <h3 className="text-sm font-bold text-white">
+                <Globe className="w-4 h-4 text-warning" />
+                <h3 className="text-base font-bold">
                   {hasUserUnlockedSimulation(user, collectionTargetSim)
-                    ? 'Enter Collection Simulation'
-                    : 'Unlock Simulation with Sims'}
+                    ? 'Play Game'
+                    : 'Unlock Game'}
                 </h3>
               </div>
               <button
                 onClick={() => setCollectionTargetSim(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="btn btn-ghost btn-sm btn-square"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {collectionFeedback && (
-              <div className="p-3 rounded-xl text-xs bg-rose-950/50 border border-rose-500/50 text-rose-200">
+              <div className="alert alert-error text-xs py-2">
                 {collectionFeedback.msg}
               </div>
             )}
@@ -1166,84 +1099,83 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
               onSubmit={handleConfirmCollectionUnlockAndPlay}
               className="space-y-4 text-xs"
             >
-              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
-                <div className="font-bold text-white text-sm">
+              <div className="card bg-base-100 border border-base-300 p-3 space-y-1">
+                <div className="font-bold text-sm">
                   {collectionTargetSim.title}
                 </div>
                 {collectionTargetSim.voiceStyle && (
-                  <div className="text-[11px] text-violet-300">
-                    Speech Style: {collectionTargetSim.voiceStyle.name}
+                  <div className="badge badge-xs badge-secondary">
+                    {collectionTargetSim.voiceStyle.name}
                   </div>
                 )}
-                <p className="text-slate-400 leading-relaxed">
+                <p className="text-base-content/70 text-xs line-clamp-3">
                   {collectionTargetSim.masterNarrative}
                 </p>
               </div>
 
               {!hasUserUnlockedSimulation(user, collectionTargetSim) && (
-                <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-500/40 flex items-center justify-between">
+                <div className="card bg-base-100 border border-warning/40 p-3 flex flex-row items-center justify-between">
                   <div>
-                    <div className="font-bold text-amber-200">
-                      Nominal 10% Collection Cost
+                    <div className="font-bold text-warning text-xs">
+                      Unlock Price
                     </div>
-                    <div className="text-[11px] text-slate-400">
-                      Paid directly to creator @
-                      {collectionTargetSim.creatorUsername ?? 'architect'}
+                    <div className="text-[11px] text-base-content/60">
+                      Paid to @{collectionTargetSim.creatorUsername ?? 'creator'}
                     </div>
                   </div>
-                  <div className="text-right font-mono">
-                    <div className="text-sm font-bold text-amber-300">
+                  <div className="text-right">
+                    <div className="text-base font-bold font-mono text-warning">
                       {collectionTargetSim.usageCostSims ??
                         calculateCollectionUsageCostSims(
                           collectionTargetSim.creationCostSims ?? 20
                         )}{' '}
                       Sims
                     </div>
-                    <div className="text-[10px] text-slate-400">
-                      Wallet: {user.simsBalance ?? 0} Sims
+                    <div className="text-[10px] text-base-content/50">
+                      Balance: {user.simsBalance ?? 0} Sims
                     </div>
                   </div>
                 </div>
               )}
 
-              <div>
-                <label className="block font-medium text-slate-300 mb-1.5">
-                  Choose Your Character Role
+              <div className="space-y-1">
+                <label className="text-xs font-semibold">
+                  Pick Your Character
                 </label>
                 <select
                   value={collectionRoleId}
                   onChange={(e) => setCollectionRoleId(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-amber-500"
+                  className="select select-bordered select-sm w-full bg-base-100"
                 >
                   {Object.values(collectionTargetSim.characters).map((c) => (
                     <option key={c.playerId} value={c.playerId}>
                       {c.characterName} — {c.publicRole}
-                      {c.isAiControlled ? ' [AI Controlled Seat]' : ''}
+                      {c.isAiControlled ? ' [AI]' : ''}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="modal-action mt-2">
                 <button
                   type="button"
                   onClick={() => setCollectionTargetSim(null)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700"
+                  className="btn btn-ghost btn-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold"
+                  className="btn btn-primary btn-sm"
                 >
                   {hasUserUnlockedSimulation(user, collectionTargetSim)
-                    ? 'Enter Room Now'
-                    : `Spend ${
+                    ? 'Start Playing'
+                    : `Pay ${
                         collectionTargetSim.usageCostSims ??
                         calculateCollectionUsageCostSims(
                           collectionTargetSim.creationCostSims ?? 20
                         )
-                      } Sims & Enter Room`}
+                      } Sims & Play`}
                 </button>
               </div>
             </form>
@@ -1251,74 +1183,68 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
         </div>
       )}
 
-      {/* ==================================================================== */}
-      {/* MODAL: 'SIMS' WALLET & TRANSACTION LEDGER                            */}
-      {/* ==================================================================== */}
+      {/* MODAL: SIMS WALLET */}
       {showSimsWalletModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-lg bg-base-200 border border-base-300 p-5 space-y-4 max-h-[85vh] flex flex-col">
+            <div className="flex items-center justify-between border-b border-base-300 pb-3">
               <div className="flex items-center gap-2">
-                <Coins className="w-4 h-4 text-amber-400" />
-                <h3 className="text-sm font-bold text-white">
-                  'Sims' Credit Wallet &amp; Ledger
+                <Coins className="w-4 h-4 text-warning" />
+                <h3 className="text-base font-bold">
+                  Sims Balance &amp; History
                 </h3>
               </div>
               <button
                 onClick={() => setShowSimsWalletModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="btn btn-ghost btn-sm btn-square"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-500/40 flex items-center justify-between">
+            <div className="card bg-base-100 border border-warning/40 p-4 flex flex-row items-center justify-between">
               <div>
-                <div className="text-[11px] uppercase tracking-wider text-amber-200/80">
-                  Available Balance
+                <div className="text-[10px] uppercase font-bold text-warning">
+                  Your Balance
                 </div>
-                <div className="text-2xl font-bold font-mono text-amber-300">
+                <div className="text-2xl font-bold font-mono text-warning">
                   {user.simsBalance ?? 0} Sims
                 </div>
               </div>
-              <div className="text-right text-[11px] text-slate-400 max-w-[230px]">
-                Earn Sims when Admins gift credits or when other users spend 10% Sims unlocking your published simulations.
+              <div className="text-right text-xs text-base-content/60 max-w-[200px]">
+                Earn Sims when other players unlock your games.
               </div>
             </div>
 
             <div className="space-y-2 overflow-y-auto pr-1 flex-1">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
-                Recent Transactions
+              <div className="text-xs font-semibold text-base-content/70">
+                Recent Activity
               </div>
               {(user.simTransactions ?? []).length === 0 ? (
-                <p className="text-xs text-slate-500 py-4 text-center">
-                  No transactions recorded yet.
+                <p className="text-xs text-base-content/50 py-4 text-center">
+                  No activity yet.
                 </p>
               ) : (
                 (user.simTransactions ?? []).map((tx) => (
                   <div
                     key={tx.id}
-                    className="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-3 text-xs"
+                    className="card bg-base-100 border border-base-300 p-2.5 flex flex-row items-center justify-between gap-2 text-xs"
                   >
                     <div className="space-y-0.5">
-                      <div className="font-semibold text-slate-200">
+                      <div className="font-semibold">
                         {tx.description}
                       </div>
-                      <div className="text-[10px] font-mono text-slate-500">
-                        {new Date(tx.timestamp).toLocaleString()} •{' '}
-                        {tx.type.replace(/_/g, ' ')}
+                      <div className="text-[10px] text-base-content/50 font-mono">
+                        {new Date(tx.timestamp).toLocaleDateString()}
                       </div>
                     </div>
                     <div className="text-right font-mono shrink-0">
                       <div
                         className={`font-bold ${
-                          tx.amount >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                          tx.amount >= 0 ? 'text-success' : 'text-error'
                         }`}
                       >
                         {tx.amount >= 0 ? `+${tx.amount}` : tx.amount} Sims
-                      </div>
-                      <div className="text-[10px] text-slate-500">
-                        Bal: {tx.balanceAfter}
                       </div>
                     </div>
                   </div>
@@ -1329,22 +1255,20 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
         </div>
       )}
 
-      {/* ==================================================================== */}
-      {/* MODAL 1: EDIT PROFILE & PASSWORD MANAGEMENT                          */}
-      {/* ==================================================================== */}
+      {/* MODAL: EDIT PROFILE & PASSWORD */}
       {showEditProfile && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-lg bg-base-200 border border-base-300 p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-base-300 pb-3">
               <div className="flex items-center gap-2">
-                <Edit3 className="w-4 h-4 text-sky-400" />
-                <h3 className="text-sm font-bold text-white">
-                  Profile &amp; Security Settings
+                <Edit3 className="w-4 h-4 text-primary" />
+                <h3 className="text-base font-bold">
+                  Edit Profile
                 </h3>
               </div>
               <button
                 onClick={() => setShowEditProfile(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="btn btn-ghost btn-sm btn-square"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1352,57 +1276,55 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
 
             {profileFeedback && (
               <div
-                className={`p-3 rounded-xl text-xs border ${
-                  profileFeedback.type === 'ok'
-                    ? 'bg-emerald-950/50 border-emerald-500/50 text-emerald-200'
-                    : 'bg-rose-950/50 border-rose-500/50 text-rose-200'
+                className={`alert text-xs py-2 ${
+                  profileFeedback.type === 'ok' ? 'alert-success' : 'alert-error'
                 }`}
               >
                 {profileFeedback.msg}
               </div>
             )}
 
-            <form onSubmit={handleSaveProfileDetails} className="space-y-3.5">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Display Name
+            <form onSubmit={handleSaveProfileDetails} className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">
+                    Name
                   </label>
                   <input
                     type="text"
                     value={editDisplayName}
                     onChange={(e) => setEditDisplayName(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                    className="input input-bordered input-sm w-full bg-base-100"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Callsign
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">
+                    Nickname
                   </label>
                   <input
                     type="text"
                     value={editCallsign}
                     onChange={(e) => setEditCallsign(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                    className="input input-bordered input-sm w-full bg-base-100"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Operative Bio
+              <div className="space-y-1">
+                <label className="text-xs font-semibold">
+                  About Me
                 </label>
                 <textarea
                   rows={2}
                   value={editBio}
                   onChange={(e) => setEditBio(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 resize-none"
+                  className="textarea textarea-bordered w-full bg-base-100 text-xs resize-none"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Avatar Badge Theme
+              <div className="space-y-1">
+                <label className="text-xs font-semibold">
+                  Avatar Color
                 </label>
                 <div className="flex items-center gap-2 flex-wrap">
                   {AVATAR_COLOR_OPTIONS.map((opt) => (
@@ -1410,14 +1332,14 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                       key={opt.value}
                       type="button"
                       onClick={() => setEditAvatarColor(opt.value)}
-                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium border flex items-center gap-2 transition-all ${
+                      className={`btn btn-xs gap-1.5 ${
                         editAvatarColor === opt.value
-                          ? 'border-sky-400 bg-slate-800 text-white'
-                          : 'border-slate-800 bg-slate-950 text-slate-400'
+                          ? 'btn-primary'
+                          : 'btn-outline border-base-300'
                       }`}
                     >
                       <span
-                        className={`w-3.5 h-3.5 rounded-full bg-gradient-to-br ${opt.value}`}
+                        className={`w-2.5 h-2.5 rounded-full bg-gradient-to-br ${opt.value}`}
                       />
                       {opt.label}
                     </button>
@@ -1427,18 +1349,18 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition-colors"
+                className="btn btn-primary btn-sm w-full"
               >
-                Save Profile Changes
+                Save Changes
               </button>
             </form>
 
             <form
               onSubmit={handleChangePassword}
-              className="pt-4 border-t border-slate-800 space-y-3"
+              className="pt-3 border-t border-base-300 space-y-2.5"
             >
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
-                <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+              <div className="flex items-center gap-2 text-xs font-bold">
+                <KeyRound className="w-3.5 h-3.5 text-warning" />
                 Change Password
               </div>
 
@@ -1447,28 +1369,28 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                 value={currentPwd}
                 onChange={(e) => setCurrentPwd(e.target.value)}
                 placeholder="Current password"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                className="input input-bordered input-sm w-full bg-base-100"
               />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2">
                 <input
                   type="password"
                   value={newPwd}
                   onChange={(e) => setNewPwd(e.target.value)}
-                  placeholder="New password (6+ chars)"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                  placeholder="New password"
+                  className="input input-bordered input-sm w-full bg-base-100"
                 />
                 <input
                   type="password"
                   value={confirmPwd}
                   onChange={(e) => setConfirmPwd(e.target.value)}
-                  placeholder="Confirm new password"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                  placeholder="Confirm password"
+                  className="input input-bordered input-sm w-full bg-base-100"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition-colors"
+                className="btn btn-outline btn-sm w-full"
               >
                 Update Password
               </button>
@@ -1477,31 +1399,29 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
         </div>
       )}
 
-      {/* ==================================================================== */}
-      {/* MODAL 2: ENROLL OR SWITCH ROLE IN SIMULATION                         */}
-      {/* ==================================================================== */}
+      {/* MODAL: ENROLL OR SWITCH ROLE */}
       {showEnrollModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-md bg-base-200 border border-base-300 p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-base-300 pb-3">
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-sky-400" />
-                <h3 className="text-sm font-bold text-white">
-                  Simulation Role Assignment
+                <Layers className="w-4 h-4 text-primary" />
+                <h3 className="text-base font-bold">
+                  Pick a Character
                 </h3>
               </div>
               <button
                 onClick={() => setShowEnrollModal(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="btn btn-ghost btn-sm btn-square"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleEnrollSubmit} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-medium text-slate-300 mb-1.5">
-                  Select Simulation Scenario
+            <form onSubmit={handleEnrollSubmit} className="space-y-3 text-xs">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold">
+                  Game
                 </label>
                 <select
                   value={enrollSimId}
@@ -1515,7 +1435,7 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                       );
                     }
                   }}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                  className="select select-bordered select-sm w-full bg-base-100"
                 >
                   {simList.map((sim) => {
                     const unlocked = hasUserUnlockedSimulation(user, sim);
@@ -1526,7 +1446,7 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                       );
                     return (
                       <option key={sim.id} value={sim.id}>
-                        {sim.title} ({unlocked ? 'Unlocked' : `${fee} Sims`})
+                        {sim.title} ({unlocked ? 'Free' : `${fee} Sims`})
                       </option>
                     );
                   })}
@@ -1534,20 +1454,19 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
               </div>
 
               {simulations[enrollSimId] && (
-                <div>
-                  <label className="block font-medium text-slate-300 mb-1.5">
-                    Assigned Character Role
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">
+                    Character
                   </label>
                   <select
                     value={enrollCharId}
                     onChange={(e) => setEnrollCharId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-sky-500"
+                    className="select select-bordered select-sm w-full bg-base-100"
                   >
                     {Object.values(simulations[enrollSimId].characters).map(
                       (c) => (
                         <option key={c.playerId} value={c.playerId}>
-                          {c.characterName} — {c.publicRole} ({c.victoryPoints}{' '}
-                          VP)
+                          {c.characterName} — {c.publicRole}
                         </option>
                       )
                     )}
@@ -1555,19 +1474,19 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                 </div>
               )}
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="modal-action mt-2">
                 <button
                   type="button"
                   onClick={() => setShowEnrollModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700"
+                  className="btn btn-ghost btn-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold"
+                  className="btn btn-primary btn-sm"
                 >
-                  Confirm Assignment
+                  Join Game
                 </button>
               </div>
             </form>
@@ -1575,68 +1494,63 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
         </div>
       )}
 
-      {/* ==================================================================== */}
-      {/* MODAL 3: COMPLETED SIMULATION DEBRIEF                                */}
-      {/* ==================================================================== */}
+      {/* MODAL: COMPLETED GAME SUMMARY */}
       {selectedPastDebrief && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal modal-open">
+          <div className="modal-box max-w-lg bg-base-200 border border-base-300 p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-base-300 pb-3">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
-                  Archive Record
+                <span className="badge badge-xs badge-ghost">
+                  Completed
                 </span>
-                <h3 className="text-base font-bold text-white">
+                <h3 className="text-base font-bold mt-1">
                   {selectedPastDebrief.simulationTitle}
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedPastDebrief(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                className="btn btn-ghost btn-sm btn-square"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 text-xs">
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Role Played</div>
-                <div className="font-bold text-white mt-0.5">
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="card bg-base-100 border border-base-300 p-2.5 text-center">
+                <div className="text-[10px] text-base-content/60">Character</div>
+                <div className="font-bold text-xs truncate mt-0.5">
                   {selectedPastDebrief.characterName}
                 </div>
-                <div className="text-[11px] text-sky-300">
-                  {selectedPastDebrief.publicRole}
-                </div>
               </div>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Victory Points</div>
-                <div className="text-base font-bold text-amber-300 mt-0.5">
+              <div className="card bg-base-100 border border-base-300 p-2.5 text-center">
+                <div className="text-[10px] text-base-content/60">Points</div>
+                <div className="font-bold text-warning text-xs mt-0.5">
                   {selectedPastDebrief.victoryPointsEarned.toLocaleString()} VP
                 </div>
               </div>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Duration</div>
-                <div className="text-base font-bold text-slate-200 mt-0.5">
-                  {selectedPastDebrief.roundsParticipated} Rounds
+              <div className="card bg-base-100 border border-base-300 p-2.5 text-center">
+                <div className="text-[10px] text-base-content/60">Rounds</div>
+                <div className="font-bold text-xs mt-0.5">
+                  {selectedPastDebrief.roundsParticipated}
                 </div>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5 text-xs">
-              <div className="font-semibold text-slate-300">
-                Scenario &amp; Outcome
+            <div className="card bg-base-100 border border-base-300 p-3 space-y-1 text-xs">
+              <div className="font-semibold text-base-content/70">
+                Story Ending
               </div>
-              <p className="text-slate-400 leading-relaxed">
+              <p className="text-base-content/80">
                 {selectedPastDebrief.scenarioSummary}
               </p>
               {selectedPastDebrief.outcomeSummary && (
-                <p className="text-emerald-300 pt-1.5 border-t border-slate-800/80">
-                  Outcome: {selectedPastDebrief.outcomeSummary}
+                <p className="text-success pt-1 border-t border-base-300">
+                  {selectedPastDebrief.outcomeSummary}
                 </p>
               )}
             </div>
 
-            <div className="flex justify-end gap-2">
+            <div className="modal-action mt-2">
               {simulations[selectedPastDebrief.simulationId] && (
                 <button
                   onClick={() => {
@@ -1645,14 +1559,14 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                     setSelectedPastDebrief(null);
                     onEnterSimulation(simId, charId);
                   }}
-                  className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs"
+                  className="btn btn-primary btn-sm"
                 >
-                  Inspect Simulation Room
+                  View Game
                 </button>
               )}
               <button
                 onClick={() => setSelectedPastDebrief(null)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold"
+                className="btn btn-ghost btn-sm"
               >
                 Close
               </button>
