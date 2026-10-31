@@ -7,7 +7,7 @@ import {
   SpeechStyle,
 } from '../../types/simulation';
 import { UserAccount } from '../../types/user';
-import { validateInitialDistribution, ValidationResult } from '../../engine/compiler';
+import { reconcileCardDistribution } from '../../engine/compiler';
 import { normalizeAllCharacterPolicies } from '../../engine/resolution';
 import {
   atomizeMasterNarrative,
@@ -160,9 +160,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
   const [studioNotice, setStudioNotice] = useState<string | null>(null);
   const [studioError, setStudioError] = useState<string | null>(null);
   const [paidCurrentDraft, setPaidCurrentDraft] = useState<boolean>(false);
-  const [validation, setValidation] = useState<ValidationResult>(() =>
-    validateInitialDistribution(simulationState)
-  );
   const [selectedCharacterId, setSelectedCharacterId] = useState<string>('vance');
 
   // Storyline Library Modal State
@@ -210,7 +207,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       );
     }
     setPaidCurrentDraft(false);
-    setValidation(validateInitialDistribution(simulationState));
     const firstCharKey = Object.keys(simulationState.characters)[0] ?? 'vance';
     if (!simulationState.characters[selectedCharacterId]) {
       setSelectedCharacterId(firstCharKey);
@@ -332,11 +328,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
     return parts.join(' + ');
   };
 
-  const handleValidate = (state: SimulationState) => {
-    const res = validateInitialDistribution(state);
-    setValidation(res);
-  };
-
   const handleApplyCollectionVoicePreview = () => {
     if (voiceMode !== 'COLLECTION' || !activeCollectionVoice) return;
     const updated: SimulationState = {
@@ -397,104 +388,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       status: 'ACTIVE',
       currentTurnOrTick: 0,
       masterNarrative: '',
-      characters: {
-        vance: {
-          playerId: 'vance',
-          simulationId: newSimId,
-          characterName: 'Director Vance',
-          publicRole: 'Command Lead',
-          privateNarrativeBio: 'Pending storyline compilation...',
-          coreTraits: ['Pragmatic', 'Commanding'],
-          coreMotives: ['Maintain Operational Control'],
-          hiddenStats: {
-            inquiry: 0.5,
-            coercion: 0.85,
-            negotiation: 0.45,
-            deception: 0.35,
-            composure: 0.7,
-            insight: 0.5,
-          },
-          defensivePolicy: {
-            protectedCardIds: [],
-            tradeableCardIds: [],
-            stanceByPlayerId: {},
-          },
-          actionPoints: 3,
-          victoryPoints: 0,
-        },
-        thorne: {
-          playerId: 'thorne',
-          simulationId: newSimId,
-          characterName: 'Dr. Thorne',
-          publicRole: 'Chief Specialist',
-          privateNarrativeBio: 'Pending storyline compilation...',
-          coreTraits: ['Analytical', 'Stoic'],
-          coreMotives: ['Protect Confidential Archives'],
-          hiddenStats: {
-            inquiry: 0.88,
-            coercion: 0.35,
-            negotiation: 0.5,
-            deception: 0.4,
-            composure: 0.8,
-            insight: 0.75,
-          },
-          defensivePolicy: {
-            protectedCardIds: [],
-            tradeableCardIds: [],
-            stanceByPlayerId: {},
-          },
-          actionPoints: 3,
-          victoryPoints: 0,
-        },
-        kael: {
-          playerId: 'kael',
-          simulationId: newSimId,
-          characterName: 'Engineer Kael',
-          publicRole: 'Operations Chief',
-          privateNarrativeBio: 'Pending storyline compilation...',
-          coreTraits: ['Resourceful', 'Pragmatic'],
-          coreMotives: ['Exonerate Systems Crew'],
-          hiddenStats: {
-            inquiry: 0.6,
-            coercion: 0.4,
-            negotiation: 0.82,
-            deception: 0.38,
-            composure: 0.4,
-            insight: 0.55,
-          },
-          defensivePolicy: {
-            protectedCardIds: [],
-            tradeableCardIds: [],
-            stanceByPlayerId: {},
-          },
-          actionPoints: 3,
-          victoryPoints: 0,
-        },
-        nyx: {
-          playerId: 'nyx',
-          simulationId: newSimId,
-          characterName: 'Operative Nyx',
-          publicRole: 'Security Envoy',
-          privateNarrativeBio: 'Pending storyline compilation...',
-          coreTraits: ['Deceptive', 'Perceptive'],
-          coreMotives: ['Advance Covert Syndicate Objectives'],
-          hiddenStats: {
-            inquiry: 0.75,
-            coercion: 0.6,
-            negotiation: 0.65,
-            deception: 0.9,
-            composure: 0.7,
-            insight: 0.85,
-          },
-          defensivePolicy: {
-            protectedCardIds: [],
-            tradeableCardIds: [],
-            stanceByPlayerId: {},
-          },
-          actionPoints: 3,
-          victoryPoints: 0,
-        },
-      },
+      characters: {},
       cards: {},
       goals: {},
       tokens: [],
@@ -594,7 +488,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
     setComplexityTier(copiedSim.complexityTier ?? 'STANDARD');
     setUseV4ProForCreation(Boolean(copiedSim.createdWithV4Pro));
     setPaidCurrentDraft(true);
-    handleValidate(copiedSim);
     setStudioError(null);
     setStudioNotice(
       `Created editable copy "${copiedSim.title}"! You can now edit its lore, prompt AI revisions, and recompile.`
@@ -623,7 +516,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       );
     }
     setPaidCurrentDraft(false);
-    handleValidate(sim);
     setShowLibraryModal(false);
     setStudioNotice(`Loaded storyline "${sim.title}" into studio editor.`);
   };
@@ -788,50 +680,63 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
         };
       }
 
-      // 3. Weave private character narrative dossiers in the chosen SpeechStyle (and V4 Pro if paid)
-      // and establish defensive policy (1 protected secret card, 1 tradeable card)
-      const updatedCharacters: SimulationState['characters'] = {};
+      // 3. Construct initial character models for the generated cast
+      const initialCharacters: SimulationState['characters'] = {};
+      for (const cConcept of generatedCast) {
+        const otherSlots = generatedCast
+          .filter((o) => o.slotId !== cConcept.slotId)
+          .map((o) => o.slotId);
 
-      const secrecyRank: Record<string, number> = {
-        CRITICAL: 5,
-        HIGH: 4,
-        MEDIUM: 3,
-        LOW: 2,
-        PUBLIC: 1,
+        const defaultStances: Record<
+          string,
+          'COOPERATIVE' | 'NEUTRAL' | 'SUSPICIOUS' | 'HOSTILE'
+        > = {};
+        otherSlots.forEach((sid, idx) => {
+          defaultStances[sid] =
+            idx === 0 ? 'COOPERATIVE' : idx === 1 ? 'SUSPICIOUS' : 'NEUTRAL';
+        });
+
+        initialCharacters[cConcept.slotId] = {
+          playerId: cConcept.slotId,
+          simulationId: simulationState.id,
+          characterName: cConcept.characterName,
+          publicRole: cConcept.publicRole,
+          privateNarrativeBio: '',
+          coreTraits: cConcept.coreTraits,
+          coreMotives: cConcept.coreMotives,
+          hiddenStats: cConcept.hiddenStats,
+          defensivePolicy: {
+            protectedCardIds: [],
+            tradeableCardIds: [],
+            stanceByPlayerId: defaultStances,
+          },
+          actionPoints: 3,
+          victoryPoints: 0,
+        };
+      }
+
+      // 4. Automatically reconcile and balance epistemic DAG dependencies across the cast
+      // Enforces Zero Self-Sufficiency, Global Reachability, and Asymmetric Leverage >= 2 per player
+      const preReconciledState: SimulationState = {
+        ...simulationState,
+        title: effectiveTitle,
+        masterNarrative: effectiveLore,
+        characters: initialCharacters,
+        cards: newCards,
+        goals: newGoals,
+        characterCount: generatedCast.length,
       };
+
+      const reconciledState = reconcileCardDistribution(preReconciledState);
+
+      // 5. Weave private character narrative dossiers using the reconciled starting cards
+      const updatedCharacters: SimulationState['characters'] = {};
 
       await Promise.all(
         generatedCast.map(async (cConcept) => {
-          const assignedCards = Object.values(newCards).filter((c) =>
+          const assignedCards = Object.values(reconciledState.cards).filter((c) =>
             c.knownByPlayerIds.includes(cConcept.slotId)
           );
-
-          // Sort cards by secrecy: highest secrecy is guarded, lowest is tradeable
-          const sortedCards = [...assignedCards].sort(
-            (a, b) =>
-              (secrecyRank[b.secrecy] ?? 0) - (secrecyRank[a.secrecy] ?? 0)
-          );
-          const protectedCardIds =
-            sortedCards.length > 0 ? [sortedCards[0].id] : [];
-          const tradeableCardIds =
-            sortedCards.length > 1
-              ? [sortedCards[sortedCards.length - 1].id]
-              : sortedCards.length === 1
-              ? [sortedCards[0].id]
-              : [];
-
-          const otherSlots = generatedCast
-            .filter((o) => o.slotId !== cConcept.slotId)
-            .map((o) => o.slotId);
-
-          const defaultStances: Record<
-            string,
-            'COOPERATIVE' | 'NEUTRAL' | 'SUSPICIOUS' | 'HOSTILE'
-          > = {};
-          otherSlots.forEach((sid, idx) => {
-            defaultStances[sid] =
-              idx === 0 ? 'COOPERATIVE' : idx === 1 ? 'SUSPICIOUS' : 'NEUTRAL';
-          });
 
           const wovenBio = await weaveCharacterDossier(
             cConcept.characterName,
@@ -844,22 +749,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             }
           );
 
+          const baseChar =
+            reconciledState.characters[cConcept.slotId] ||
+            initialCharacters[cConcept.slotId];
+
           updatedCharacters[cConcept.slotId] = {
-            playerId: cConcept.slotId,
-            simulationId: simulationState.id,
-            characterName: cConcept.characterName,
-            publicRole: cConcept.publicRole,
+            ...baseChar,
             privateNarrativeBio: wovenBio,
-            coreTraits: cConcept.coreTraits,
-            coreMotives: cConcept.coreMotives,
-            hiddenStats: cConcept.hiddenStats,
-            defensivePolicy: {
-              protectedCardIds,
-              tradeableCardIds,
-              stanceByPlayerId: defaultStances,
-            },
-            actionPoints: 3,
-            victoryPoints: 0,
           };
         })
       );
@@ -870,7 +766,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
         masterNarrative: effectiveLore,
         currentTurnOrTick: 0,
         characters: updatedCharacters,
-        cards: newCards,
+        cards: reconciledState.cards,
         goals: newGoals,
         interactions: [],
         pendingEngagements: [],
@@ -892,18 +788,17 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       normalizeAllCharacterPolicies(newState);
       newState.ragIndex = buildRagIndexFromState(newState);
       onUpdateState(newState);
-      handleValidate(newState);
       setPaidCurrentDraft(true);
       setScenarioTitle(effectiveTitle);
       setMasterText(effectiveLore);
       setStudioNotice(
         `Spent ${totalCreationCostSims} Sims: Storyline successfully diced into ${
-          Object.keys(newCards).length
-        } clues and 4 character dossiers generated [${
+          Object.keys(reconciledState.cards).length
+        } clues across ${generatedCast.length} character dossiers with auto-balanced asymmetric dependencies [${
           COMPLEXITY_TIER_CONFIG[complexityTier].label
         }, Voice: ${voiceResult.voice.name}${
           useV4ProForCreation ? ', DeepSeek V4 Pro' : ', DeepSeek Flash'
-        }]. Ready to launch or publish to Collection!`
+        }]. Ready to launch!`
       );
     } catch (e) {
       console.error('Compilation failed:', e);
@@ -1049,7 +944,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
     setSelectedVoiceId(helios.voiceStyle?.id ?? 'voice_scifi');
     setPaidCurrentDraft(false);
     onUpdateState(helios);
-    handleValidate(helios);
   };
 
   const selectedChar = simulationState.characters[selectedCharacterId];
@@ -1153,9 +1047,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           {onCreateSimulation && (
             <button
               onClick={handlePublishToCollection}
-              disabled={!validation.isValid}
+              disabled={!hasStoryBeenGenerated}
               className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded bg-purple-600 hover:bg-purple-500 text-white transition-colors shadow disabled:opacity-40 disabled:cursor-not-allowed"
-              title="Publish simulation to Available Simulations Collection so other users can unlock it for 10% Sims (paid to you)"
+              title={
+                !hasStoryBeenGenerated
+                  ? 'Please compile your storyline and character cast before publishing to the collection'
+                  : `Publish simulation to Available Simulations Collection so other users can unlock it for 10% Sims (paid to you)`
+              }
             >
               <Globe className="w-3.5 h-3.5" />
               Publish to Collection (Earn +{nominalCollectionPlayCostSims} Sims/Play)
@@ -1164,8 +1062,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
           <button
             onClick={onLaunchSimulation}
-            disabled={!validation.isValid}
+            disabled={!hasStoryBeenGenerated}
             className="flex items-center gap-2 px-4 py-2 text-xs font-bold rounded bg-sky-500 hover:bg-sky-400 text-slate-950 transition-colors shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+            title={
+              !hasStoryBeenGenerated
+                ? 'Please compile your storyline and character cast first before launching'
+                : 'Launch Simulation'
+            }
           >
             <Play className="w-4 h-4 fill-current" />
             Launch Simulation
@@ -1683,134 +1586,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 className="w-full bg-slate-950/80 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-200 leading-relaxed focus:outline-none focus:border-sky-500 resize-none"
                 placeholder="Enter or paste your storyline lore here, or click 'Prompt AI to Revise Storyline' to brainstorm from a premise..."
               />
-            </div>
-          </div>
-
-          {/* DAG Solvability Invariants Panel */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-emerald-400" />
-                <h2 className="text-sm font-semibold text-slate-200">
-                  Pre-Game Solvability Invariants
-                </h2>
-              </div>
-              <span
-                className={`text-xs px-2.5 py-0.5 rounded-full font-mono font-bold border ${
-                  validation.isValid
-                    ? 'bg-emerald-950 text-emerald-300 border-emerald-700'
-                    : 'bg-rose-950 text-rose-300 border-rose-700'
-                }`}
-              >
-                {validation.isValid
-                  ? 'ALL INVARIANTS SATISFIED'
-                  : 'DAG VIOLATIONS DETECTED'}
-              </span>
-            </div>
-
-            <div className="space-y-3">
-              <div
-                className={`p-3 rounded-lg border text-xs ${
-                  validation.zeroSelfSufficiency
-                    ? 'bg-slate-950/40 border-slate-800 text-slate-300'
-                    : 'bg-rose-950/20 border-rose-800/60 text-rose-200'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-2">
-                    {validation.zeroSelfSufficiency ? (
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-rose-400" />
-                    )}
-                    <span className="font-semibold text-slate-200">
-                      Zero Self-Sufficiency Invariant
-                    </span>
-                  </div>
-                  <span className="font-mono text-[11px] text-slate-400">
-                    |H_0(P_i) ∩ G_j| &lt; |G_j|
-                  </span>
-                </div>
-                <p className="text-slate-400 text-[11px]">
-                  No player can complete any assigned Goal on Turn 0 without trade or interrogation.
-                </p>
-              </div>
-
-              <div
-                className={`p-3 rounded-lg border text-xs ${
-                  validation.globalReachability
-                    ? 'bg-slate-950/40 border-slate-800 text-slate-300'
-                    : 'bg-rose-950/20 border-rose-800/60 text-rose-200'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-2">
-                    {validation.globalReachability ? (
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-rose-400" />
-                    )}
-                    <span className="font-semibold text-slate-200">
-                      Global Reachability Invariant (100% Coverage)
-                    </span>
-                  </div>
-                  <span className="font-mono text-[11px] text-slate-400">
-                    ∪ H_0(P_i) ⊇ ∪ G_j.requiredCardIds
-                  </span>
-                </div>
-                <p className="text-slate-400 text-[11px]">
-                  The union of all starting hands contains 100% of all required clues across all goals.
-                </p>
-                {validation.details.uncoveredRequiredCardIds.length > 0 && (
-                  <div className="mt-2 text-rose-400 font-mono text-[10px]">
-                    Missing from all hands:{' '}
-                    {validation.details.uncoveredRequiredCardIds.join(', ')}
-                  </div>
-                )}
-              </div>
-
-              <div
-                className={`p-3 rounded-lg border text-xs ${
-                  validation.asymmetricLeverage
-                    ? 'bg-slate-950/40 border-slate-800 text-slate-300'
-                    : 'bg-rose-950/20 border-rose-800/60 text-rose-200'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-2">
-                    {validation.asymmetricLeverage ? (
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-rose-400" />
-                    )}
-                    <span className="font-semibold text-slate-200">
-                      Asymmetric Dependency Seeding
-                    </span>
-                  </div>
-                  <span className="font-mono text-[11px] text-slate-400">
-                    Leverage Cards &ge; 2 per Player
-                  </span>
-                </div>
-                <p className="text-slate-400 text-[11px]">
-                  Every player starts holding at least 2 cards required by other players' goals to guarantee bargaining leverage.
-                </p>
-                <div className="flex flex-wrap gap-2 mt-2 font-mono text-[10px]">
-                  {Object.entries(validation.details.playerLeverageCounts).map(
-                    ([pId, count]) => (
-                      <span
-                        key={pId}
-                        className={`px-2 py-0.5 rounded ${
-                          count >= 2
-                            ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50'
-                            : 'bg-rose-950 text-rose-300 border border-rose-800'
-                        }`}
-                      >
-                        {pId}: {count} leverage cards
-                      </span>
-                    )
-                  )}
-                </div>
-              </div>
             </div>
           </div>
         </div>

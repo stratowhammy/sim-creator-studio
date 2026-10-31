@@ -143,3 +143,164 @@ export function validateInitialDistribution(state: SimulationState): ValidationR
     },
   };
 }
+
+/**
+ * Automatically rebalances and partitions starting card distribution across characters
+ * to satisfy all three Pre-Game Solvability Invariants:
+ * 1. Zero Self-Sufficiency (no player starts holding all cards for their own goal)
+ * 2. Global Reachability (100% of required clues are distributed into player hands)
+ * 3. Asymmetric Dependency Seeding (every player holds at least 2 leverage cards required by others)
+ */
+export function reconcileCardDistribution(state: SimulationState): SimulationState {
+  const playerIds = Object.keys(state.characters);
+  if (playerIds.length < 2) return state;
+
+  const cards = { ...state.cards };
+  const goals = Object.values(state.goals);
+
+  // If no cards or goals exist, nothing to distribute
+  if (Object.keys(cards).length === 0 || goals.length === 0) {
+    return state;
+  }
+
+  // Clear existing card ownership to start from clean slate
+  for (const cardId of Object.keys(cards)) {
+    cards[cardId] = {
+      ...cards[cardId],
+      knownByPlayerIds: [],
+    };
+  }
+
+  // Map other players for each player
+  const otherPlayersMap: Record<string, string[]> = {};
+  for (const pId of playerIds) {
+    otherPlayersMap[pId] = playerIds.filter((p) => p !== pId);
+  }
+
+  // 1. Distribute required cards circularly among OTHER players
+  // This guarantees that the assigned player does not start with all cards (Zero Self-Sufficiency)
+  // and other players receive bargaining leverage cards
+  for (let i = 0; i < playerIds.length; i++) {
+    const pId = playerIds[i];
+    const playerGoals = goals.filter((g) => g.assignedPlayerId === pId);
+    const others = otherPlayersMap[pId];
+
+    let shift = 0;
+    for (const goal of playerGoals) {
+      goal.requiredCardIds.forEach((cardId, cIdx) => {
+        if (!cards[cardId]) return;
+        const target = others[(shift + cIdx) % others.length];
+        if (!cards[cardId].knownByPlayerIds.includes(target)) {
+          cards[cardId].knownByPlayerIds.push(target);
+        }
+      });
+      shift++;
+    }
+  }
+
+  // 2. Guarantee Global Reachability: any cards not yet held are distributed round-robin
+  Object.values(cards).forEach((card, idx) => {
+    if (card.knownByPlayerIds.length === 0) {
+      const recipient = playerIds[idx % playerIds.length];
+      card.knownByPlayerIds.push(recipient);
+    }
+  });
+
+  // 3. Guarantee Asymmetric Leverage >= 2 per player
+  for (const pId of playerIds) {
+    const othersGoalsCards = new Set<string>();
+    for (const goal of goals) {
+      if (goal.assignedPlayerId !== pId) {
+        goal.requiredCardIds.forEach((id) => othersGoalsCards.add(id));
+      }
+    }
+
+    const currentLeverage = Object.values(cards).filter(
+      (c) => c.knownByPlayerIds.includes(pId) && othersGoalsCards.has(c.id)
+    ).length;
+
+    if (currentLeverage < 2) {
+      for (const cardId of othersGoalsCards) {
+        if (cards[cardId] && !cards[cardId].knownByPlayerIds.includes(pId)) {
+          // Verify that giving cardId to pId does not violate Zero Self-Sufficiency for pId's goals
+          const pGoals = goals.filter((g) => g.assignedPlayerId === pId);
+          const wouldViolate = pGoals.some((g) => {
+            const matchCount = g.requiredCardIds.filter(
+              (id) => id === cardId || cards[id]?.knownByPlayerIds.includes(pId)
+            ).length;
+            return matchCount === g.requiredCardIds.length && g.requiredCardIds.length > 0;
+          });
+
+          if (!wouldViolate) {
+            cards[cardId].knownByPlayerIds.push(pId);
+            const updatedCount = Object.values(cards).filter(
+              (c) => c.knownByPlayerIds.includes(pId) && othersGoalsCards.has(c.id)
+            ).length;
+            if (updatedCount >= 2) break;
+          }
+        }
+      }
+    }
+  }
+
+  // 3b. Strict Zero Self-Sufficiency enforcement
+  for (const pId of playerIds) {
+    const pGoals = goals.filter((g) => g.assignedPlayerId === pId);
+    for (const g of pGoals) {
+      const held = g.requiredCardIds.filter((id) => cards[id]?.knownByPlayerIds.includes(pId));
+      if (held.length === g.requiredCardIds.length && g.requiredCardIds.length > 0) {
+        // Remove 1 card from pId's hand and ensure at least one other player holds it
+        const cardToRemove = held[0];
+        cards[cardToRemove].knownByPlayerIds = cards[cardToRemove].knownByPlayerIds.filter(
+          (id) => id !== pId
+        );
+        const others = otherPlayersMap[pId] || [];
+        const hasOtherHolder = others.some((otherId) =>
+          cards[cardToRemove].knownByPlayerIds.includes(otherId)
+        );
+        if (!hasOtherHolder && others.length > 0) {
+          cards[cardToRemove].knownByPlayerIds.push(others[0]);
+        }
+      }
+    }
+  }
+
+  // 4. Update defensive policy (guard 1 highest secrecy card, mark 1 lowest secrecy card tradeable)
+  const secrecyRank: Record<string, number> = {
+    CRITICAL: 5,
+    HIGH: 4,
+    MEDIUM: 3,
+    LOW: 2,
+    PUBLIC: 1,
+  };
+
+  const updatedCharacters = { ...state.characters };
+  for (const pId of playerIds) {
+    const hand = Object.values(cards).filter((c) => c.knownByPlayerIds.includes(pId));
+    const sorted = [...hand].sort(
+      (a, b) => (secrecyRank[b.secrecy] ?? 0) - (secrecyRank[a.secrecy] ?? 0)
+    );
+    const char = updatedCharacters[pId];
+    if (char) {
+      updatedCharacters[pId] = {
+        ...char,
+        defensivePolicy: {
+          ...char.defensivePolicy,
+          protectedCardIds: sorted.length > 0 ? [sorted[0].id] : [],
+          tradeableCardIds:
+            sorted.length > 1
+              ? [sorted[sorted.length - 1].id]
+              : sorted.length === 1
+              ? [sorted[0].id]
+              : [],
+        },
+      };
+    }
+  }
+
+  return {
+    ...state,
+    cards,
+    characters: updatedCharacters,
+  };
+}
