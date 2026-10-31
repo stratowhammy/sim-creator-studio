@@ -22,8 +22,9 @@ import {
 import {
   classifyAuthenticity,
   generateBatchedDialogue,
-  getGeminiApiKey,
-  setGeminiApiKey,
+  getDeepSeekApiKey,
+  HARDCODED_DEEPSEEK_API_KEY,
+  setDeepSeekApiKey,
 } from '../../services/llmOrchestrator';
 import { InfoCardItem } from '../primitives/InfoCardItem';
 import { GoalTrackerCard } from '../primitives/GoalTrackerCard';
@@ -142,7 +143,7 @@ export const SimulationWorkspace: React.FC<SimulationWorkspaceProps> = ({
 
   // API Key Modal State
   const [showApiKeyModal, setShowApiKeyModal] = useState<boolean>(false);
-  const [apiKeyInput, setApiKeyInput] = useState<string>(getGeminiApiKey() || '');
+  const [apiKeyInput, setApiKeyInput] = useState<string>(getDeepSeekApiKey());
 
   const activeChar = state.characters[activePlayerId];
   const targetChar = state.characters[targetPlayerId] || Object.values(state.characters).find((c) => c.playerId !== activePlayerId);
@@ -442,7 +443,7 @@ export const SimulationWorkspace: React.FC<SimulationWorkspaceProps> = ({
           <button
             onClick={() => setShowApiKeyModal(true)}
             className="p-1.5 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
-            title="Configure Gemini API Key"
+            title="Configure DeepSeek API Key"
           >
             <Settings className="w-4 h-4" />
           </button>
@@ -1077,7 +1078,7 @@ export const SimulationWorkspace: React.FC<SimulationWorkspaceProps> = ({
       </main>
 
       {/* ==================================================================== */}
-      {/* GEMINI API KEY MODAL                                                 */}
+      {/* DEEPSEEK API KEY MODAL                                               */}
       {/* ==================================================================== */}
       {showApiKeyModal && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -1086,7 +1087,7 @@ export const SimulationWorkspace: React.FC<SimulationWorkspaceProps> = ({
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-sky-400" />
                 <h3 className="font-bold text-sm text-slate-100">
-                  Gemini API Configuration
+                  DeepSeek API Configuration
                 </h3>
               </div>
               <button
@@ -1098,18 +1099,18 @@ export const SimulationWorkspace: React.FC<SimulationWorkspaceProps> = ({
             </div>
 
             <p className="text-xs text-slate-400 leading-relaxed">
-              Enter your Google Gemini API key to enable live prompt orchestration (narrative atomization, dossier weaving, and batched dialogue generation). If no key is set, the studio operates using the deterministic offline Alpha logic harness.
+              Connected to DeepSeek (<code className="text-sky-400">api.deepseek.com</code>) for live prompt orchestration (narrative atomization, dossier weaving, authenticity scoring, and batched dialogue generation).
             </p>
 
             <div>
               <label className="text-[10px] uppercase tracking-wider text-slate-400 font-mono block mb-1">
-                Gemini API Key:
+                DeepSeek API Key:
               </label>
               <input
                 type="password"
                 value={apiKeyInput}
                 onChange={(e) => setApiKeyInput(e.target.value)}
-                placeholder="AIzaSy..."
+                placeholder="sk-..."
                 className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-sky-500"
               />
             </div>
@@ -1117,17 +1118,17 @@ export const SimulationWorkspace: React.FC<SimulationWorkspaceProps> = ({
             <div className="flex items-center justify-end gap-2 pt-2">
               <button
                 onClick={() => {
-                  setGeminiApiKey('');
-                  setApiKeyInput('');
+                  setDeepSeekApiKey('');
+                  setApiKeyInput(HARDCODED_DEEPSEEK_API_KEY);
                   setShowApiKeyModal(false);
                 }}
                 className="px-3 py-1.5 text-xs rounded text-slate-400 hover:text-slate-200"
               >
-                Clear Key
+                Reset Default
               </button>
               <button
                 onClick={() => {
-                  setGeminiApiKey(apiKeyInput);
+                  setDeepSeekApiKey(apiKeyInput);
                   setShowApiKeyModal(false);
                 }}
                 className="px-4 py-1.5 text-xs font-bold rounded bg-sky-500 hover:bg-sky-400 text-slate-950"

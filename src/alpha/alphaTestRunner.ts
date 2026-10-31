@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { createStationHeliosScenario } from './scenarioData';
 import { validateInitialDistribution } from '../engine/compiler';
 import {

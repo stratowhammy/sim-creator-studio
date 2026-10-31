@@ -1,5 +1,70 @@
 export type SimulationMode = 'TURN_BASED' | 'CONTINUOUS';
 
+export type SimulationComplexityTier =
+  | 'STANDARD'
+  | 'ELEVATED'
+  | 'LABYRINTHINE';
+
+export interface SpeechStyle {
+  id: string;
+  name: string;
+  genre?: string;
+  authorInspiration?: string;
+  tagline: string;
+  styleDirective: string;
+  sampleLine: string;
+  source: 'BUILT_IN' | 'ADMIN_ADDED' | 'USER_CUSTOM';
+  createdByUsername?: string;
+}
+
+export type ReadabilityLevel = 'EASY' | 'NORMAL' | 'COMPLEX';
+
+export interface ReadabilityConfig {
+  id: ReadabilityLevel;
+  label: string;
+  gradeLevel: string;
+  targetLexile: string;
+  description: string;
+  promptDirective: string;
+  badgeClass: string;
+}
+
+export const READABILITY_CONFIG: Record<ReadabilityLevel, ReadabilityConfig> = {
+  EASY: {
+    id: 'EASY',
+    label: 'Easy',
+    gradeLevel: '6th Grade Level',
+    targetLexile: '~800L–950L',
+    description:
+      'Clear, accessible prose around a 6th-grade reading level. Uses common vocabulary, straightforward sentence structures, and direct action verbs without convoluted jargon.',
+    promptDirective:
+      'STRICT READABILITY CONSTRAINT: Target an accessible 6th-grade reading level (Lexile ~800L-950L). Use direct, clear vocabulary, short simple sentences (average 8-14 words), active voice, and minimal technical jargon. Ensure complex deductive concepts are explained with straightforward, concrete phrasing.',
+    badgeClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  },
+  NORMAL: {
+    id: 'NORMAL',
+    label: 'Normal',
+    gradeLevel: '8th Grade Level',
+    targetLexile: '~950L–1100L',
+    description:
+      'Standard conversational mystery prose around an 8th-grade reading level. Features balanced compound sentences, engaging atmospheric depth, and moderate technical lore.',
+    promptDirective:
+      'STRICT READABILITY CONSTRAINT: Target an 8th-grade reading level (Lexile ~950L-1100L). Use natural conversational mystery prose, balanced compound and complex sentences (average 14-20 words), and engaging atmospheric tone with clear investigative terminology.',
+    badgeClass: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
+  },
+  COMPLEX: {
+    id: 'COMPLEX',
+    label: 'Complex',
+    gradeLevel: '12th Grade Reading Level',
+    targetLexile: '~1150L–1350L+',
+    description:
+      'Advanced literary prose around a 12th-grade reading level. Features sophisticated vocabulary, nuanced syntactic structures, intricate psychological subtext, and rich technical detail.',
+    promptDirective:
+      'STRICT READABILITY CONSTRAINT: Target an advanced 12th-grade reading level (Lexile ~1150L-1350L+). Employ elevated literary vocabulary, nuanced subordinate clauses, intricate psychological subtext, and authentic domain-specific technical terminology.',
+    badgeClass: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
+  },
+};
+
 export type InteractionType = 'ASK' | 'INTERROGATE' | 'NEGOTIATE' | 'DECEIVE';
 
 export type CardTier = 'ATOMIC' | 'COMPOSITE';
@@ -12,6 +77,47 @@ export type BeatOutcomeTier =
   | 'NEUTRAL_EXCHANGE'     // -0.05 < Delta < +0.05
   | 'DEFLECTION'           // -0.25 < Delta <= -0.05
   | 'HOSTILE_STONEWALL';   // Delta <= -0.25
+
+export type InteractionResponseMode =
+  | 'AI_AUTOMATED'
+  | 'PLAYER_DIRECT'
+  | 'PLAYER_SUGGESTED';
+
+export interface SuggestedPlayerResponse {
+  id: string;
+  stanceLabel: string;
+  responseText: string;
+}
+
+export type PendingEngagementStatus =
+  | 'NOTIFYING'
+  | 'QUEUED_MOMENTARILY'
+  | 'FOCUSED'
+  | 'RESOLVING'
+  | 'COMPLETED';
+
+export interface PendingEngagement {
+  id: string;
+  simulationId: string;
+  tickOrTurn: number;
+  initiatorPlayerId: string;
+  targetPlayerId: string;
+  interactionType: InteractionType;
+  initiatorPrompt: string;
+  targetedTopicOrCardId?: string;
+  initiatorAuthScore: number;
+  initiatorAuthReasoning: string;
+  status: PendingEngagementStatus;
+  createdAt: number;
+  notificationStartedAt?: number;
+  expiresAt?: number;
+  queuedNoticeShown?: boolean;
+  suggestedResponses: SuggestedPlayerResponse[];
+  suggestionsLoading?: boolean;
+  resolvedInteractionId?: string;
+  resolutionMode?: InteractionResponseMode;
+  resolvingLockId?: string;
+}
 
 export interface StatVector {
   // Hidden backend values normalized on [0.00, 1.00]
@@ -54,11 +160,20 @@ export interface Goal {
   baseVpValue: number;
   decayMultipliers: number[];   // e.g., [1.0, 0.6, 0.3] based on order of completion across players
   completedByPlayerIds: string[];
+  knownByPlayerIds?: string[];  // Players who know this goal (assigned player + PEEK_RANDOM_GOAL tokens)
   synthesizedCardTemplate: {
     title: string;
     canonicalFactSummary: string;
     secrecy: SecrecyLevel;
   };
+}
+
+export interface PlayerKnowledgeBriefing {
+  playerId: string;
+  cardSignature: string;
+  narrative: string;
+  keyQuestions: string[];
+  generatedAtTurn: number;
 }
 
 export interface ConnectionToken {
@@ -83,6 +198,9 @@ export interface CharacterSheet {
   actionPoints: number;         // Used in TURN_BASED mode
   staminaCooldownUntil?: number;// Unix timestamp used in CONTINUOUS mode
   victoryPoints: number;
+  isAiControlled?: boolean;     // Set by Admin if not enough human players to fill character seat
+  assignedUserId?: string;      // Human user occupying this seat (if any)
+  assignedUsername?: string;
 }
 
 export interface SentenceBeat {
@@ -111,6 +229,8 @@ export interface InteractionRecord {
   beats: SentenceBeat[];
   cardsTransferredToInitiator: string[];
   cardsTransferredToTarget: string[]; // Populated during successful NEGOTIATE
+  responseMode?: InteractionResponseMode;
+  targetRawResponse?: string;
 }
 
 export interface RagDocumentChunk {
@@ -136,4 +256,21 @@ export interface SimulationState {
   tokens: ConnectionToken[];
   interactions: InteractionRecord[];
   ragIndex: RagDocumentChunk[];
+  knowledgeBriefings?: Record<string, PlayerKnowledgeBriefing>;
+  pendingEngagements?: PendingEngagement[];
+  // Complexity, AI Voice Style, Readability, and 'Sims' Creator Economy Metadata
+  complexityTier?: SimulationComplexityTier;
+  readabilityLevel?: ReadabilityLevel;
+  characterCount?: number;
+  voiceStyle?: SpeechStyle;
+  createdWithV4Pro?: boolean;
+  creatorUserId?: string;
+  creatorUsername?: string;
+  creatorDisplayName?: string;
+  creationCostSims?: number;
+  usageCostSims?: number;
+  publishedToCollection?: boolean;
+  publishedAt?: string;
+  unlockedByUserIds?: string[];
+  totalRoyaltiesEarnedSims?: number;
 }
