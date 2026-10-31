@@ -1592,68 +1592,6 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
         {/* Right Column: Character Dossier, Active Metadata & Hand Inspector (Cols 8-12) */}
         <div className="col-span-12 lg:col-span-5 space-y-4">
-          {/* Active Simulation Spec Summary */}
-          <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-4 space-y-2.5 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-slate-200">
-                Compiled Simulation Metadata
-              </span>
-              {simulationState.publishedToCollection ? (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-semibold">
-                  Published in Collection
-                </span>
-              ) : (
-                <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-semibold">
-                  Draft / Private
-                </span>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-[11px]">
-              <div className="p-2 rounded-lg bg-slate-950 border border-slate-800">
-                <div className="text-slate-500">Active Voice</div>
-                <div className="font-semibold text-violet-300 truncate">
-                  {simulationState.voiceStyle?.name ?? 'Direct Conversational'}
-                </div>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-950 border border-slate-800">
-                <div className="text-slate-500">Readability Level</div>
-                <div className="font-semibold text-sky-300">
-                  {READABILITY_CONFIG[simulationState.readabilityLevel ?? 'NORMAL']?.gradeLevel}
-                </div>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-950 border border-slate-800">
-                <div className="text-slate-500">Complexity / Clues</div>
-                <div className="font-semibold text-purple-300">
-                  {simulationState.complexityTier ?? 'STANDARD'} (
-                  {Object.keys(simulationState.cards).length} cards /{' '}
-                  {Object.keys(simulationState.goals).length} goals)
-                </div>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-950 border border-slate-800">
-                <div className="text-slate-500">Character Seats</div>
-                <div className="font-semibold text-amber-300">
-                  {simulationState.characterCount ?? Object.keys(simulationState.characters).length} Roles
-                </div>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-950 border border-slate-800">
-                <div className="text-slate-500">Creator Sims Paid</div>
-                <div className="font-mono font-bold text-amber-300">
-                  {simulationState.creationCostSims ?? 20} Sims
-                </div>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-950 border border-slate-800">
-                <div className="text-slate-500">10% Play Fee / Royalty</div>
-                <div className="font-mono font-bold text-emerald-300">
-                  {simulationState.usageCostSims ??
-                    calculateCollectionUsageCostSims(
-                      simulationState.creationCostSims ?? 20
-                    )}{' '}
-                  Sims
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Character Editor: Hidden/Locked Until Story Has Been Generated */}
           {!hasStoryBeenGenerated ? (
             <div className="bg-slate-900/60 rounded-xl border border-slate-800 p-6 text-center space-y-4">
