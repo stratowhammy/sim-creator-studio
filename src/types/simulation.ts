@@ -273,4 +273,5 @@ export interface SimulationState {
   publishedAt?: string;
   unlockedByUserIds?: string[];
   totalRoyaltiesEarnedSims?: number;
+  seatInvitations?: import('./user').SeatInvitation[];
 }

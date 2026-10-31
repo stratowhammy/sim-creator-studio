@@ -74,3 +74,25 @@ export interface RegisterPayload {
   callsign?: string;
   preferredCharacterId?: string;
 }
+
+export type SeatInviteType = 'CREATOR_INVITE' | 'ROLE_TRANSFER';
+export type SeatInviteStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'CANCELLED';
+
+export interface SeatInvitation {
+  id: string;
+  simulationId: string;
+  simulationTitle: string;
+  characterId: string;
+  characterName: string;
+  characterPublicRole: string;
+  fromUserId: string;
+  fromUsername: string;
+  fromDisplayName?: string;
+  toUserId: string;
+  toUsername: string;
+  toDisplayName?: string;
+  inviteType: SeatInviteType;
+  status: SeatInviteStatus;
+  createdAt: string;
+  respondedAt?: string;
+}

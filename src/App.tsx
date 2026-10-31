@@ -531,6 +531,7 @@ export const App: React.FC = () => {
         <PlayerDashboard
           state={standaloneSim}
           playerId={standaloneRoute.playerId}
+          currentUser={currentUser ?? undefined}
           onUpdateState={(updater) =>
             updateSimulationById(standaloneSim.id, updater)
           }
@@ -580,6 +581,7 @@ export const App: React.FC = () => {
         <PlayerDashboard
           state={activeSim}
           playerId={activeView.playerId}
+          currentUser={currentUser}
           onUpdateState={(updater) =>
             updateSimulationById(activeSim.id, updater)
           }
@@ -636,6 +638,7 @@ export const App: React.FC = () => {
           <PlayerDashboard
             state={adminSim}
             playerId={activeView.previewPlayerId}
+            currentUser={currentUser}
             onUpdateState={(updater) =>
               updateSimulationById(adminSim.id, updater)
             }

@@ -83,9 +83,12 @@ import {
   Terminal,
   User,
   UserCheck,
+  UserPlus,
   Users,
   Zap,
 } from 'lucide-react';
+import { UserSeatInviteModal } from '../modals/UserSeatInviteModal';
+import { getPendingInvitationForSeat } from '../../services/seatInviteService';
 
 interface AdminDashboardProps {
   state: SimulationState;
@@ -146,6 +149,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isEvaluatingAuth, setIsEvaluatingAuth] = useState<boolean>(false);
   const [isResolving, setIsResolving] = useState<boolean>(false);
   const [selectedInteractionId, setSelectedInteractionId] = useState<string | null>(null);
+  const [inviteModalCharId, setInviteModalCharId] = useState<string | null>(null);
 
   // Admin Right Pane Tabs
   const [rightTab, setRightTab] = useState<'GOALS_VP' | 'GLOBAL_CARDS' | 'ACTING_HAND'>(
@@ -846,6 +850,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <User className="w-2.5 h-2.5" /> Human
                         </span>
                       )}
+                      {char.assignedUsername && (
+                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono">
+                          @{char.assignedUsername}
+                        </span>
+                      )}
+                      {getPendingInvitationForSeat(state.id, char.playerId) && (
+                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                          Invited @{getPendingInvitationForSeat(state.id, char.playerId)?.toUsername}
+                        </span>
+                      )}
                     </div>
                     <div className="text-[10px] text-slate-400 truncate">
                       {char.publicRole} • ID: <span className="font-mono">{char.playerId}</span>
@@ -949,6 +963,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   >
                     <Eye className="w-3 h-3" />
                     Player View
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setInviteModalCharId(char.playerId)}
+                    className="py-1 px-2 rounded text-[11px] font-semibold bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 flex items-center gap-1 transition-colors"
+                    title={`Search username database and invite a player to fill or take over ${char.characterName}'s seat`}
+                  >
+                    <UserPlus className="w-3 h-3" />
+                    {char.assignedUserId ? 'Transfer' : 'Invite'}
                   </button>
 
                   <button
@@ -1716,6 +1740,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
           </div>
         </div>
+      )}
+      {/* Seat Invitation & Role Transfer Modal */}
+      {inviteModalCharId && currentUser && (
+        <UserSeatInviteModal
+          isOpen={Boolean(inviteModalCharId)}
+          onClose={() => setInviteModalCharId(null)}
+          simulation={state}
+          characterId={inviteModalCharId}
+          currentUser={currentUser}
+          inviteType={state.characters[inviteModalCharId]?.assignedUserId ? 'ROLE_TRANSFER' : 'CREATOR_INVITE'}
+          onInviteSent={(updatedSim) => {
+            onUpdateState(updatedSim);
+          }}
+        />
       )}
     </div>
   );

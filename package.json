@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test:alpha": "tsx src/alpha/alphaTestRunner.ts"
+    "test:alpha": "tsx src/alpha/alphaTestRunner.ts",
+    "test:invites": "tsx src/services/__tests__/seatInviteService.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",

@@ -18,10 +18,18 @@ import {
 } from '../../services/simsEconomyService';
 import { getActivePlayersInSimulation } from '../../services/presenceService';
 import {
+  acceptSeatInvitation,
+  declineSeatInvitation,
+  getPendingInvitationsForUser,
+} from '../../services/seatInviteService';
+import { UserSeatInviteModal } from '../modals/UserSeatInviteModal';
+import {
   ArrowRight,
+  ArrowRightLeft,
   Award,
   Bell,
   Calendar,
+  Check,
   CheckCircle2,
   Clock,
   Coins,
@@ -34,6 +42,7 @@ import {
   Layers,
   Lock,
   LogOut,
+  Mail,
   Mic,
   Play,
   PlusCircle,
@@ -101,6 +110,24 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
   const [historyFilter, setHistoryFilter] = useState<
     'ALL' | 'COMPLETED' | 'ACTIVE'
   >('ALL');
+
+  // Pending Seat Invitations state
+  const [inviteNonce, setInviteNonce] = useState<number>(0);
+  const [inviteActionFeedback, setInviteActionFeedback] = useState<{
+    type: 'ok' | 'err';
+    msg: string;
+  } | null>(null);
+
+  const pendingInvites = useMemo(
+    () => getPendingInvitationsForUser(user.id),
+    [user.id, inviteNonce, simulations]
+  );
+
+  // Transfer Role modal target state
+  const [transferTarget, setTransferTarget] = useState<{
+    simulation: SimulationState;
+    characterId: string;
+  } | null>(null);
 
   // Edit Profile state
   const [editDisplayName, setEditDisplayName] = useState<string>(
@@ -250,6 +277,38 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
       onUserUpdated(updated);
       setShowEnrollModal(false);
     }
+  };
+
+  const handleAcceptInvite = (inviteId: string) => {
+    const res = acceptSeatInvitation({
+      inviteId,
+      acceptingUser: user,
+      simulations,
+    });
+    if (!res.ok) {
+      setInviteActionFeedback({ type: 'err', msg: res.error });
+      return;
+    }
+    onUpdateSimulation?.(res.updatedSimulation);
+    onUserUpdated(res.updatedUser);
+    setInviteNonce((n) => n + 1);
+    setInviteActionFeedback({
+      type: 'ok',
+      msg: `Seat accepted! You are now permanently assigned to ${res.updatedSimulation.title}.`,
+    });
+  };
+
+  const handleDeclineInvite = (inviteId: string) => {
+    const res = declineSeatInvitation(inviteId, user);
+    if (!res.ok) {
+      setInviteActionFeedback({ type: 'err', msg: res.error });
+      return;
+    }
+    setInviteNonce((n) => n + 1);
+    setInviteActionFeedback({
+      type: 'ok',
+      msg: 'Invitation declined.',
+    });
   };
 
   const handleOpenCollectionModal = (sim: SimulationState) => {
@@ -530,6 +589,97 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
           </div>
         </section>
 
+        {/* PENDING SEAT INVITATIONS & ROLE OFFERS */}
+        {pendingInvites.length > 0 && (
+          <section className="space-y-3 p-5 rounded-2xl bg-amber-950/20 border border-amber-500/40">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Mail className="w-5 h-5 text-amber-400 animate-bounce" />
+                <div>
+                  <h2 className="text-base font-bold text-white flex items-center gap-2">
+                    Pending Seat Invitations &amp; Role Offers
+                    <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500 text-slate-950">
+                      {pendingInvites.length}
+                    </span>
+                  </h2>
+                  <p className="text-xs text-amber-200/80 mt-0.5">
+                    You have been invited to occupy or take over a character seat. Accepting will permanently assign this role to your account.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {inviteActionFeedback && (
+              <div
+                className={`p-3 rounded-xl text-xs flex items-center justify-between ${
+                  inviteActionFeedback.type === 'ok'
+                    ? 'bg-emerald-950/70 border border-emerald-500/50 text-emerald-200'
+                    : 'bg-rose-950/70 border border-rose-500/50 text-rose-200'
+                }`}
+              >
+                <span>{inviteActionFeedback.msg}</span>
+                <button
+                  type="button"
+                  onClick={() => setInviteActionFeedback(null)}
+                  className="text-slate-400 hover:text-white ml-2"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+              {pendingInvites.map((invite) => (
+                <div
+                  key={invite.id}
+                  className="p-4 rounded-xl bg-slate-900/90 border border-amber-500/30 flex flex-col justify-between gap-3 shadow-md"
+                >
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                        {invite.inviteType === 'ROLE_TRANSFER' ? 'Role Transfer' : 'Seat Invitation'}
+                      </span>
+                      <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {new Date(invite.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="text-sm font-bold text-white">
+                      {invite.simulationTitle}
+                    </div>
+                    <div className="text-xs text-slate-300 flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5 text-sky-400" />
+                      Character: <strong className="text-sky-300">{invite.characterName}</strong>
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      Offered by: <span className="text-slate-200 font-mono">@{invite.fromUsername}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => handleAcceptInvite(invite.id)}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors"
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      Accept Role
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeclineInvite(invite.id)}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs border border-slate-700 transition-colors"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                      Decline
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* 2. CURRENTLY ACTIVE SIMULATIONS (Click to Enter Room) */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
@@ -657,6 +807,24 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
                             </span>
                           </div>
                         </div>
+
+                        {liveSim && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setTransferTarget({
+                                simulation: liveSim,
+                                characterId: part.characterId,
+                              });
+                            }}
+                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 border border-slate-700 hover:border-amber-500/50 text-[11px] font-semibold transition-colors shrink-0"
+                            title="Transfer this seat to another user by username"
+                          >
+                            <ArrowRightLeft className="w-3 h-3 text-amber-400" />
+                            <span>Transfer Role</span>
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -1491,6 +1659,24 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {/* ==================================================================== */}
+      {/* ROLE TRANSFER MODAL                                                  */}
+      {/* ==================================================================== */}
+      {transferTarget && (
+        <UserSeatInviteModal
+          isOpen={Boolean(transferTarget)}
+          onClose={() => setTransferTarget(null)}
+          simulation={transferTarget.simulation}
+          characterId={transferTarget.characterId}
+          currentUser={user}
+          inviteType="ROLE_TRANSFER"
+          onInviteSent={(updatedSim) => {
+            onUpdateSimulation?.(updatedSim);
+            setInviteNonce((n) => n + 1);
+          }}
+        />
       )}
     </div>
   );

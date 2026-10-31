@@ -78,10 +78,14 @@ import {
   User,
   Zap,
 } from 'lucide-react';
+import { UserAccount } from '../../types/user';
+import { UserSeatInviteModal } from '../modals/UserSeatInviteModal';
+import { getPendingInvitationForSeat } from '../../services/seatInviteService';
 
 interface PlayerDashboardProps {
   state: SimulationState;
   playerId: string;
+  currentUser?: UserAccount;
   onUpdateState: (
     updater: SimulationState | ((prev: SimulationState) => SimulationState)
   ) => void;
@@ -187,10 +191,12 @@ const AUTONOMOUS_PEER_PROMPTS: Record<
 export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
   state,
   playerId,
+  currentUser,
   onUpdateState,
   onBackToProfile,
   onBackToAdmin,
 }) => {
+  const [showTransferModal, setShowTransferModal] = useState<boolean>(false);
   const activeChar = state.characters[playerId];
   const otherCharacters = useMemo(
     () => Object.values(state.characters).filter((c) => c.playerId !== playerId),
@@ -1286,6 +1292,26 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
             <span className="text-sky-300">{activeChar.publicRole}</span>
           </div>
         </div>
+
+        {/* Role Transfer Action */}
+        {currentUser && (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowTransferModal(true)}
+              className="flex items-center gap-1.5 bg-slate-950 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-amber-500/50 text-amber-300 font-semibold transition-colors text-xs"
+              title={`Transfer your role as ${activeChar.characterName} to another user`}
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5" />
+              <span>Transfer Role</span>
+            </button>
+            {getPendingInvitationForSeat(state.id, activeChar.playerId) && (
+              <span className="text-[10px] px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                Transfer pending: @{getPendingInvitationForSeat(state.id, activeChar.playerId)?.toUsername}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Personal Status Indicators + Character History Shortcut */}
         <div className="flex items-center gap-2.5 text-xs">
@@ -2511,6 +2537,23 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
           ownedCardIds={ownedCardIds}
           initialSelectedCharacterId={historyModalCharId}
           onClose={() => setHistoryModalCharId(null)}
+        />
+      )}
+
+      {/* ==================================================================== */}
+      {/* ROLE TRANSFER / SEAT INVITATION MODAL                                */}
+      {/* ==================================================================== */}
+      {showTransferModal && currentUser && (
+        <UserSeatInviteModal
+          isOpen={showTransferModal}
+          onClose={() => setShowTransferModal(false)}
+          simulation={state}
+          characterId={activeChar.playerId}
+          currentUser={currentUser}
+          inviteType="ROLE_TRANSFER"
+          onInviteSent={(updatedSim) => {
+            onUpdateState(updatedSim);
+          }}
         />
       )}
     </div>

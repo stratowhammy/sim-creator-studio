@@ -30,7 +30,13 @@ export type RealtimeMessage =
   | { type: 'SIMULATIONS_UPDATED'; simulationId?: string }
   | { type: 'USERS_UPDATED' }
   | { type: 'VOICES_UPDATED' }
-  | { type: 'LLM_MODEL_UPDATED'; testV4Pro: boolean };
+  | { type: 'LLM_MODEL_UPDATED'; testV4Pro: boolean }
+  | {
+      type: 'NOTIFICATION_BROADCAST';
+      title: string;
+      body: string;
+      targetUserId?: string;
+    };
 
 export function broadcastRealtimeEvent(msg: RealtimeMessage): void {
   const ch = getChannel();

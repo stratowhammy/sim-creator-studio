@@ -47,12 +47,16 @@ import {
   Lock,
   Mic,
   Play,
+  Bot,
   Plus,
   RefreshCw,
   RotateCcw,
   Search,
   Shield,
   Sparkles,
+  User,
+  UserCheck,
+  UserPlus,
   Users,
   Wand2,
   X,
@@ -60,6 +64,8 @@ import {
 } from 'lucide-react';
 import { createStationHeliosScenario } from '../../alpha/scenarioData';
 import { buildRagIndexFromState } from '../../engine/ragPartition';
+import { UserSeatInviteModal } from '../modals/UserSeatInviteModal';
+import { getPendingInvitationForSeat } from '../../services/seatInviteService';
 
 interface AuthoringStudioProps {
   simulationState: SimulationState;
@@ -161,6 +167,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
   const [studioError, setStudioError] = useState<string | null>(null);
   const [paidCurrentDraft, setPaidCurrentDraft] = useState<boolean>(false);
   const [selectedCharacterId, setSelectedCharacterId] = useState<string>('vance');
+  const [inviteModalCharId, setInviteModalCharId] = useState<string | null>(null);
 
   // Storyline Library Modal State
   const [showLibraryModal, setShowLibraryModal] = useState(false);
@@ -1647,33 +1654,92 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
               {/* Character Selector Pills */}
               <div className="grid grid-cols-2 gap-2 mb-4">
-                {Object.values(simulationState.characters).map((char) => (
-                  <button
-                    key={char.playerId}
-                    onClick={() => setSelectedCharacterId(char.playerId)}
-                    className={`p-2 rounded-lg text-left transition-all border text-xs ${
-                      selectedCharacterId === char.playerId
-                        ? 'bg-sky-950/60 border-sky-500 text-sky-200'
-                        : 'bg-slate-950/50 border-slate-800 hover:border-slate-700 text-slate-400'
-                    }`}
-                  >
-                    <div className="font-bold text-slate-100 flex items-center justify-between">
-                      <span className="truncate">{char.characterName}</span>
-                      {char.isAiControlled && (
-                        <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">
-                          AI
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-[11px] text-slate-400 truncate">
-                      {char.publicRole}
-                    </div>
-                  </button>
-                ))}
+                {Object.values(simulationState.characters).map((char) => {
+                  const seatInvite = getPendingInvitationForSeat(
+                    simulationState.id,
+                    char.playerId
+                  );
+
+                  return (
+                    <button
+                      key={char.playerId}
+                      onClick={() => setSelectedCharacterId(char.playerId)}
+                      className={`p-2 rounded-lg text-left transition-all border text-xs ${
+                        selectedCharacterId === char.playerId
+                          ? 'bg-sky-950/60 border-sky-500 text-sky-200'
+                          : 'bg-slate-950/50 border-slate-800 hover:border-slate-700 text-slate-400'
+                      }`}
+                    >
+                      <div className="font-bold text-slate-100 flex items-center justify-between">
+                        <span className="truncate">{char.characterName}</span>
+                        <div className="flex items-center gap-1 shrink-0">
+                          {char.assignedUsername ? (
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono">
+                              @{char.assignedUsername}
+                            </span>
+                          ) : seatInvite ? (
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                              Invited
+                            </span>
+                          ) : char.isAiControlled ? (
+                            <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                              AI
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="text-[11px] text-slate-400 truncate">
+                        {char.publicRole}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
 
               {selectedChar && (
                 <div className="space-y-3 text-xs">
+                  {/* Seat Assignment & Player Invite Card */}
+                  <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80 flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-0.5">
+                        Permanent Seat Assignment
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {selectedChar.assignedUserId ? (
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400">
+                            <UserCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                            <span>Assigned: @{selectedChar.assignedUsername}</span>
+                          </div>
+                        ) : selectedChar.isAiControlled ? (
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-400">
+                            <Bot className="w-4 h-4 text-purple-400 shrink-0" />
+                            <span>AI Controlled Seat</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                            <User className="w-4 h-4 text-slate-500 shrink-0" />
+                            <span>Unoccupied Human Seat</span>
+                          </div>
+                        )}
+                        {getPendingInvitationForSeat(simulationState.id, selectedChar.playerId) && (
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                            Invite pending: @
+                            {getPendingInvitationForSeat(simulationState.id, selectedChar.playerId)?.toUsername}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setInviteModalCharId(selectedChar.playerId)}
+                      className="px-2.5 py-1.5 rounded-lg bg-purple-600/90 hover:bg-purple-500 text-white text-xs font-semibold flex items-center gap-1.5 transition shadow shrink-0"
+                      title="Search username database and send an invite to fill or take over this seat"
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      <span>{selectedChar.assignedUserId ? 'Reassign / Transfer' : 'Invite User to Seat'}</span>
+                    </button>
+                  </div>
                   <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
                     <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2 flex justify-between">
                       <span>Hidden Stat Vector</span>
@@ -2244,6 +2310,21 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             </div>
           </div>
         </div>
+      )}
+      {/* User Seat Invite Modal */}
+      {inviteModalCharId && currentUser && (
+        <UserSeatInviteModal
+          isOpen={Boolean(inviteModalCharId)}
+          onClose={() => setInviteModalCharId(null)}
+          simulation={simulationState}
+          characterId={inviteModalCharId}
+          currentUser={currentUser}
+          inviteType="CREATOR_INVITE"
+          onInviteSent={(updatedSim) => {
+            onUpdateState(updatedSim);
+            setStudioNotice('Seat invitation sent successfully!');
+          }}
+        />
       )}
     </div>
   );
