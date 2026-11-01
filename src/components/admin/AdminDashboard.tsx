@@ -407,8 +407,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (!actingChar || !targetChar || isResolving) return;
     if (actingChar.actionPoints <= 0) return;
 
-    // If the target player is actively inside the simulation room (e.g. in another tab),
-    // route as a live 30s notification (or busy queue if target is in another conversation)!
     if (isPlayerActivelyInRoom(state.id, targetChar.playerId)) {
       const staged = stageLivePendingEngagement(state, {
         initiatorPlayerId: actingPlayerId,
@@ -600,7 +598,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   if (adminMode === 'STUDIO' && canUseStudio) {
     return (
-      <div className="h-screen flex flex-col bg-slate-950 overflow-hidden">
+      <div className="h-screen flex flex-col bg-[#fffef0] text-[#41403e] overflow-hidden">
         <AuthoringStudio
           simulationState={state}
           simulations={simulations}
@@ -619,23 +617,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-base-100 text-base-content font-sans">
+    <div className="flex flex-col h-screen overflow-hidden bg-[#fffef0] text-[#41403e] font-sans">
       {/* ADMIN NAVBAR */}
-      <header className="navbar bg-base-200 border-b border-base-300 px-4 min-h-14 justify-between gap-2 shrink-0">
+      <header className="paper sticky top-0 z-30 px-4 py-2 border-b-2 border-[#41403e] bg-[#fffef0]/95 backdrop-blur-sm flex items-center justify-between gap-2 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           {onBackToOverview && (
             <button
               type="button"
               onClick={onBackToOverview}
-              className="btn btn-ghost btn-sm gap-1"
+              className="paper-btn btn-small"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-3.5 h-3.5 inline mr-1" />
               All Games
             </button>
           )}
 
-          <div className="badge badge-warning gap-1.5 font-bold text-xs py-2">
-            <Terminal className="w-3.5 h-3.5" />
+          <div className="badge warning font-bold text-xs py-1">
+            <Terminal className="w-3.5 h-3.5 inline mr-1" />
             <span>{roleLabel || 'Game Host'}</span>
           </div>
 
@@ -643,7 +641,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <select
               value={state.id}
               onChange={(e) => onSelectSimulation(e.target.value)}
-              className="select select-bordered select-xs font-semibold"
+              className="bg-white border-2 border-[#41403e] rounded px-2 py-1 text-xs font-semibold"
             >
               {Object.values(simulations).map((sim) => (
                 <option key={sim.id} value={sim.id}>
@@ -659,8 +657,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           <button
             onClick={handleToggleSimulationStatus}
-            className={`badge badge-sm font-mono cursor-pointer ${
-              state.status === 'COMPLETED' ? 'badge-ghost' : 'badge-success'
+            className={`badge cursor-pointer ${
+              state.status === 'COMPLETED' ? '' : 'success'
             }`}
           >
             {state.status}
@@ -668,44 +666,42 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         {/* Global Turn & Controls */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
           <button
             type="button"
             onClick={() => onToggleTestV4Pro(!testV4Pro)}
-            className={`btn btn-xs gap-1 ${
-              testV4Pro ? 'btn-secondary' : 'btn-outline border-base-300'
-            }`}
+            className={`paper-btn btn-small ${testV4Pro ? 'btn-secondary' : ''}`}
           >
-            <Sparkles className="w-3 h-3" />
+            <Sparkles className="w-3 h-3 inline mr-1" />
             <span>AI Pro: {testV4Pro ? 'ON' : 'OFF'}</span>
           </button>
 
-          <div className="badge badge-sm badge-ghost font-mono gap-1">
-            <Clock className="w-3 h-3" />
+          <div className="badge font-mono">
+            <Clock className="w-3 h-3 inline mr-1" />
             Turn {state.currentTurnOrTick}
           </div>
 
           <button
             onClick={handleAdvanceTurn}
-            className="btn btn-primary btn-sm"
+            className="paper-btn btn-primary btn-small"
           >
             Next Turn
           </button>
 
           <button
             onClick={handleResetScenario}
-            className="btn btn-ghost btn-sm gap-1"
+            className="paper-btn btn-small"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3.5 h-3.5 inline mr-1" />
             Reset
           </button>
 
           {canUseStudio && (
             <button
               onClick={() => setAdminMode('STUDIO')}
-              className="btn btn-secondary btn-sm gap-1"
+              className="paper-btn btn-secondary btn-small"
             >
-              <Layers className="w-3.5 h-3.5" />
+              <Layers className="w-3.5 h-3.5 inline mr-1" />
               Studio
             </button>
           )}
@@ -713,9 +709,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {onBackToProfile && (
             <button
               onClick={onBackToProfile}
-              className="btn btn-ghost btn-sm gap-1"
+              className="paper-btn btn-small"
             >
-              <User className="w-3.5 h-3.5" />
+              <User className="w-3.5 h-3.5 inline mr-1" />
               Profile
             </button>
           )}
@@ -723,44 +719,44 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {onSignOut && (
             <button
               onClick={onSignOut}
-              className="btn btn-ghost btn-sm btn-square text-error"
+              className="paper-btn btn-danger btn-small"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           )}
 
           <button
             onClick={() => setShowApiKeyModal(true)}
-            className="btn btn-ghost btn-sm btn-square"
+            className="paper-btn btn-small"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-3.5 h-3.5" />
           </button>
         </div>
       </header>
 
       {/* PLAYER ROSTER BAR */}
-      <section className="px-4 py-2.5 border-b border-base-300 bg-base-200/50 shrink-0">
-        <div className="flex items-center justify-between mb-2">
+      <section className="px-4 py-2 border-b-2 border-[#41403e] bg-amber-50/50 shrink-0">
+        <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-primary" />
+            <Users className="w-4 h-4 text-sky-800" />
             <span className="text-xs font-bold">
               Characters ({Object.keys(state.characters).length})
             </span>
-            <span className="text-xs text-base-content/60">
+            <span className="text-xs opacity-70">
               • {Object.values(state.characters).filter((c) => c.isAiControlled).length} AI Controlled
             </span>
           </div>
           <button
             type="button"
             onClick={handleFillEmptySeatsWithAi}
-            className="btn btn-xs btn-outline btn-secondary gap-1"
+            className="paper-btn btn-secondary btn-small"
           >
-            <Bot className="w-3 h-3" />
+            <Bot className="w-3 h-3 inline mr-1" />
             Auto-Fill Empty Seats with AI
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
           {Object.values(state.characters).map((char) => {
             const isActing = actingPlayerId === char.playerId;
             const knownCount = Object.values(state.cards).filter((c) =>
@@ -770,56 +766,56 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             return (
               <div
                 key={char.playerId}
-                className={`card bg-base-100 border p-2.5 shadow-sm transition-all text-xs ${
+                className={`card bg-white border-2 p-2 shadow-sm transition-all text-xs ${
                   isActing
-                    ? 'border-primary ring-1 ring-primary'
-                    : 'border-base-300'
+                    ? 'border-sky-600 ring-2 ring-sky-600 bg-sky-50/30'
+                    : 'border-[#41403e]'
                 }`}
               >
-                <div className="flex items-start justify-between gap-2 mb-1">
+                <div className="flex items-start justify-between gap-1.5 mb-1">
                   <div className="min-w-0">
-                    <div className="font-bold flex items-center gap-1.5 flex-wrap">
+                    <div className="font-bold flex items-center gap-1 flex-wrap">
                       <span className="truncate">{char.characterName}</span>
                       {isActing && (
-                        <span className="badge badge-xs badge-primary">
+                        <span className="badge secondary text-[10px]">
                           Testing
                         </span>
                       )}
                       {char.isAiControlled ? (
-                        <span className="badge badge-xs badge-secondary">
+                        <span className="badge text-[10px]">
                           AI
                         </span>
                       ) : (
-                        <span className="badge badge-xs badge-ghost">
+                        <span className="badge text-[10px]">
                           Player
                         </span>
                       )}
                       {char.assignedUsername && (
-                        <span className="badge badge-xs badge-success">
+                        <span className="badge success text-[10px]">
                           @{char.assignedUsername}
                         </span>
                       )}
                       {getPendingInvitationForSeat(state.id, char.playerId) && (
-                        <span className="badge badge-xs badge-warning">
+                        <span className="badge warning text-[10px]">
                           Invited
                         </span>
                       )}
                     </div>
-                    <div className="text-[11px] text-base-content/60 truncate">
+                    <div className="text-[11px] opacity-70 truncate">
                       {char.publicRole}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-1 font-mono text-[10px] shrink-0">
-                    <span className="badge badge-xs badge-warning font-bold">
+                    <span className="badge warning font-bold">
                       {char.victoryPoints} VP
                     </span>
-                    <span className="badge badge-xs badge-success font-bold">
+                    <span className="badge success font-bold">
                       {char.actionPoints} AP
                     </span>
                     <button
                       onClick={() => handleGrantActionPoint(char.playerId)}
-                      className="btn btn-ghost btn-xs btn-square"
+                      className="cursor-pointer font-bold px-1"
                       title="Add 1 Action Point"
                     >
                       <Plus className="w-3 h-3" />
@@ -828,7 +824,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 {/* Character Skills */}
-                <div className="grid grid-cols-6 gap-1 text-[9px] bg-base-200 p-1 rounded mb-2 text-center">
+                <div className="grid grid-cols-6 gap-1 text-[9px] bg-[#fffef0] p-1 rounded border border-[#41403e]/20 mb-1.5 text-center">
                   <div>
                     <span className="opacity-60 block">INQ</span>
                     <span className="font-bold">{char.hiddenStats.inquiry.toFixed(1)}</span>
@@ -859,43 +855,44 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <div className="flex items-center gap-1 flex-wrap">
                   <button
                     onClick={() => handleSelectActingPlayer(char.playerId)}
-                    className={`btn btn-xs flex-1 ${
-                      isActing ? 'btn-primary' : 'btn-outline border-base-300'
+                    className={`paper-btn btn-small flex-1 ${
+                      isActing ? 'btn-primary' : ''
                     }`}
                   >
-                    <UserCheck className="w-3 h-3" />
+                    <UserCheck className="w-3 h-3 inline mr-1" />
                     {isActing ? `Active (${knownCount})` : 'Select'}
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleToggleAiControl(char.playerId)}
-                    className="btn btn-xs btn-ghost"
+                    className="paper-btn btn-small"
                   >
-                    <Bot className="w-3 h-3" />
+                    <Bot className="w-3 h-3 inline mr-1" />
                     {char.isAiControlled ? 'AI' : 'Human'}
                   </button>
 
                   <button
                     onClick={() => onOpenPlayerView(char.playerId)}
-                    className="btn btn-xs btn-info"
+                    className="paper-btn btn-small btn-secondary"
                   >
-                    <Eye className="w-3 h-3" />
+                    <Eye className="w-3 h-3 inline mr-1" />
                     View
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setInviteModalCharId(char.playerId)}
-                    className="btn btn-xs btn-outline border-base-300"
+                    className="paper-btn btn-small"
                   >
-                    <UserPlus className="w-3 h-3" />
+                    <UserPlus className="w-3 h-3 inline mr-1" />
                     {char.assignedUserId ? 'Reassign' : 'Invite'}
                   </button>
 
                   <button
                     onClick={() => handleOpenPlayerInNewTab(char.playerId)}
-                    className="btn btn-xs btn-ghost btn-square"
+                    className="paper-btn btn-small"
+                    title="Open in new tab"
                   >
                     <ExternalLink className="w-3 h-3" />
                   </button>
@@ -913,32 +910,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* ------------------------------------------------------------------ */}
         {/* LEFT PANE (COLS 1-3): Acting Player Server Sheet & RAG Inspector     */}
         {/* ------------------------------------------------------------------ */}
-        <aside className="col-span-3 border-r border-slate-800 bg-slate-900/40 flex flex-col min-h-0 overflow-y-auto p-3.5 space-y-4">
+        <aside className="col-span-3 border-r-2 border-[#41403e] bg-[#fffef0] flex flex-col min-h-0 overflow-y-auto p-3 space-y-3">
           {actingChar && (
             <>
               {/* Server Metadata for Acting Player */}
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+              <div className="card bg-white p-3 rounded border-2 border-[#41403e] space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
-                    <Cpu className="w-4 h-4 text-amber-400" />
-                    <span className="font-bold text-slate-100">
+                    <Cpu className="w-4 h-4 text-amber-700" />
+                    <span className="font-bold text-[#41403e]">
                       Server Sheet: {actingChar.characterName}
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                  <span className="badge success text-[10px]">
                     RLS: STRICT
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-slate-500 block mb-1">
-                    Core Traits (Authenticity Classifier):
+                  <span className="text-[10px] uppercase font-bold opacity-70 block mb-1">
+                    Core Traits:
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {actingChar.coreTraits.map((t) => (
                       <span
                         key={t}
-                        className="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 font-mono"
+                        className="badge text-[10px]"
                       >
                         {t}
                       </span>
@@ -947,14 +944,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-mono uppercase text-slate-500 block mb-1">
+                  <span className="text-[10px] uppercase font-bold opacity-70 block mb-1">
                     Core Motives:
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {actingChar.coreMotives.map((m) => (
                       <span
                         key={m}
-                        className="text-[10px] px-1.5 py-0.5 rounded bg-purple-950/40 border border-purple-900/60 text-purple-200 font-mono"
+                        className="badge secondary text-[10px]"
                       >
                         {m}
                       </span>
@@ -963,8 +960,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 {/* Defensive Stances Matrix for Acting Player */}
-                <div className="pt-2 border-t border-slate-800 space-y-1.5">
-                  <span className="text-[10px] font-mono uppercase text-slate-500 block">
+                <div className="pt-2 border-t border-[#41403e]/20 space-y-1.5">
+                  <span className="text-[10px] uppercase font-bold opacity-70 block">
                     Defensive Stance Policy (+0.12 to -0.20):
                   </span>
                   {Object.values(state.characters)
@@ -976,9 +973,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       return (
                         <div
                           key={other.playerId}
-                          className="flex items-center justify-between gap-1 bg-slate-900 px-2 py-1.5 rounded border border-slate-800"
+                          className="flex items-center justify-between gap-1 bg-[#fffef0] px-2 py-1 rounded border border-[#41403e]/30"
                         >
-                          <span className="text-[11px] text-slate-300 truncate">
+                          <span className="text-[11px] font-medium truncate">
                             {other.characterName}
                           </span>
                           <div className="flex items-center gap-0.5 shrink-0">
@@ -987,10 +984,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 <button
                                   key={st}
                                   onClick={() => handleChangeStance(other.playerId, st)}
-                                  className={`px-1 py-0.5 text-[9px] rounded font-mono ${
+                                  className={`px-1 py-0.5 text-[9px] rounded font-mono cursor-pointer ${
                                     currentStance === st
                                       ? STANCE_BADGE_STYLES[st] + ' font-bold ring-1'
-                                      : 'bg-slate-950 text-slate-500 hover:text-slate-300'
+                                      : 'opacity-50 hover:opacity-100'
                                   }`}
                                 >
                                   {st.slice(0, 4)}
@@ -1005,13 +1002,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
 
               {/* Connection Tokens on Behalf of Acting Player */}
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+              <div className="card bg-white p-3 rounded border-2 border-[#41403e] space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                    <Zap className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="font-bold text-[#41403e] flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-amber-600" />
                     Tokens (Bypass RNG)
                   </span>
-                  <span className="text-[10px] font-mono text-slate-500">
+                  <span className="text-[10px] opacity-70">
                     {actingTokens.filter((t) => !t.isConsumed).length} unconsumed
                   </span>
                 </div>
@@ -1026,46 +1023,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     />
                   ))
                 ) : (
-                  <p className="text-[11px] text-slate-500 font-mono">
+                  <p className="text-[11px] opacity-60 italic m-0">
                     No connection tokens assigned to {actingChar.characterName}.
                   </p>
                 )}
               </div>
 
               {/* Partitioned RAG Query Debugger */}
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2 text-xs">
+              <div className="card bg-white p-3 rounded border-2 border-[#41403e] space-y-2 text-xs">
                 <div className="flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-purple-400" />
-                  <span className="font-bold text-slate-200">
+                  <Database className="w-3.5 h-3.5 text-purple-700" />
+                  <span className="font-bold text-[#41403e]">
                     RAG Partition Inspector ({actingPlayerId})
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Search className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                  <Search className="w-3.5 h-3.5 opacity-60 shrink-0" />
                   <input
                     type="text"
                     value={ragTestQuery}
                     onChange={(e) => setRagTestQuery(e.target.value)}
                     placeholder="Test keyword isolation..."
-                    className="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-[11px] font-mono text-slate-200 focus:outline-none focus:border-sky-500"
+                    className="w-full bg-[#fffef0] border border-[#41403e] rounded px-2 py-1 text-[11px] font-mono"
                   />
                 </div>
                 <div className="space-y-1.5 max-h-40 overflow-y-auto">
                   {ragTestResults.length === 0 ? (
-                    <div className="text-[10px] font-mono text-slate-500 py-1">
+                    <div className="text-[10px] opacity-60 py-1 italic">
                       0 matching chunks in {actingPlayerId}&apos;s partition.
                     </div>
                   ) : (
                     ragTestResults.map((res) => (
                       <div
                         key={res.chunk.chunkId}
-                        className="p-2 rounded bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300"
+                        className="p-2 rounded bg-[#fffef0] border border-[#41403e]/30 text-[10px] font-mono"
                       >
-                        <div className="flex justify-between text-sky-400 mb-0.5">
+                        <div className="flex justify-between text-sky-800 font-bold mb-0.5">
                           <span>{res.chunk.sourceType}</span>
                           <span>#{res.chunk.sourceRefId}</span>
                         </div>
-                        <p className="font-sans text-slate-300 text-[11px] line-clamp-2">
+                        <p className="font-sans text-[11px] line-clamp-2 m-0 opacity-80">
                           {res.chunk.content}
                         </p>
                       </div>
@@ -1080,32 +1077,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* ------------------------------------------------------------------ */}
         {/* CENTER PANE (COLS 4-8): Admin AP Testing Console & Beat Telemetry    */}
         {/* ------------------------------------------------------------------ */}
-        <section className="col-span-5 border-r border-slate-800 flex flex-col min-h-0 bg-slate-950/70">
+        <section className="col-span-5 border-r-2 border-[#41403e] flex flex-col min-h-0 bg-white">
           {/* Staging Console on Behalf of Acting Player */}
-          <div className="p-4 border-b border-slate-800 bg-slate-900/50 shrink-0 space-y-3">
+          <div className="p-3 border-b-2 border-[#41403e] bg-amber-50/40 shrink-0 space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Swords className="w-4 h-4 text-rose-400" />
-                <h3 className="font-bold text-xs text-slate-100">
+                <Swords className="w-4 h-4 text-rose-600" />
+                <h3 className="font-bold text-xs text-[#41403e] m-0">
                   Test Action as{' '}
-                  <span className="text-amber-300">{actingChar?.characterName}</span>
+                  <span className="text-amber-800">{actingChar?.characterName}</span>
                 </h3>
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                <span className="badge success font-mono text-[10px]">
                   AP: {actingChar?.actionPoints ?? 0}
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span
-                  className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono"
+                  className="badge success font-mono text-[10px]"
                   title="Server-side success bonus from cards marked Shareable in Acting Player's hand"
                 >
                   Shareable ({actingShareableCount}): +{actingShareableBonus.toFixed(2)}
                 </span>
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-[11px] font-mono opacity-70">
                   P_k:
                 </span>
-                <span className="text-xs px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800 font-bold font-mono">
+                <span className="badge info font-bold font-mono text-xs">
                   {liveThreshold.toFixed(3)}
                 </span>
               </div>
@@ -1113,8 +1110,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* Target Character Selector with Server Stance & Defense Info */}
             <div>
-              <label className="text-[10px] uppercase tracking-wider text-slate-400 font-mono block mb-1">
-                Target Character (Showing Server Stance & AP):
+              <label className="text-[10px] uppercase font-bold opacity-70 block mb-1">
+                Target Character:
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {Object.values(state.characters)
@@ -1129,25 +1126,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <button
                         key={target.playerId}
                         onClick={() => setTargetPlayerId(target.playerId)}
-                        className={`p-2 rounded-lg text-left transition-all border text-xs ${
+                        className={`p-2 rounded border-2 text-left transition-all text-xs cursor-pointer ${
                           isSelected
-                            ? 'bg-rose-950/40 border-rose-500 text-rose-100 ring-1 ring-rose-500/50'
-                            : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 text-slate-400'
+                            ? 'bg-amber-100 border-amber-700 ring-2 ring-amber-700'
+                            : 'bg-white border-[#41403e]/40 hover:border-[#41403e]'
                         }`}
                       >
-                        <div className="font-bold text-slate-200 truncate">
+                        <div className="font-bold truncate">
                           {target.characterName}
                         </div>
-                        <div className="text-[10px] text-slate-400 truncate">
+                        <div className="text-[10px] opacity-70 truncate">
                           {target.publicRole}
                         </div>
                         <div className="mt-1 flex items-center justify-between">
                           <span
-                            className={`text-[9px] uppercase px-1.5 py-0.2 rounded border font-mono ${stanceClass}`}
+                            className={`text-[9px] uppercase px-1 py-0.2 rounded font-mono ${stanceClass}`}
                           >
                             {stance}
                           </span>
-                          <span className="text-[10px] font-mono text-slate-500">
+                          <span className="text-[10px] font-mono opacity-60">
                             AP:{target.actionPoints}
                           </span>
                         </div>
@@ -1159,8 +1156,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* Approach Vector with Server Stat Matchups */}
             <div>
-              <label className="text-[10px] uppercase tracking-wider text-slate-400 font-mono block mb-1">
-                Approach Vector & Stat Matchup:
+              <label className="text-[10px] uppercase font-bold opacity-70 block mb-1">
+                Approach Vector &amp; Stat Matchup:
               </label>
               <div className="grid grid-cols-4 gap-1.5">
                 {(['ASK', 'INTERROGATE', 'NEGOTIATE', 'DECEIVE'] as InteractionType[]).map(
@@ -1173,14 +1170,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <button
                         key={type}
                         onClick={() => setInteractionType(type)}
-                        className={`p-2 rounded-lg text-left transition-all border text-xs flex flex-col justify-between ${
+                        className={`p-2 rounded border-2 text-left transition-all text-xs flex flex-col justify-between cursor-pointer ${
                           isSelected
-                            ? `${info.button} ring-1`
-                            : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 text-slate-400'
+                            ? `${info.button} ring-2 ring-[#41403e]`
+                            : 'bg-white border-[#41403e]/40 hover:border-[#41403e]'
                         }`}
                       >
                         <div className="font-bold text-xs">{type}</div>
-                        <div className="text-[9px] font-mono text-slate-400 mt-1">
+                        <div className="text-[9px] font-mono opacity-70 mt-1">
                           {statPair.offenseKey} vs {statPair.defenseKey}
                         </div>
                       </button>
@@ -1193,13 +1190,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             {/* Admin Target Card Override & Authenticity Evaluator */}
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-[10px] uppercase tracking-wider text-slate-400 font-mono block mb-1">
-                  Target Specific Card (Admin Override):
+                <label className="text-[10px] uppercase font-bold opacity-70 block mb-1">
+                  Target Specific Card:
                 </label>
                 <select
                   value={targetedCardId}
                   onChange={(e) => setTargetedCardId(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-sky-500"
+                  className="w-full bg-[#fffef0] border-2 border-[#41403e] rounded px-2 py-1 text-xs font-mono"
                 >
                   <option value="">-- Auto / Untargeted Inquiry --</option>
                   {Object.values(state.cards).map((c) => (
@@ -1212,23 +1209,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-[10px] uppercase tracking-wider text-slate-400 font-mono">
+                  <label className="text-[10px] uppercase font-bold opacity-70">
                     Authenticity Modifier:
                   </label>
                   <button
                     onClick={handleEvaluateAuthenticity}
                     disabled={isEvaluatingAuth}
-                    className="text-[10px] text-sky-400 hover:text-sky-300 font-mono underline"
+                    className="text-[10px] text-sky-800 hover:underline font-mono cursor-pointer"
                   >
                     {isEvaluatingAuth ? 'Scoring...' : 'Re-Evaluate via AI'}
                   </button>
                 </div>
-                <div className="flex items-center gap-2 bg-slate-950 p-1.5 rounded border border-slate-800">
+                <div className="flex items-center gap-2 bg-[#fffef0] p-1.5 rounded border border-[#41403e]/40">
                   <span
-                    className={`text-xs font-bold font-mono px-2 py-0.5 rounded ${
+                    className={`text-xs font-bold font-mono px-1.5 py-0.5 rounded ${
                       authenticityScore >= 0
-                        ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
-                        : 'bg-rose-950 text-rose-300 border border-rose-800'
+                        ? 'badge success'
+                        : 'badge danger'
                     }`}
                   >
                     {authenticityScore >= 0
@@ -1236,7 +1233,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       : authenticityScore.toFixed(2)}
                   </span>
                   <span
-                    className="text-[10px] text-slate-400 truncate"
+                    className="text-[10px] opacity-70 truncate"
                     title={authenticityReason}
                   >
                     {authenticityReason}
@@ -1251,8 +1248,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 pe.initiatorPlayerId === actingPlayerId &&
                 pe.status !== 'COMPLETED'
             ) && (
-              <div className="p-2.5 rounded-lg bg-amber-950/40 border border-amber-600/50 flex items-center gap-2 text-xs text-amber-200">
-                <Hourglass className="w-4 h-4 text-amber-400 shrink-0 animate-pulse" />
+              <div className="alert alert-warning text-xs flex items-center gap-2">
+                <Hourglass className="w-4 h-4 shrink-0 animate-pulse" />
                 <span>
                   {(() => {
                     const pe = (state.pendingEngagements ?? []).find(
@@ -1279,31 +1276,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 value={initiatorPrompt}
                 onChange={(e) => setInitiatorPrompt(e.target.value)}
                 rows={2}
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500 resize-none font-sans"
+                className="flex-1 bg-[#fffef0] border-2 border-[#41403e] rounded p-2 text-xs resize-none font-sans"
                 placeholder="Enter test dialogue on behalf of the selected player..."
               />
               <button
                 onClick={handleStageLiveHailAndPreviewTarget}
                 disabled={isResolving || (actingChar?.actionPoints ?? 0) <= 0}
-                className="px-3 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-[11px] flex flex-col items-center justify-center gap-1 transition-all shadow-md disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                className="paper-btn btn-small btn-secondary flex flex-col items-center justify-center shrink-0"
                 title="Stage a live 30s incoming conversation notification and immediately open Target's Player Dashboard"
               >
-                <Eye className="w-4 h-4" />
-                <span>Hail & View</span>
+                <Eye className="w-3.5 h-3.5 mb-0.5" />
+                <span>Hail &amp; View</span>
               </button>
               <button
                 onClick={handleExecuteInteractionOnBehalf}
                 disabled={isResolving || (actingChar?.actionPoints ?? 0) <= 0}
-                className="px-4 py-2.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex flex-col items-center justify-center gap-1 transition-all shadow-md disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                className="paper-btn btn-small btn-danger flex flex-col items-center justify-center shrink-0"
               >
                 {isResolving ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 animate-spin mb-0.5" />
                     <span>Rolling...</span>
                   </>
                 ) : (
                   <>
-                    <Swords className="w-4 h-4" />
+                    <Swords className="w-3.5 h-3.5 mb-0.5" />
                     <span>Spend 1 AP</span>
                   </>
                 )}
@@ -1312,12 +1309,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
 
           {/* Omniscient Interaction Log with Full RNG Beat Telemetry */}
-          <div className="flex-1 overflow-y-auto p-4 min-h-0 space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800 text-xs">
+          <div className="flex-1 overflow-y-auto p-3 min-h-0 space-y-2.5">
+            <div className="flex items-center justify-between pb-2 border-b-2 border-[#41403e]/20 text-xs">
               <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-amber-400" />
-                <h4 className="font-bold text-slate-200">
-                  Omniscient Beat & RNG Telemetry
+                <Activity className="w-4 h-4 text-amber-700" />
+                <h4 className="font-bold text-[#41403e] m-0">
+                  Omniscient Beat &amp; RNG Telemetry
                 </h4>
               </div>
 
@@ -1325,7 +1322,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <select
                   value={displayedInteraction?.id ?? ''}
                   onChange={(e) => setSelectedInteractionId(e.target.value)}
-                  className="bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] font-mono text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="bg-[#fffef0] border border-[#41403e] rounded px-2 py-1 text-[11px] font-mono"
                 >
                   {state.interactions.map((ix, idx) => (
                     <option key={ix.id} value={ix.id}>
@@ -1337,21 +1334,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
 
             {displayedInteraction ? (
-              <div>
+              <div className="space-y-2">
                 {displayedInteraction.cardsTransferredToInitiator.length > 0 && (
-                  <div className="p-2.5 mb-3 rounded-lg bg-emerald-950/40 border border-emerald-500/60 flex items-center justify-between text-xs font-mono">
-                    <span className="flex items-center gap-2 text-emerald-200 font-semibold">
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <div className="alert alert-success text-xs font-mono flex items-center justify-between p-2">
+                    <span className="flex items-center gap-1.5 font-bold">
+                      <CheckCircle className="w-4 h-4" />
                       Transferred to {displayedInteraction.initiatorPlayerId}: #
                       {displayedInteraction.cardsTransferredToInitiator.join(', #')}
                     </span>
-                    <span className="text-[10px] text-emerald-300">Non-Depleting Copy</span>
+                    <span className="text-[10px]">Non-Depleting Copy</span>
                   </div>
                 )}
 
                 {displayedInteraction.cardsTransferredToTarget.length > 0 && (
-                  <div className="p-2.5 mb-3 rounded-lg bg-sky-950/40 border border-sky-500/60 flex items-center justify-between text-xs font-mono">
-                    <span className="text-sky-200 font-semibold">
+                  <div className="alert alert-primary text-xs font-mono flex items-center justify-between p-2">
+                    <span className="font-bold">
                       Reciprocal Trade to {displayedInteraction.targetPlayerId}: #
                       {displayedInteraction.cardsTransferredToTarget.join(', #')}
                     </span>
@@ -1376,9 +1373,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="h-44 flex flex-col items-center justify-center text-slate-500 text-xs">
-                <MessageSquare className="w-7 h-7 text-slate-700 mb-2" />
-                <p>No interactions recorded yet. Spend 1 AP above to test resolution math & AI dialogue.</p>
+              <div className="h-44 flex flex-col items-center justify-center text-[#41403e]/60 text-xs">
+                <MessageSquare className="w-7 h-7 opacity-40 mb-2" />
+                <p className="m-0">No interactions recorded yet. Spend 1 AP above to test resolution math &amp; AI dialogue.</p>
               </div>
             )}
           </div>
@@ -1387,82 +1384,76 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {/* ------------------------------------------------------------------ */}
         {/* RIGHT PANE (COLS 9-12): Global Goals, VP & Epistemic Card Matrix    */}
         {/* ------------------------------------------------------------------ */}
-        <aside className="col-span-4 bg-slate-900/40 flex flex-col min-h-0">
-          <div className="grid grid-cols-3 border-b border-slate-800 bg-slate-900/80 text-xs shrink-0">
+        <aside className="col-span-4 bg-[#fffef0] flex flex-col min-h-0">
+          <div className="grid grid-cols-3 border-b-2 border-[#41403e] bg-amber-50/60 text-xs shrink-0 p-1 gap-1">
             <button
               onClick={() => setRightTab('GOALS_VP')}
-              className={`py-3 px-2 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1.5 ${
-                rightTab === 'GOALS_VP'
-                  ? 'border-amber-500 text-amber-300 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'GOALS_VP' ? 'btn-primary' : ''
               }`}
             >
-              <Award className="w-3.5 h-3.5" />
-              All Goals & VP
+              <Award className="w-3.5 h-3.5 inline mr-1" />
+              Goals &amp; VP
             </button>
 
             <button
               onClick={() => setRightTab('GLOBAL_CARDS')}
-              className={`py-3 px-2 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1.5 ${
-                rightTab === 'GLOBAL_CARDS'
-                  ? 'border-amber-500 text-amber-300 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'GLOBAL_CARDS' ? 'btn-primary' : ''
               }`}
             >
-              <Database className="w-3.5 h-3.5" />
-              Global Cards ({Object.keys(state.cards).length})
+              <Database className="w-3.5 h-3.5 inline mr-1" />
+              Cards ({Object.keys(state.cards).length})
             </button>
 
             <button
               onClick={() => setRightTab('ACTING_HAND')}
-              className={`py-3 px-2 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1.5 ${
-                rightTab === 'ACTING_HAND'
-                  ? 'border-amber-500 text-amber-300 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'ACTING_HAND' ? 'btn-primary' : ''
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5" />
-              {actingPlayerId} Hand ({actingOwnedCards.length})
+              <BookOpen className="w-3.5 h-3.5 inline mr-1" />
+              Hand ({actingOwnedCards.length})
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 min-h-0 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 min-h-0 space-y-3">
             {/* TAB 1: GLOBAL VP STANDINGS & ALL GOALS */}
             {rightTab === 'GOALS_VP' && (
-              <div className="space-y-4">
-                <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                  <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2.5 flex justify-between">
-                    <span>Global Victory Points Leaderboard</span>
-                    <span className="text-amber-400">Target: 1500 VP</span>
+              <div className="space-y-3">
+                <div className="card bg-white p-3 rounded border-2 border-[#41403e]">
+                  <div className="text-[11px] font-mono opacity-70 uppercase font-bold mb-2 flex justify-between">
+                    <span>Leaderboard</span>
+                    <span className="text-amber-800">Target: 1500 VP</span>
                   </div>
                   <div className="space-y-1.5">
                     {sortedCharactersByVp.map((char, index) => (
                       <div
                         key={char.playerId}
-                        className={`flex items-center justify-between p-2 rounded-lg text-xs font-mono ${
+                        className={`flex items-center justify-between p-1.5 rounded text-xs font-mono border ${
                           char.playerId === actingPlayerId
-                            ? 'bg-amber-950/40 border border-amber-600/50 text-amber-200 font-bold'
-                            : 'bg-slate-900 text-slate-300'
+                            ? 'bg-amber-100 border-amber-600 font-bold'
+                            : 'bg-[#fffef0] border-[#41403e]/20'
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="w-4 text-center font-bold text-slate-500">
+                          <span className="w-4 text-center font-bold opacity-60">
                             #{index + 1}
                           </span>
                           <span>{char.characterName}</span>
                         </div>
-                        <span className="text-amber-400 font-bold">{char.victoryPoints} VP</span>
+                        <span className="text-amber-800 font-bold">{char.victoryPoints} VP</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-300">
-                      All Scenario Goals (Checking against {actingChar?.characterName})
+                    <span className="font-bold">
+                      All Scenario Goals (Checking {actingChar?.characterName})
                     </span>
-                    <span className="text-[11px] font-mono text-slate-500">
+                    <span className="text-[11px] font-mono opacity-70">
                       {Object.keys(state.goals).length} Total
                     </span>
                   </div>
@@ -1484,35 +1475,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* TAB 2: GLOBAL EPISTEMIC CARD MATRIX */}
             {rightTab === 'GLOBAL_CARDS' && (
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {Object.values(state.cards).map((card) => (
                   <div
                     key={card.id}
-                    className="p-3 rounded-lg bg-slate-950 border border-slate-800 text-xs space-y-2"
+                    className="p-3 rounded card bg-white border-2 border-[#41403e] text-xs space-y-1.5"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[10px] text-slate-400">
+                      <span className="font-mono text-[10px] opacity-70">
                         #{card.id} • {card.tier}
                       </span>
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full border font-mono ${
-                          SECRECY_BADGE_STYLES[card.secrecy]
-                        }`}
+                        className={`badge ${SECRECY_BADGE_STYLES[card.secrecy]}`}
                       >
                         {card.secrecy}
                       </span>
                     </div>
-                    <div className="font-semibold text-slate-100">{card.title}</div>
-                    <p className="text-slate-400 text-[11px] leading-relaxed">
+                    <div className="font-bold text-sm text-[#41403e]">{card.title}</div>
+                    <p className="opacity-80 text-[11px] leading-relaxed m-0">
                       {card.canonicalFact}
                     </p>
-                    <div className="pt-1.5 border-t border-slate-800/80 flex items-center justify-between gap-2 flex-wrap">
+                    <div className="pt-1.5 border-t border-[#41403e]/20 flex items-center justify-between gap-2 flex-wrap">
                       <div className="flex items-center gap-1 flex-wrap">
-                        <span className="text-[10px] font-mono text-slate-500">Known By:</span>
+                        <span className="text-[10px] font-bold opacity-60">Known By:</span>
                         {card.knownByPlayerIds.map((pid) => (
                           <span
                             key={pid}
-                            className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800"
+                            className="badge text-[10px]"
                           >
                             {characterNamesById[pid] ?? pid}
                           </span>
@@ -1522,10 +1511,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         onClick={() =>
                           setTargetedCardId(targetedCardId === card.id ? '' : card.id)
                         }
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                          targetedCardId === card.id
-                            ? 'bg-rose-500 text-white font-bold'
-                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                        className={`paper-btn btn-small ${
+                          targetedCardId === card.id ? 'btn-danger' : ''
                         }`}
                       >
                         {targetedCardId === card.id ? 'Targeted' : 'Target in Console'}
@@ -1538,9 +1525,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
             {/* TAB 3: ACTING PLAYER HAND */}
             {rightTab === 'ACTING_HAND' && actingChar && (
-              <div className="space-y-2.5">
-                <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 font-mono text-[10px] text-slate-400 flex items-center justify-between">
-                  <span className="text-rose-300">
+              <div className="space-y-2">
+                <div className="p-2 rounded bg-white border border-[#41403e]/40 font-mono text-[10px] flex items-center justify-between">
+                  <span className="text-rose-800 font-bold">
                     Guarded:{' '}
                     {
                       actingChar.defensivePolicy.protectedCardIds
@@ -1549,7 +1536,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     }
                     /{MAX_GUARDED_CARDS} max
                   </span>
-                  <span className="text-emerald-300">
+                  <span className="text-emerald-800 font-bold">
                     Shareable: {actingShareableCount} (min {MIN_SHAREABLE_CARDS}, +{actingShareableBonus.toFixed(2)} P_k)
                   </span>
                 </div>
@@ -1592,29 +1579,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* DEEPSEEK API KEY MODAL (Admin Only)                                  */}
       {/* ==================================================================== */}
       {showApiKeyModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl max-w-md w-full p-5 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="card bg-white border-2 border-[#41403e] rounded max-w-md w-full p-5 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-sky-400" />
-                <h3 className="font-bold text-sm text-slate-100">
+                <Sparkles className="w-5 h-5 text-sky-700" />
+                <h3 className="font-bold text-sm text-[#41403e] m-0">
                   DeepSeek API Configuration
                 </h3>
               </div>
               <button
                 onClick={() => setShowApiKeyModal(false)}
-                className="text-slate-500 hover:text-slate-300"
+                className="font-bold text-lg cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs opacity-80 leading-relaxed m-0">
               Active DeepSeek Model:{' '}
               <code
-                className={
-                  testV4Pro ? 'text-fuchsia-300 font-bold' : 'text-sky-400 font-bold'
-                }
+                className="font-mono font-bold text-purple-800"
               >
                 {testV4Pro ? DEEPSEEK_V4_PRO_MODEL : DEEPSEEK_FLASH_MODEL}
               </code>{' '}
@@ -1622,7 +1607,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </p>
 
             <div>
-              <label className="text-[10px] uppercase tracking-wider text-slate-400 font-mono block mb-1">
+              <label className="text-[10px] uppercase font-bold opacity-70 block mb-1">
                 DeepSeek API Key:
               </label>
               <input
@@ -1630,7 +1615,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 value={apiKeyInput}
                 onChange={(e) => setApiKeyInput(e.target.value)}
                 placeholder="sk-..."
-                className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs font-mono text-slate-200 focus:outline-none focus:border-sky-500"
+                className="w-full bg-[#fffef0] border-2 border-[#41403e] rounded px-3 py-1.5 text-xs font-mono"
               />
             </div>
 
@@ -1641,7 +1626,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   setApiKeyInput(HARDCODED_DEEPSEEK_API_KEY);
                   setShowApiKeyModal(false);
                 }}
-                className="px-3 py-1.5 text-xs rounded text-slate-400 hover:text-slate-200"
+                className="paper-btn btn-small"
               >
                 Reset Default
               </button>
@@ -1650,7 +1635,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   setDeepSeekApiKey(apiKeyInput);
                   setShowApiKeyModal(false);
                 }}
-                className="px-4 py-1.5 text-xs font-bold rounded bg-sky-500 hover:bg-sky-400 text-slate-950"
+                className="paper-btn btn-small btn-primary"
               >
                 Save Key
               </button>

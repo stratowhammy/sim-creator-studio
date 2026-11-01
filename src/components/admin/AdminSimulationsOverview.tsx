@@ -254,55 +254,53 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
   };
 
   return (
-    <div className="h-screen w-screen overflow-y-auto bg-base-100 text-base-content font-sans select-text">
+    <div className="min-h-screen w-screen overflow-y-auto bg-[#fffef0] text-[#41403e] font-sans select-text">
       {/* ==================================================================== */}
-      {/* DAISYUI NAVBAR                                                       */}
+      {/* PAPERCSS NAVBAR                                                      */}
       {/* ==================================================================== */}
-      <header className="navbar bg-base-200 border-b border-base-300 sticky top-0 z-30 px-4 sm:px-6 gap-2">
-        <div className="navbar-start gap-2">
-          <div className="w-8 h-8 rounded-lg bg-warning/20 text-warning flex items-center justify-center font-bold">
-            <Terminal className="w-4 h-4" />
+      <header className="paper sticky top-0 z-30 px-4 sm:px-6 py-3 border-b-2 border-[#41403e] bg-[#fffef0]/95 backdrop-blur-sm flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg border-2 border-[#41403e] bg-amber-100 flex items-center justify-center font-bold">
+            <Terminal className="w-4 h-4 text-[#41403e]" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm font-bold">Admin Overview</h1>
-              <span className="badge badge-sm badge-warning badge-outline">All Games</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-base font-bold m-0">Admin Overview</h1>
+            <span className="badge warning">All Games</span>
           </div>
         </div>
 
-        <div className="navbar-end gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {/* TEST V4 PRO TOGGLE */}
           <button
             type="button"
             onClick={() => onToggleTestV4Pro(!testV4Pro)}
-            className={`btn btn-sm ${testV4Pro ? 'btn-secondary' : 'btn-outline'}`}
+            className={`paper-btn btn-small ${testV4Pro ? 'btn-secondary' : ''}`}
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 inline mr-1" />
             <span>Test V4 Pro: {testV4Pro ? 'ON' : 'OFF'}</span>
           </button>
 
           <button
             onClick={onOpenStudio}
-            className="btn btn-sm btn-ghost gap-1"
+            className="paper-btn btn-small"
           >
-            <Layers className="w-3.5 h-3.5" />
+            <Layers className="w-3.5 h-3.5 inline mr-1" />
             Studio
           </button>
 
           <button
             onClick={onOpenProfile}
-            className="btn btn-sm btn-ghost gap-1"
+            className="paper-btn btn-small"
           >
-            <User className="w-3.5 h-3.5" />
+            <User className="w-3.5 h-3.5 inline mr-1" />
             Profile ({currentUser.simsBalance ?? 0} Sims)
           </button>
 
           <button
             onClick={onSignOut}
-            className="btn btn-sm btn-outline btn-error gap-1"
+            className="paper-btn btn-small btn-danger"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-3.5 h-3.5 inline mr-1" />
             Sign Out
           </button>
         </div>
@@ -312,25 +310,25 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
         {/* ================================================================== */}
         {/* QUICK STATS BAR                                                    */}
         {/* ================================================================== */}
-        <section className="stats shadow bg-base-200 border border-base-300 w-full grid grid-cols-2 md:grid-cols-4">
-          <div className="stat py-3 place-items-center">
-            <div className="stat-title text-xs">Active Games</div>
-            <div className="stat-value text-xl text-success">{activeSims.length}</div>
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
+            <div className="text-xs uppercase opacity-70 font-semibold">Active Games</div>
+            <div className="text-2xl font-bold text-emerald-700">{activeSims.length}</div>
           </div>
 
-          <div className="stat py-3 place-items-center">
-            <div className="stat-title text-xs">Library Games</div>
-            <div className="stat-value text-xl text-warning">{publishedCollectionSims.length}</div>
+          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
+            <div className="text-xs uppercase opacity-70 font-semibold">Library Games</div>
+            <div className="text-2xl font-bold text-amber-700">{publishedCollectionSims.length}</div>
           </div>
 
-          <div className="stat py-3 place-items-center">
-            <div className="stat-title text-xs">Players Online</div>
-            <div className="stat-value text-xl text-info">{platformStats.onlineCount}</div>
+          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
+            <div className="text-xs uppercase opacity-70 font-semibold">Players Online</div>
+            <div className="text-2xl font-bold text-sky-700">{platformStats.onlineCount}</div>
           </div>
 
-          <div className="stat py-3 place-items-center">
-            <div className="stat-title text-xs">AI Model</div>
-            <div className="stat-value text-xs font-mono pt-1 text-primary">
+          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
+            <div className="text-xs uppercase opacity-70 font-semibold">AI Model</div>
+            <div className="text-lg font-mono font-bold pt-1 text-purple-700">
               {testV4Pro ? 'v4-pro' : 'flash'}
             </div>
           </div>
@@ -339,38 +337,38 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
         {/* ================================================================== */}
         {/* TABS                                                               */}
         {/* ================================================================== */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-3">
-          <div className="join">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#41403e] pb-3">
+          <div className="flex gap-2 flex-wrap">
             <button
               type="button"
               onClick={() => setActiveTab('SIMULATIONS')}
-              className={`btn btn-sm join-item ${activeTab === 'SIMULATIONS' ? 'btn-primary' : 'btn-ghost'}`}
+              className={`paper-btn btn-small ${activeTab === 'SIMULATIONS' ? 'btn-primary' : ''}`}
             >
-              <Activity className="w-3.5 h-3.5" />
+              <Activity className="w-3.5 h-3.5 inline mr-1" />
               Games ({activeSims.length})
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('ECONOMY_VOICES')}
-              className={`btn btn-sm join-item ${activeTab === 'ECONOMY_VOICES' ? 'btn-primary' : 'btn-ghost'}`}
+              className={`paper-btn btn-small ${activeTab === 'ECONOMY_VOICES' ? 'btn-primary' : ''}`}
             >
-              <Coins className="w-3.5 h-3.5" />
+              <Coins className="w-3.5 h-3.5 inline mr-1" />
               Credits &amp; Voices
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab('ROLES')}
-              className={`btn btn-sm join-item ${activeTab === 'ROLES' ? 'btn-primary' : 'btn-ghost'}`}
+              className={`paper-btn btn-small ${activeTab === 'ROLES' ? 'btn-primary' : ''}`}
             >
-              <ShieldCheck className="w-3.5 h-3.5" />
+              <ShieldCheck className="w-3.5 h-3.5 inline mr-1" />
               User Roles ({users.length})
             </button>
           </div>
 
           {activeTab === 'SIMULATIONS' && (
-            <div className="join">
+            <div className="flex gap-1.5 flex-wrap">
               {(
                 [
                   { id: 'ACTIVE', label: `Active (${activeSims.length})` },
@@ -382,7 +380,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                   key={f.id}
                   type="button"
                   onClick={() => setSimFilter(f.id)}
-                  className={`btn btn-xs join-item ${simFilter === f.id ? 'btn-neutral' : 'btn-ghost'}`}
+                  className={`paper-btn btn-small ${simFilter === f.id ? 'btn-secondary' : ''}`}
                 >
                   {f.label}
                 </button>
@@ -397,19 +395,19 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
         {activeTab === 'SIMULATIONS' && (
           <section className="space-y-4 pb-10">
             <div className="flex items-center justify-between">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#41403e]/70">
                 Click into any running game below to open its single-game{' '}
-                <strong className="text-amber-300">Admin Dashboard</strong> (live AP testing, exact Player Dashboard preview, server stats, and RAG partition inspector).
+                <strong className="text-amber-800">Admin Dashboard</strong> (live AP testing, exact Player Dashboard preview, server stats, and RAG partition inspector).
               </p>
             </div>
 
             {displayedSims.length === 0 ? (
-              <div className="card bg-base-200 border border-base-300 p-8 text-center space-y-2">
+              <div className="card bg-white border-2 border-[#41403e] p-8 text-center space-y-2">
                 <Database className="w-8 h-8 opacity-40 mx-auto" />
                 <div className="text-sm font-bold">
                   No games found
                 </div>
-                <p className="text-xs text-base-content/60">
+                <p className="text-xs text-[#41403e]/60">
                   Switch the filter above or create a new game in Studio.
                 </p>
               </div>
@@ -438,7 +436,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           onSelectGameAdmin(sim.id);
                         }
                       }}
-                      className="card bg-base-200 border border-base-300 hover:border-warning/70 p-5 transition-all shadow cursor-pointer flex flex-col justify-between space-y-3"
+                      className="card bg-white border-2 border-[#41403e] hover:shadow-lg p-5 transition-all shadow cursor-pointer flex flex-col justify-between space-y-3"
                     >
                       <div className="space-y-3">
                         {/* Card Top Meta Row */}
@@ -446,72 +444,72 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           <div className="space-y-1">
                             <div className="flex items-center gap-1.5 flex-wrap">
                               {sim.status !== 'COMPLETED' ? (
-                                <span className="badge badge-sm badge-success gap-1">
+                                <span className="badge success gap-1">
                                   Active
                                 </span>
                               ) : (
-                                <span className="badge badge-sm badge-ghost gap-1">
+                                <span className="badge gap-1">
                                   Completed
                                 </span>
                               )}
 
                               {sim.voiceStyle && (
-                                <span className="badge badge-sm badge-secondary badge-outline">
+                                <span className="badge secondary">
                                   {sim.voiceStyle.name}
                                 </span>
                               )}
 
                               {onlinePlayers.length > 0 && (
-                                <span className="badge badge-sm badge-info badge-outline gap-1">
-                                  <Eye className="w-3 h-3" />
+                                <span className="badge info gap-1">
+                                  <Eye className="w-3 h-3 inline mr-0.5" />
                                   {onlinePlayers.length} Online
                                 </span>
                               )}
                             </div>
 
-                            <h2 className="text-base font-bold text-base-content mt-1">
+                            <h2 className="text-base font-bold text-[#41403e] mt-1">
                               {sim.title}
                             </h2>
                           </div>
 
-                          <div className="badge badge-ghost font-mono text-xs py-2">
+                          <div className="badge font-mono text-xs py-1">
                             Turn {sim.currentTurnOrTick}
                           </div>
                         </div>
 
-                        <p className="text-xs text-base-content/70 line-clamp-2">
+                        <p className="text-xs text-[#41403e]/80 line-clamp-2">
                           {sim.masterNarrative}
                         </p>
 
                         {/* Metric stats */}
                         <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                          <div className="p-2 rounded bg-base-100 border border-base-300">
+                          <div className="p-2 rounded border border-[#41403e]/30 bg-[#fffef0]">
                             <div className="text-[10px] opacity-60">Clues</div>
-                            <div className="font-bold text-primary">{cardsList.length}</div>
+                            <div className="font-bold text-sky-800">{cardsList.length}</div>
                           </div>
-                          <div className="p-2 rounded bg-base-100 border border-base-300">
+                          <div className="p-2 rounded border border-[#41403e]/30 bg-[#fffef0]">
                             <div className="text-[10px] opacity-60">Goals Solved</div>
-                            <div className="font-bold text-success">{solvedGoalsCount} / {goalsList.length}</div>
+                            <div className="font-bold text-emerald-800">{solvedGoalsCount} / {goalsList.length}</div>
                           </div>
-                          <div className="p-2 rounded bg-base-100 border border-base-300">
+                          <div className="p-2 rounded border border-[#41403e]/30 bg-[#fffef0]">
                             <div className="text-[10px] opacity-60">Actions</div>
-                            <div className="font-bold text-warning">{sim.interactions.length}</div>
+                            <div className="font-bold text-amber-800">{sim.interactions.length}</div>
                           </div>
                         </div>
 
                         {/* Characters mini table */}
-                        <div className="p-2.5 rounded-lg bg-base-100 border border-base-300 space-y-1.5">
-                          <div className="text-[10px] opacity-60 font-semibold uppercase">
+                        <div className="p-2.5 rounded border border-[#41403e]/30 bg-[#fffef0] space-y-1.5">
+                          <div className="text-[10px] opacity-70 font-bold uppercase">
                             Characters ({chars.length})
                           </div>
                           <div className="grid grid-cols-2 gap-1.5 text-xs">
                             {chars.map((c) => (
                               <div
                                 key={c.playerId}
-                                className="flex items-center justify-between p-1.5 rounded bg-base-200"
+                                className="flex items-center justify-between p-1.5 rounded bg-white border border-[#41403e]/20"
                               >
                                 <span className="font-medium truncate">{c.characterName}</span>
-                                <span className="badge badge-xs badge-warning font-mono font-bold">
+                                <span className="badge warning font-mono font-bold text-[10px]">
                                   {c.victoryPoints} VP
                                 </span>
                               </div>
@@ -521,13 +519,13 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       </div>
 
                       {/* Footer */}
-                      <div className="pt-2 border-t border-base-300 flex items-center justify-between text-xs">
-                        <span className="text-base-content/60 text-[11px]">
+                      <div className="pt-2 border-t border-[#41403e]/20 flex items-center justify-between text-xs">
+                        <span className="text-[#41403e]/60 text-[11px]">
                           Click to manage game
                         </span>
-                        <span className="btn btn-warning btn-xs gap-1">
+                        <span className="paper-btn btn-small btn-warning">
                           Manage Game
-                          <ArrowRight className="w-3 h-3" />
+                          <ArrowRight className="w-3 h-3 inline ml-1" />
                         </span>
                       </div>
                     </div>
@@ -545,17 +543,15 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
           <section className="space-y-6 pb-10">
             {economyFeedback && (
               <div
-                className={`p-3.5 rounded-xl border text-xs flex items-center justify-between ${
-                  economyFeedback.type === 'ok'
-                    ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-200'
-                    : 'bg-rose-950/40 border-rose-500/50 text-rose-200'
-                }`}
+                className={`alert ${
+                  economyFeedback.type === 'ok' ? 'alert-success' : 'alert-danger'
+                } text-xs flex items-center justify-between`}
               >
                 <span>{economyFeedback.message}</span>
                 <button
                   type="button"
                   onClick={() => setEconomyFeedback(null)}
-                  className="text-slate-400 hover:text-white ml-4"
+                  className="font-bold ml-4 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -564,14 +560,14 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
               {/* Left: Gift Sims */}
-              <div className="lg:col-span-5 card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+              <div className="lg:col-span-5 card bg-white border-2 border-[#41403e] p-4 shadow space-y-3">
                 <div className="flex items-center gap-2">
-                  <Gift className="w-5 h-5 text-warning" />
+                  <Gift className="w-5 h-5 text-amber-600" />
                   <div>
-                    <h2 className="text-sm font-bold">
+                    <h2 className="text-sm font-bold m-0">
                       Gift Sims Credits
                     </h2>
-                    <p className="text-xs text-base-content/70">
+                    <p className="text-xs text-[#41403e]/70 m-0">
                       Send Sims to any user account.
                     </p>
                   </div>
@@ -579,13 +575,13 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
 
                 <div className="space-y-3 text-xs">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold">
+                    <label className="text-xs font-semibold block">
                       Player
                     </label>
                     <select
                       value={giftRecipientId}
                       onChange={(e) => setGiftRecipientId(e.target.value)}
-                      className="select select-bordered select-sm w-full bg-base-100"
+                      className="w-full bg-[#fffef0] border-2 border-[#41403e] rounded p-1.5 text-xs"
                     >
                       {users.map((u) => (
                         <option key={u.id} value={u.id}>
@@ -596,7 +592,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold">
+                    <label className="text-xs font-semibold block">
                       Amount
                     </label>
                     <div className="flex items-center gap-1.5 mb-2 flex-wrap">
@@ -605,10 +601,8 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           key={preset}
                           type="button"
                           onClick={() => setGiftAmount(preset)}
-                          className={`btn btn-xs ${
-                            giftAmount === preset
-                              ? 'btn-warning'
-                              : 'btn-outline border-base-300'
+                          className={`paper-btn btn-small ${
+                            giftAmount === preset ? 'btn-warning' : ''
                           }`}
                         >
                           +{preset}
@@ -621,12 +615,12 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       step={1}
                       value={giftAmount}
                       onChange={(e) => setGiftAmount(Number(e.target.value))}
-                      className="input input-bordered input-sm w-full bg-base-100 font-mono"
+                      className="w-full bg-[#fffef0] border-2 border-[#41403e] rounded p-1.5 text-xs font-mono"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold">
+                    <label className="text-xs font-semibold block">
                       Note (Optional)
                     </label>
                     <input
@@ -634,7 +628,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       value={giftNote}
                       onChange={(e) => setGiftNote(e.target.value)}
                       placeholder="e.g. Reward for new game creation"
-                      className="input input-bordered input-sm w-full bg-base-100"
+                      className="w-full bg-[#fffef0] border-2 border-[#41403e] rounded p-1.5 text-xs"
                     />
                   </div>
 
@@ -643,29 +637,29 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                     onClick={() =>
                       handleGiftSims(giftRecipientId, giftAmount, giftNote, false)
                     }
-                    className="btn btn-warning btn-sm w-full gap-1"
+                    className="paper-btn btn-warning w-full"
                   >
-                    <Gift className="w-4 h-4" />
+                    <Gift className="w-4 h-4 inline mr-1" />
                     Send +{giftAmount} Sims
                   </button>
                 </div>
 
                 {/* Balances Mini-List */}
-                <div className="pt-2 border-t border-base-300 space-y-1.5">
-                  <div className="text-[11px] font-semibold text-base-content/60">
+                <div className="pt-2 border-t border-[#41403e]/20 space-y-1.5">
+                  <div className="text-[11px] font-bold text-[#41403e]/70">
                     User Balances
                   </div>
                   <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
                     {users.map((u) => (
                       <div
                         key={u.id}
-                        className="card bg-base-100 border border-base-300 p-2 flex flex-row items-center justify-between text-xs"
+                        className="bg-[#fffef0] border border-[#41403e]/30 rounded p-2 flex items-center justify-between text-xs"
                       >
                         <div>
                           <span className="font-semibold">{u.displayName}</span>{' '}
                           <span className="opacity-60 text-[10px]">@{u.username}</span>
                         </div>
-                        <span className="font-mono font-bold text-warning">
+                        <span className="font-mono font-bold text-amber-700">
                           {u.simsBalance ?? 0} Sims
                         </span>
                       </div>
@@ -675,14 +669,14 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
               </div>
 
               {/* Right: Add New Speech Style */}
-              <div className="lg:col-span-7 card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+              <div className="lg:col-span-7 card bg-white border-2 border-[#41403e] p-4 shadow space-y-3">
                 <div className="flex items-center gap-2">
-                  <Mic className="w-5 h-5 text-secondary" />
+                  <Mic className="w-5 h-5 text-purple-700" />
                   <div>
-                    <h2 className="text-sm font-bold">
+                    <h2 className="text-sm font-bold m-0">
                       Story Voices ({voices.length})
                     </h2>
-                    <p className="text-xs text-base-content/70">
+                    <p className="text-xs text-[#41403e]/70 m-0">
                       Available voice styles for games.
                     </p>
                   </div>
@@ -690,9 +684,9 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
 
                 <form
                   onSubmit={handleAddSpeechStyle}
-                  className="card bg-base-100 border border-base-300 p-3 space-y-2 text-xs"
+                  className="paper bg-[#fffef0] border-2 border-[#41403e] p-3 space-y-2 text-xs"
                 >
-                  <div className="text-xs font-bold text-secondary flex items-center gap-1">
+                  <div className="text-xs font-bold text-purple-800 flex items-center gap-1">
                     <Plus className="w-3.5 h-3.5" />
                     Add New Voice Style
                   </div>
@@ -702,14 +696,14 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       value={newVoiceName}
                       onChange={(e) => setNewVoiceName(e.target.value)}
                       placeholder="Voice Name (e.g. Gritty Noir)"
-                      className="input input-bordered input-sm bg-base-200"
+                      className="bg-white border-2 border-[#41403e] rounded p-1.5 text-xs"
                     />
                     <input
                       type="text"
                       value={newVoiceGenre}
                       onChange={(e) => setNewVoiceGenre(e.target.value)}
                       placeholder="Genre (e.g. Mystery)"
-                      className="input input-bordered input-sm bg-base-200"
+                      className="bg-white border-2 border-[#41403e] rounded p-1.5 text-xs"
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -718,14 +712,14 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       value={newVoiceAuthor}
                       onChange={(e) => setNewVoiceAuthor(e.target.value)}
                       placeholder="Author (e.g. Raymond Chandler)"
-                      className="input input-bordered input-sm bg-base-200"
+                      className="bg-white border-2 border-[#41403e] rounded p-1.5 text-xs"
                     />
                     <input
                       type="text"
                       value={newVoiceTagline}
                       onChange={(e) => setNewVoiceTagline(e.target.value)}
                       placeholder="Short description"
-                      className="input input-bordered input-sm bg-base-200"
+                      className="bg-white border-2 border-[#41403e] rounded p-1.5 text-xs"
                     />
                   </div>
                   <textarea
@@ -733,7 +727,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                     onChange={(e) => setNewVoiceDirective(e.target.value)}
                     rows={2}
                     placeholder="Instructions for how characters should speak..."
-                    className="textarea textarea-bordered bg-base-200 text-xs resize-none"
+                    className="bg-white border-2 border-[#41403e] rounded p-1.5 text-xs resize-none w-full"
                   />
                   <div className="flex flex-col sm:flex-row gap-2">
                     <input
@@ -741,13 +735,13 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                       value={newVoiceSample}
                       onChange={(e) => setNewVoiceSample(e.target.value)}
                       placeholder="Sample spoken sentence..."
-                      className="input input-bordered input-sm bg-base-200 flex-1"
+                      className="bg-white border-2 border-[#41403e] rounded p-1.5 text-xs flex-1"
                     />
                     <button
                       type="submit"
-                      className="btn btn-primary btn-sm gap-1"
+                      className="paper-btn btn-primary btn-small"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-3.5 h-3.5 inline mr-1" />
                       Add Voice
                     </button>
                   </div>
@@ -758,20 +752,20 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                   {voices.map((v) => (
                     <div
                       key={v.id}
-                      className="card bg-base-100 border border-base-300 p-3 space-y-1"
+                      className="card bg-[#fffef0] border border-[#41403e]/40 p-3 space-y-1"
                     >
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-bold">{v.name}</span>
                         {v.authorInspiration && (
-                          <span className="badge badge-xs badge-ghost">
+                          <span className="badge text-[10px]">
                             {v.authorInspiration}
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-base-content/80">
+                      <p className="text-[11px] text-[#41403e]/80 m-0">
                         {v.tagline}
                       </p>
-                      <p className="text-[10px] italic text-base-content/60 line-clamp-1">
+                      <p className="text-[10px] italic text-[#41403e]/60 line-clamp-1 m-0">
                         {v.sampleLine}
                       </p>
                     </div>
@@ -799,17 +793,17 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                 return (
                   <div
                     key={roleKey}
-                    className="card bg-base-200 border border-base-300 p-3 space-y-1 shadow-sm"
+                    className="card bg-white border-2 border-[#41403e] p-3 space-y-1 shadow-sm"
                   >
                     <div className="flex items-center justify-between">
-                      <span className={`badge badge-sm ${info.badgeClass}`}>
+                      <span className={`badge ${info.badgeClass}`}>
                         {info.label}
                       </span>
-                      <span className="text-xs font-mono opacity-60">
+                      <span className="text-xs font-mono opacity-70 font-semibold">
                         {users.filter((u) => u.accountRole === roleKey).length} users
                       </span>
                     </div>
-                    <p className="text-[11px] opacity-70">
+                    <p className="text-[11px] opacity-80 m-0">
                       {info.description}
                     </p>
                   </div>
@@ -819,15 +813,15 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
 
             {roleFeedback && (
               <div
-                className={`alert text-xs py-2 ${
-                  roleFeedback.type === 'ok' ? 'alert-success' : 'alert-error'
-                }`}
+                className={`alert ${
+                  roleFeedback.type === 'ok' ? 'alert-success' : 'alert-danger'
+                } text-xs flex items-center justify-between`}
               >
                 <span>{roleFeedback.message}</span>
                 <button
                   type="button"
                   onClick={() => setRoleFeedback(null)}
-                  className="btn btn-ghost btn-xs btn-circle"
+                  className="font-bold ml-4 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -835,9 +829,9 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
             )}
 
             {/* Table */}
-            <div className="card bg-base-200 border border-base-300 overflow-hidden shadow">
+            <div className="card bg-white border-2 border-[#41403e] overflow-hidden shadow p-3">
               <div className="overflow-x-auto">
-                <table className="table table-zebra w-full text-xs">
+                <table className="table-hover table-alternating w-full text-xs">
                   <thead>
                     <tr className="text-[11px] uppercase opacity-70">
                       <th>User</th>
@@ -866,7 +860,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           <td>
                             <div className="flex items-center gap-2">
                               <div
-                                className={`w-7 h-7 rounded-lg bg-gradient-to-br ${u.avatarColor} flex items-center justify-center text-white font-bold text-xs shrink-0`}
+                                className={`w-7 h-7 rounded border border-[#41403e] bg-gradient-to-br ${u.avatarColor} flex items-center justify-center text-white font-bold text-xs shrink-0`}
                               >
                                 {u.displayName.slice(0, 2).toUpperCase()}
                               </div>
@@ -881,7 +875,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
 
                           <td>
                             <div className="flex items-center gap-2">
-                              <span className="font-mono font-bold text-warning">
+                              <span className="font-mono font-bold text-amber-700">
                                 {u.simsBalance ?? 0} Sims
                               </span>
                               <button
@@ -894,7 +888,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                     true
                                   )
                                 }
-                                className="btn btn-warning btn-xs"
+                                className="paper-btn btn-warning btn-small"
                               >
                                 +50
                               </button>
@@ -902,7 +896,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                           </td>
 
                           <td>
-                            <span className={`badge badge-xs ${currentInfo.badgeClass}`}>
+                            <span className={`badge ${currentInfo.badgeClass}`}>
                               {currentInfo.label}
                             </span>
                           </td>
@@ -916,7 +910,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                   [u.id]: e.target.value as AccountRole,
                                 }))
                               }
-                              className="select select-bordered select-xs bg-base-100"
+                              className="bg-[#fffef0] border border-[#41403e] rounded p-1 text-xs"
                             >
                               <option value="PLAYER">Player Only</option>
                               <option value="STUDIO_CREATOR">Studio Creator</option>
@@ -935,7 +929,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                     [u.id]: e.target.value,
                                   }))
                                 }
-                                className="select select-bordered select-xs bg-base-100 max-w-xs"
+                                className="bg-[#fffef0] border border-[#41403e] rounded p-1 text-xs max-w-xs"
                               >
                                 {simList.map((sim) => (
                                   <option key={sim.id} value={sim.id}>
@@ -944,7 +938,7 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                                 ))}
                               </select>
                             ) : (
-                              <span className="text-[11px] opacity-50 italic">
+                              <span className="text-[11px] opacity-60 italic">
                                 {effectiveRole === 'ADMIN' ? 'All games' : '—'}
                               </span>
                             )}
@@ -955,8 +949,8 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
                               type="button"
                               onClick={() => handleSaveUserRole(u)}
                               disabled={!hasUnsavedChange}
-                              className={`btn btn-xs ${
-                                hasUnsavedChange ? 'btn-primary' : 'btn-disabled'
+                              className={`paper-btn btn-small ${
+                                hasUnsavedChange ? 'btn-primary' : 'disabled opacity-50'
                               }`}
                             >
                               Save

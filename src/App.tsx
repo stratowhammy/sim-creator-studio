@@ -527,7 +527,7 @@ export const App: React.FC = () => {
       simulations[standaloneRoute.simulationId] ??
       Object.values(simulations)[0];
     return (
-      <div className="w-screen h-screen overflow-hidden bg-slate-950 select-none">
+      <div className="w-screen h-screen overflow-hidden bg-[#fffef0] text-[#41403e] select-none">
         <PlayerDashboard
           state={standaloneSim}
           playerId={standaloneRoute.playerId}
@@ -577,7 +577,7 @@ export const App: React.FC = () => {
     const activeSim =
       simulations[activeView.simulationId] ?? Object.values(simulations)[0];
     return (
-      <div className="w-screen h-screen overflow-hidden bg-slate-950 select-none">
+      <div className="w-screen h-screen overflow-hidden bg-[#fffef0] text-[#41403e] select-none">
         <PlayerDashboard
           state={activeSim}
           playerId={activeView.playerId}
@@ -634,7 +634,7 @@ export const App: React.FC = () => {
 
     if (activeView.previewPlayerId) {
       return (
-        <div className="w-screen h-screen overflow-hidden bg-slate-950 select-none">
+        <div className="w-screen h-screen overflow-hidden bg-[#fffef0] text-[#41403e] select-none">
           <PlayerDashboard
             state={adminSim}
             playerId={activeView.previewPlayerId}
@@ -654,7 +654,7 @@ export const App: React.FC = () => {
     }
 
     return (
-      <div className="w-screen h-screen overflow-hidden bg-slate-950 select-none">
+      <div className="w-screen h-screen overflow-hidden bg-[#fffef0] text-[#41403e] select-none">
         <AdminDashboard
           state={adminSim}
           simulations={isGlobalAdmin ? simulations : undefined}
@@ -705,7 +705,7 @@ export const App: React.FC = () => {
       simulations[activeView.simulationId] ?? Object.values(simulations)[0];
 
     return (
-      <div className="w-screen h-screen overflow-hidden bg-slate-950">
+      <div className="w-screen h-screen overflow-hidden bg-[#fffef0] text-[#41403e]">
         <AuthoringStudio
           simulationState={studioSim}
           simulations={simulations}

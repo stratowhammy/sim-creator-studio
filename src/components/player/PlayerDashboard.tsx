@@ -1131,7 +1131,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
   if (!activeChar) {
     return (
-      <div className="h-screen flex items-center justify-center bg-slate-950 text-slate-300 text-sm">
+      <div className="h-screen flex items-center justify-center bg-[#fffef0] text-[#41403e] text-sm">
         Character profile not found.
       </div>
     );
@@ -1156,36 +1156,36 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
     return (
       <div
         key={ix.id}
-        className="rounded-xl bg-slate-900/60 border border-slate-800/90 p-3.5 space-y-2.5"
+        className="card bg-[#fffef0] border-2 border-[#41403e] p-3 space-y-2"
       >
-        <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-800/80 text-xs">
+        <div className="flex items-center justify-between gap-2 pb-2 border-b border-[#41403e]/20 text-xs">
           <div className="flex items-center gap-2 flex-wrap">
-            <ArrowLeftRight className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-            <span className="font-bold text-slate-100">
+            <ArrowLeftRight className="w-3.5 h-3.5 text-sky-800 shrink-0" />
+            <span className="font-bold text-[#41403e]">
               {youInitiated
                 ? `You → ${otherChar?.characterName ?? otherId}`
                 : `${otherChar?.characterName ?? otherId} → You`}
             </span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-300 text-[10px] font-semibold">
+            <span className="badge text-[10px] font-semibold">
               {PLAYER_APPROACH_DESCRIPTIONS[ix.interactionType].label}
             </span>
             {ix.responseMode && ix.responseMode !== 'AI_AUTOMATED' && (
-              <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-semibold">
+              <span className="badge success text-[10px] font-semibold">
                 Personal Response
               </span>
             )}
           </div>
           {!compactHeader && (
-            <span className="text-[10px] font-mono text-slate-400 shrink-0">
+            <span className="text-[10px] font-mono opacity-70 shrink-0">
               Turn {ix.tickOrTurn}
             </span>
           )}
         </div>
 
         {gainedTitles.length > 0 && (
-          <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/60 flex items-center gap-2 text-xs">
-            <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="font-semibold text-emerald-200">
+          <div className="alert alert-success p-2 text-xs flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 shrink-0" />
+            <span className="font-bold">
               New Intelligence Uncovered: {gainedTitles.join(', ')}
             </span>
           </div>
@@ -1231,16 +1231,16 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
     : null;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-base-100 text-base-content font-sans">
+    <div className="flex flex-col h-screen overflow-hidden bg-[#fffef0] text-[#41403e] font-sans">
       {/* PLAYER NAVBAR */}
-      <header className="navbar bg-base-200 border-b border-base-300 px-4 min-h-14 justify-between z-10 shrink-0 gap-2">
+      <header className="paper sticky top-0 z-10 px-4 py-2 border-b-2 border-[#41403e] bg-[#fffef0]/95 backdrop-blur-sm flex items-center justify-between gap-2 shrink-0 flex-wrap">
         <div className="flex items-center gap-2">
           {onBackToAdmin && (
             <button
               onClick={onBackToAdmin}
-              className="btn btn-ghost btn-sm gap-1"
+              className="paper-btn btn-small"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-3.5 h-3.5 inline mr-1" />
               Admin
             </button>
           )}
@@ -1250,22 +1250,22 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                 removeRoomPresence(state.id, playerId, tabIdRef.current);
                 onBackToProfile();
               }}
-              className="btn btn-ghost btn-sm gap-1"
+              className="paper-btn btn-small"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-3.5 h-3.5 inline mr-1" />
               My Profile
             </button>
           )}
           <div className="flex items-center gap-2">
-            <Radio className="w-3.5 h-3.5 text-success animate-pulse" />
+            <Radio className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
             <span className="font-bold text-sm truncate max-w-xs">
               {state.title}
             </span>
-            <span className="badge badge-xs badge-success">
+            <span className="badge success text-xs">
               In Room
             </span>
             {state.voiceStyle && (
-              <span className="badge badge-xs badge-secondary badge-outline hidden md:inline-flex">
+              <span className="badge secondary text-xs hidden md:inline-flex">
                 {state.voiceStyle.name}
               </span>
             )}
@@ -1273,22 +1273,22 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
         </div>
 
         {/* Character Role Pill */}
-        <div className="badge badge-primary badge-outline py-2.5 px-3 gap-1.5 font-bold text-xs">
-          <User className="w-3.5 h-3.5" />
+        <div className="badge primary py-1 px-3 gap-1.5 font-bold text-xs">
+          <User className="w-3.5 h-3.5 inline mr-1" />
           <span>{activeChar.characterName}</span>
           <span className="opacity-60">•</span>
           <span className="font-normal opacity-90">{activeChar.publicRole}</span>
         </div>
 
         {/* Actions & Status */}
-        <div className="flex items-center gap-2 text-xs">
+        <div className="flex items-center gap-2 text-xs flex-wrap">
           {currentUser && (
             <button
               type="button"
               onClick={() => setShowTransferModal(true)}
-              className="btn btn-outline btn-xs gap-1"
+              className="paper-btn btn-small"
             >
-              <ArrowLeftRight className="w-3 h-3" />
+              <ArrowLeftRight className="w-3 h-3 inline mr-1" />
               <span>Transfer Role</span>
             </button>
           )}
@@ -1302,24 +1302,24 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   : targetChar?.playerId ?? 'ALL'
               )
             }
-            className="btn btn-ghost btn-xs gap-1"
+            className="paper-btn btn-small"
           >
-            <History className="w-3 h-3" />
+            <History className="w-3 h-3 inline mr-1" />
             <span>History</span>
           </button>
 
-          <div className="badge badge-ghost font-mono gap-1">
-            <Clock className="w-3 h-3" />
+          <div className="badge font-mono">
+            <Clock className="w-3 h-3 inline mr-1" />
             Turn {state.currentTurnOrTick}
           </div>
 
-          <div className="badge badge-success badge-outline font-mono gap-1">
-            <Zap className="w-3 h-3" />
+          <div className="badge success font-mono">
+            <Zap className="w-3 h-3 inline mr-1" />
             {activeChar.actionPoints} AP
           </div>
 
-          <div className="badge badge-warning badge-outline font-mono gap-1">
-            <Award className="w-3 h-3" />
+          <div className="badge warning font-mono">
+            <Award className="w-3 h-3 inline mr-1" />
             {activeChar.victoryPoints} VP
           </div>
         </div>
@@ -1332,25 +1332,25 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
         {/* ------------------------------------------------------------------ */}
         {/* LEFT PANE (COLS 1-3): Personal Dossier & Private Advisor            */}
         {/* ------------------------------------------------------------------ */}
-        <aside className="col-span-3 border-r border-slate-800 bg-slate-900/40 flex flex-col min-h-0">
-          <div className="p-3.5 border-b border-slate-800 bg-slate-900/70 shrink-0 space-y-2">
+        <aside className="col-span-3 border-r-2 border-[#41403e] bg-[#fffef0] flex flex-col min-h-0">
+          <div className="p-3 border-b-2 border-[#41403e] bg-amber-50/60 shrink-0 space-y-1.5">
             <div className="flex items-center gap-2">
-              <Brain className="w-4 h-4 text-purple-400" />
-              <h3 className="font-bold text-xs text-slate-200">
-                Personal Dossier & Advisor
+              <Brain className="w-4 h-4 text-purple-700" />
+              <h3 className="font-bold text-xs text-[#41403e] m-0">
+                Personal Dossier &amp; Advisor
               </h3>
             </div>
-            <p className="text-[11px] text-slate-300/90 leading-relaxed italic bg-slate-950/60 p-2.5 rounded-lg border border-slate-800/80">
+            <p className="text-[11px] opacity-80 leading-relaxed italic bg-white p-2.5 rounded border border-[#41403e]/30 m-0">
               "{activeChar.privateNarrativeBio}"
             </p>
           </div>
 
-          <div className="p-2 border-b border-slate-800/80 bg-slate-950/40 flex flex-wrap gap-1.5 shrink-0">
+          <div className="p-1.5 border-b border-[#41403e]/20 bg-amber-50/30 flex flex-wrap gap-1 shrink-0">
             <button
               onClick={() =>
                 handleSendAdvisorQuery('What confidential records do I hold?')
               }
-              className="text-[10px] px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="paper-btn btn-small text-[10px]"
             >
               My Records
             </button>
@@ -1358,7 +1358,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
               onClick={() =>
                 handleSendAdvisorQuery('What do I know about the incident?')
               }
-              className="text-[10px] px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="paper-btn btn-small text-[10px]"
             >
               Incident Details
             </button>
@@ -1366,13 +1366,13 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
               onClick={() =>
                 handleSendAdvisorQuery('What is my primary objective?')
               }
-              className="text-[10px] px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="paper-btn btn-small text-[10px]"
             >
               My Objective
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-3 space-y-3 min-h-0">
+          <div className="flex-1 overflow-y-auto p-3 space-y-2.5 min-h-0">
             {(advisorMessages[playerId] || []).map((msg) => (
               <div
                 key={msg.id}
@@ -1380,7 +1380,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   msg.sender === 'user' ? 'items-end' : 'items-start'
                 }`}
               >
-                <div className="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
+                <div className="flex items-center gap-1 text-[10px] opacity-60 mb-1">
                   <span>
                     {msg.sender === 'user' ? 'You' : 'Private Advisor'}
                   </span>
@@ -1388,22 +1388,22 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   <span>{msg.timestamp}</span>
                 </div>
                 <div
-                  className={`p-3 rounded-lg max-w-[95%] leading-relaxed ${
+                  className={`p-2.5 rounded max-w-[95%] leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-sky-600 text-white rounded-br-none'
-                      : 'bg-slate-800/90 border border-slate-700 text-slate-200 rounded-bl-none'
+                      ? 'bg-sky-100 border border-sky-400 text-sky-900'
+                      : 'bg-white border-2 border-[#41403e] text-[#41403e]'
                   }`}
                 >
-                  <p className="whitespace-pre-line">{msg.text}</p>
+                  <p className="whitespace-pre-line m-0">{msg.text}</p>
                   {msg.citedCardTitles && msg.citedCardTitles.length > 0 && (
-                    <div className="mt-2 pt-1.5 border-t border-slate-700/60 flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[10px] text-slate-400">
+                    <div className="mt-2 pt-1.5 border-t border-[#41403e]/20 flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[10px] font-bold opacity-60">
                         Sources:
                       </span>
                       {msg.citedCardTitles.map((title) => (
                         <span
                           key={title}
-                          className="text-[10px] px-1.5 py-0.5 rounded bg-purple-950/80 text-purple-200 border border-purple-800/60"
+                          className="badge secondary text-[10px]"
                         >
                           {title}
                         </span>
@@ -1415,7 +1415,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
             ))}
           </div>
 
-          <div className="p-2.5 border-t border-slate-800 bg-slate-900/60 shrink-0">
+          <div className="p-2 border-t-2 border-[#41403e] bg-amber-50/50 shrink-0">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -1428,11 +1428,11 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                 value={advisorQuery}
                 onChange={(e) => setAdvisorQuery(e.target.value)}
                 placeholder="Consult your private advisor..."
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                className="flex-1 bg-white border-2 border-[#41403e] rounded px-2.5 py-1 text-xs"
               />
               <button
                 type="submit"
-                className="p-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition-colors"
+                className="paper-btn btn-primary btn-small"
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
@@ -1443,12 +1443,12 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
         {/* ------------------------------------------------------------------ */}
         {/* CENTER PANE (COLS 4-8): Live Engagement Dialog & Multi-Round Log    */}
         {/* ------------------------------------------------------------------ */}
-        <section className="col-span-5 border-r border-slate-800 flex flex-col min-h-0 bg-slate-950/70">
+        <section className="col-span-5 border-r-2 border-[#41403e] flex flex-col min-h-0 bg-white">
           {/* ACTIVE INCOMING ENGAGEMENT RESPONSE DIALOG (When Focused within 30s) */}
           {focusedIncomingEngagement ? (
             <div
               ref={engagementDialogRef}
-              className="p-4 border-b-2 border-sky-500/70 bg-gradient-to-b from-sky-950/40 to-slate-900/90 shrink-0 space-y-3.5 max-h-[58vh] overflow-y-auto"
+              className="p-3.5 border-b-2 border-[#41403e] bg-amber-50/70 shrink-0 space-y-3 max-h-[58vh] overflow-y-auto"
             >
               {(() => {
                 const initiatorChar =
@@ -1463,13 +1463,13 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   <>
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                        <h3 className="font-bold text-xs text-white">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                        <h3 className="font-bold text-xs text-[#41403e] m-0">
                           Live Conversation with{' '}
                           {initiatorChar?.characterName ??
                             focusedIncomingEngagement.initiatorPlayerId}
                         </h3>
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-semibold">
+                        <span className="badge secondary text-[10px] font-semibold">
                           {
                             PLAYER_APPROACH_DESCRIPTIONS[
                               focusedIncomingEngagement.interactionType
@@ -1479,21 +1479,20 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                       </div>
 
                       {waitingOthers > 0 && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-950/60 text-amber-300 border border-amber-700/50">
+                        <span className="badge warning text-[10px]">
                           {waitingOthers} other{' '}
                           {waitingOthers === 1 ? 'caller' : 'callers'} notified
-                          you will be available momentarily
                         </span>
                       )}
                     </div>
 
                     {/* Engagement Dialog: Initiator's Opening Prompt */}
-                    <div className="rounded-xl bg-slate-950/95 border border-slate-700 p-3.5 space-y-1">
-                      <div className="text-[10px] font-semibold text-sky-300">
+                    <div className="rounded bg-white border-2 border-[#41403e] p-3 space-y-1">
+                      <div className="text-[10px] font-bold text-sky-800">
                         {initiatorChar?.characterName} (
                         {initiatorChar?.publicRole}) says:
                       </div>
-                      <p className="text-xs text-slate-100 leading-relaxed italic">
+                      <p className="text-xs text-[#41403e] leading-relaxed italic m-0">
                         "{focusedIncomingEngagement.initiatorPrompt}"
                       </p>
                     </div>
@@ -1501,11 +1500,11 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                     {/* Option 1: Choose from AI Suggested Responses */}
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-semibold text-slate-200">
+                        <span className="font-bold text-[#41403e]">
                           Suggested Responses (click to select or send):
                         </span>
                         {focusedIncomingEngagement.suggestionsLoading && (
-                          <span className="flex items-center gap-1 text-[10px] text-sky-400">
+                          <span className="flex items-center gap-1 text-[10px] text-sky-800">
                             <Loader2 className="w-3 h-3 animate-spin" />
                             Tailoring options...
                           </span>
@@ -1523,14 +1522,14 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                                   setSelectedSuggestionId(sug.id);
                                   setCustomResponseText(sug.responseText);
                                 }}
-                                className={`cursor-pointer rounded-xl border p-2.5 text-xs transition-all ${
+                                className={`cursor-pointer rounded border-2 border-[#41403e] p-2 text-xs transition-all ${
                                   isPicked
-                                    ? 'bg-sky-950/60 border-sky-400 text-white ring-1 ring-sky-400/40'
-                                    : 'bg-slate-950/75 border-slate-800 hover:border-slate-600 text-slate-300'
+                                    ? 'bg-amber-100 border-amber-700 ring-2 ring-amber-700'
+                                    : 'bg-white hover:bg-amber-50'
                                 }`}
                               >
                                 <div className="flex items-center justify-between gap-2 mb-1">
-                                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-300">
+                                  <span className="badge text-[10px] font-bold uppercase">
                                     {sug.stanceLabel}
                                   </span>
                                   <button
@@ -1540,12 +1539,12 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                                       e.stopPropagation();
                                       handleSubmitFocusedResponse(sug);
                                     }}
-                                    className="px-2 py-0.5 rounded bg-sky-500/20 hover:bg-sky-500 hover:text-slate-950 text-sky-300 text-[10px] font-bold transition-colors disabled:opacity-40"
+                                    className="paper-btn btn-small btn-primary"
                                   >
                                     Send Option →
                                   </button>
                                 </div>
-                                <p className="text-[11px] leading-relaxed">
+                                <p className="text-[11px] leading-relaxed m-0 opacity-90">
                                   "{sug.responseText}"
                                 </p>
                               </div>
@@ -1556,8 +1555,8 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                     </div>
 
                     {/* Option 2: Direct Custom Response Box */}
-                    <div className="space-y-1.5 pt-1 border-t border-slate-800/80">
-                      <label className="block text-[11px] font-semibold text-slate-200">
+                    <div className="space-y-1.5 pt-1 border-t border-[#41403e]/20">
+                      <label className="block text-[11px] font-bold text-[#41403e]">
                         Or Type Your Direct Response:
                       </label>
                       <textarea
@@ -1566,8 +1565,8 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                         onChange={(e) => {
                           setCustomResponseText(e.target.value);
                         }}
-                        placeholder={`Reply directly as ${activeChar.characterName} (AI will adapt phrasing & details as needed to preserve simulation integrity)...`}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 resize-none"
+                        placeholder={`Reply directly as ${activeChar.characterName}...`}
+                        className="w-full bg-[#fffef0] border-2 border-[#41403e] rounded p-2 text-xs resize-none"
                       />
 
                       <div className="flex items-center justify-between gap-2 pt-1">
@@ -1575,9 +1574,9 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                           type="button"
                           disabled={isSubmittingResponse}
                           onClick={handleDelegateFocusedToAI}
-                          className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-medium flex items-center gap-1.5 transition-colors disabled:opacity-40"
+                          className="paper-btn btn-small"
                         >
-                          <Bot className="w-3.5 h-3.5 text-slate-400" />
+                          <Bot className="w-3.5 h-3.5 inline mr-1" />
                           Let AI Automate
                         </button>
 
@@ -1587,16 +1586,16 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                             isSubmittingResponse || !customResponseText.trim()
                           }
                           onClick={() => handleSubmitFocusedResponse()}
-                          className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-md disabled:opacity-40"
+                          className="paper-btn btn-small btn-primary"
                         >
                           {isSubmittingResponse ? (
                             <>
-                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              <Loader2 className="w-3.5 h-3.5 animate-spin inline mr-1" />
                               Weaving Response...
                             </>
                           ) : (
                             <>
-                              <Send className="w-3.5 h-3.5" />
+                              <Send className="w-3.5 h-3.5 inline mr-1" />
                               Send Response
                             </>
                           )}
@@ -1609,28 +1608,28 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
             </div>
           ) : (
             /* STANDARD CONVERSATION INITIATION PANEL */
-            <div className="p-4 border-b border-slate-800 bg-slate-900/50 shrink-0 space-y-3">
+            <div className="p-3.5 border-b-2 border-[#41403e] bg-amber-50/40 shrink-0 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Swords className="w-4 h-4 text-sky-400" />
-                  <h3 className="font-bold text-xs text-slate-200">
+                  <Swords className="w-4 h-4 text-sky-800" />
+                  <h3 className="font-bold text-xs text-[#41403e] m-0">
                     Initiate Conversation
                   </h3>
                 </div>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] opacity-70">
                   Each conversation uses{' '}
-                  <strong className="text-emerald-400">1 Action</strong>
+                  <strong className="text-emerald-800">1 Action</strong>
                 </span>
               </div>
 
               {/* Outgoing Live Engagement / Busy Notice ("Available Momentarily") */}
               {activeOutgoingEngagement && (
                 <div
-                  className={`rounded-xl border p-3 text-xs space-y-1.5 ${
+                  className={`alert ${
                     activeOutgoingEngagement.status === 'QUEUED_MOMENTARILY'
-                      ? 'bg-amber-950/40 border-amber-500/60 text-amber-100'
-                      : 'bg-sky-950/40 border-sky-500/60 text-sky-100'
-                  }`}
+                      ? 'alert-warning'
+                      : 'alert-primary'
+                  } p-2 text-xs`}
                 >
                   {(() => {
                     const outTarget =
@@ -1643,14 +1642,14 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                       activeOutgoingEngagement.status === 'QUEUED_MOMENTARILY'
                     ) {
                       return (
-                        <div className="flex items-start gap-2.5">
-                          <Hourglass className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+                        <div className="flex items-start gap-2">
+                          <Hourglass className="w-4 h-4 shrink-0 mt-0.5 animate-pulse" />
                           <div>
-                            <div className="font-bold text-amber-200">
+                            <div className="font-bold">
                               {outName} is currently in another conversation and
                               will be available momentarily.
                             </div>
-                            <p className="text-[11px] text-amber-200/80 mt-0.5">
+                            <p className="text-[11px] opacity-80 mt-0.5 m-0">
                               Your inquiry has been queued—they will be notified
                               as soon as their active exchange concludes.
                             </p>
@@ -1661,10 +1660,10 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
                     if (activeOutgoingEngagement.status === 'FOCUSED') {
                       return (
-                        <div className="flex items-center gap-2.5">
-                          <Loader2 className="w-4 h-4 text-emerald-400 animate-spin shrink-0" />
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin shrink-0" />
                           <div>
-                            <span className="font-bold text-emerald-300">
+                            <span className="font-bold">
                               {outName}
                             </span>{' '}
                             has focused on your conversation and is formulating
@@ -1676,8 +1675,8 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
                     if (activeOutgoingEngagement.status === 'RESOLVING') {
                       return (
-                        <div className="flex items-center gap-2.5">
-                          <Loader2 className="w-4 h-4 text-sky-400 animate-spin shrink-0" />
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin shrink-0" />
                           <span>Finalizing conversation exchange...</span>
                         </div>
                       );
@@ -1686,13 +1685,13 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                     return (
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <Loader2 className="w-4 h-4 text-sky-400 animate-spin shrink-0" />
+                          <Loader2 className="w-4 h-4 animate-spin shrink-0" />
                           <span>
                             Hailing <strong>{outName}</strong> in room...
                           </span>
                         </div>
                         {outgoingSecondsLeft !== null && (
-                          <span className="font-mono text-[11px] text-amber-300">
+                          <span className="font-mono text-[11px]">
                             {outgoingSecondsLeft}s before auto-response
                           </span>
                         )}
@@ -1704,7 +1703,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
               {/* Person to Approach + Quick Per-Character History Count */}
               <div>
-                <label className="text-[10px] uppercase tracking-wider text-slate-400 block mb-1.5">
+                <label className="text-[10px] uppercase font-bold opacity-70 block mb-1">
                   Who to Approach:
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -1725,24 +1724,24 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                             setTargetPlayerId(other.playerId);
                           }
                         }}
-                        className={`cursor-pointer p-2.5 rounded-lg text-left transition-all border text-xs ${
+                        className={`cursor-pointer p-2 rounded border-2 text-left transition-all text-xs ${
                           isSelected
-                            ? 'bg-sky-950/50 border-sky-500 text-sky-100 ring-1 ring-sky-500/40'
-                            : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 text-slate-400'
+                            ? 'bg-amber-100 border-amber-700 ring-2 ring-amber-700'
+                            : 'bg-white border-[#41403e]/40 hover:border-[#41403e]'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1">
-                          <span className="font-bold text-slate-100 truncate">
+                          <span className="font-bold text-[#41403e] truncate">
                             {other.characterName}
                           </span>
                           {isOnline && (
                             <span
-                              className="w-2 h-2 rounded-full bg-emerald-400 shrink-0"
+                              className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"
                               title="Actively in simulation room"
                             />
                           )}
                         </div>
-                        <div className="text-[10px] text-slate-400 truncate mt-0.5">
+                        <div className="text-[10px] opacity-70 truncate mt-0.5">
                           {other.publicRole}
                         </div>
                         <button
@@ -1752,7 +1751,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                             setCharacterFilterId(other.playerId);
                             setLogViewMode('ALL_ROUNDS');
                           }}
-                          className="mt-1.5 text-[10px] text-sky-400 hover:text-sky-300 font-medium flex items-center gap-1"
+                          className="mt-1 text-[10px] text-sky-800 hover:underline font-medium flex items-center gap-1 cursor-pointer"
                           title={`Filter log to all ${pastCount} interactions with ${other.characterName}`}
                         >
                           <History className="w-2.5 h-2.5" />
@@ -1769,7 +1768,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
               {/* Conversational Approach */}
               <div>
-                <label className="text-[10px] uppercase tracking-wider text-slate-400 block mb-1.5">
+                <label className="text-[10px] uppercase font-bold opacity-70 block mb-1">
                   Conversational Approach:
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -1789,14 +1788,14 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                       <button
                         key={type}
                         onClick={() => setInteractionType(type)}
-                        className={`p-2 rounded-lg text-left transition-all border text-xs flex flex-col justify-between ${
+                        className={`p-1.5 rounded border-2 text-left transition-all text-xs flex flex-col justify-between cursor-pointer ${
                           isSelected
-                            ? `${styleInfo.button} ring-1`
-                            : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 text-slate-400'
+                            ? `${styleInfo.button} ring-2 ring-[#41403e]`
+                            : 'bg-white border-[#41403e]/40 hover:border-[#41403e]'
                         }`}
                       >
                         <div className="font-bold text-xs">{desc.label}</div>
-                        <div className="text-[10px] text-slate-400 mt-0.5 leading-tight">
+                        <div className="text-[10px] opacity-70 mt-0.5 leading-tight">
                           {desc.subtitle}
                         </div>
                       </button>
@@ -1811,7 +1810,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   value={initiatorPrompt}
                   onChange={(e) => setInitiatorPrompt(e.target.value)}
                   rows={2}
-                  className="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500 resize-none font-sans"
+                  className="flex-1 bg-[#fffef0] border-2 border-[#41403e] rounded p-2 text-xs resize-none font-sans"
                   placeholder={
                     targetChar
                       ? `Speak to ${targetChar.characterName} in character...`
@@ -1826,16 +1825,16 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                     activeChar.actionPoints <= 0 ||
                     !initiatorPrompt.trim()
                   }
-                  className="px-5 py-2.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex flex-col items-center justify-center gap-1 transition-all shadow-md disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                  className="paper-btn btn-primary btn-small flex flex-col items-center justify-center shrink-0"
                 >
                   {isResolvingOutgoing ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin mb-0.5" />
                       <span>Speaking...</span>
                     </>
                   ) : (
                     <>
-                      <MessageSquare className="w-4 h-4" />
+                      <MessageSquare className="w-3.5 h-3.5 mb-0.5" />
                       <span>Engage</span>
                     </>
                   )}
@@ -1843,7 +1842,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
               </div>
 
               {activeChar.actionPoints <= 0 && (
-                <p className="text-[11px] text-amber-300 bg-amber-950/30 border border-amber-800/50 rounded px-2.5 py-1.5">
+                <p className="alert alert-warning text-[11px] p-2 m-0">
                   You have no remaining actions this turn. You can still respond
                   to incoming conversations from others.
                 </p>
@@ -1854,38 +1853,36 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
           {/* ================================================================ */}
           {/* MULTI-ROUND CHARACTER INTERACTION LOG & FILTER MECHANISM         */}
           {/* ================================================================ */}
-          <div className="flex-1 overflow-y-auto p-4 min-h-0 space-y-3">
+          <div className="flex-1 overflow-y-auto p-3 min-h-0 space-y-2.5">
             {engagementStatusBanner && (
-              <div className="p-2.5 rounded-lg bg-slate-900 border border-sky-700/50 flex items-center justify-between gap-2 text-[11px] text-sky-200">
+              <div className="alert alert-primary p-2 text-[11px] flex items-center justify-between gap-2">
                 <span>{engagementStatusBanner}</span>
                 <button
                   type="button"
                   onClick={() => setEngagementStatusBanner(null)}
-                  className="text-slate-400 hover:text-white text-[10px]"
+                  className="font-bold cursor-pointer"
                 >
-                  Dismiss
+                  ✕
                 </button>
               </div>
             )}
 
             {/* Header + View Mode Toggle + Full Archive Button */}
-            <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-800 text-xs">
+            <div className="flex items-center justify-between gap-2 pb-2 border-b-2 border-[#41403e]/20 text-xs">
               <div className="flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-sky-400" />
-                <h4 className="font-bold text-slate-200">
+                <MessageSquare className="w-4 h-4 text-sky-800" />
+                <h4 className="font-bold text-[#41403e] m-0">
                   Conversation History
                 </h4>
               </div>
 
               <div className="flex items-center gap-1.5">
-                <div className="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-800 text-[10px]">
+                <div className="flex gap-1">
                   <button
                     type="button"
                     onClick={() => setLogViewMode('ALL_ROUNDS')}
-                    className={`px-2 py-1 rounded font-semibold transition-colors ${
-                      logViewMode === 'ALL_ROUNDS'
-                        ? 'bg-slate-800 text-sky-300'
-                        : 'text-slate-400 hover:text-slate-200'
+                    className={`paper-btn btn-small ${
+                      logViewMode === 'ALL_ROUNDS' ? 'btn-primary' : ''
                     }`}
                   >
                     All Rounds
@@ -1893,10 +1890,8 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   <button
                     type="button"
                     onClick={() => setLogViewMode('SINGLE')}
-                    className={`px-2 py-1 rounded font-semibold transition-colors ${
-                      logViewMode === 'SINGLE'
-                        ? 'bg-slate-800 text-sky-300'
-                        : 'text-slate-400 hover:text-slate-200'
+                    className={`paper-btn btn-small ${
+                      logViewMode === 'SINGLE' ? 'btn-primary' : ''
                     }`}
                   >
                     Single
@@ -1906,7 +1901,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                 <button
                   type="button"
                   onClick={() => setHistoryModalCharId(characterFilterId)}
-                  className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-sky-300 transition-colors"
+                  className="paper-btn btn-small"
                   title="Expand full-screen Character Interaction Archive across all rounds"
                 >
                   <Maximize2 className="w-3.5 h-3.5" />
@@ -1914,15 +1909,13 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
               </div>
             </div>
 
-            {/* Specific Character Filter Pills (View all interactions with any character over all rounds) */}
+            {/* Specific Character Filter Pills */}
             <div className="flex items-center gap-1.5 flex-wrap">
               <button
                 type="button"
                 onClick={() => setCharacterFilterId('ALL')}
-                className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border transition-colors ${
-                  characterFilterId === 'ALL'
-                    ? 'bg-sky-500 text-slate-950 border-sky-400'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200'
+                className={`paper-btn btn-small ${
+                  characterFilterId === 'ALL' ? 'btn-primary' : ''
                 }`}
               >
                 All ({playerInteractions.length})
@@ -1939,11 +1932,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                       setCharacterFilterId(other.playerId);
                       setLogViewMode('ALL_ROUNDS');
                     }}
-                    className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border transition-colors ${
-                      active
-                        ? 'bg-sky-500 text-slate-950 border-sky-400'
-                        : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'
-                    }`}
+                    className={`paper-btn btn-small ${active ? 'btn-primary' : ''}`}
                   >
                     {other.characterName} ({count})
                   </button>
@@ -1954,14 +1943,14 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
             {/* Transcript Display */}
             {filteredPlayerInteractions.length > 0 ? (
               logViewMode === 'ALL_ROUNDS' ? (
-                <div className="space-y-5 pt-1">
+                <div className="space-y-4 pt-1">
                   {interactionsGroupedByRound.map(([roundNum, items]) => (
-                    <div key={roundNum} className="space-y-3">
+                    <div key={roundNum} className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-bold font-mono">
+                        <span className="badge warning font-mono text-[10px] font-bold">
                           Round / Turn {roundNum}
                         </span>
-                        <div className="flex-1 h-px bg-slate-800" />
+                        <div className="flex-1 h-px bg-[#41403e]/20" />
                       </div>
                       {items.map((ix) =>
                         renderInteractionExchangeCard(ix, true)
@@ -1970,12 +1959,12 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   ))}
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {filteredPlayerInteractions.length > 1 && (
                     <select
                       value={displayedSingleInteraction?.id ?? ''}
                       onChange={(e) => setSelectedInteractionId(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-slate-200 focus:outline-none focus:border-sky-500"
+                      className="w-full bg-[#fffef0] border border-[#41403e] rounded p-1.5 text-xs"
                     >
                       {filteredPlayerInteractions.map((ix, idx) => {
                         const otherId =
@@ -1998,9 +1987,9 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                 </div>
               )
             ) : (
-              <div className="h-44 flex flex-col items-center justify-center text-slate-500 text-xs text-center px-6">
-                <MessageSquare className="w-8 h-8 text-slate-700 mb-2" />
-                <p className="text-slate-400 font-medium mb-1">
+              <div className="h-44 flex flex-col items-center justify-center text-[#41403e]/60 text-xs text-center px-6">
+                <MessageSquare className="w-8 h-8 opacity-40 mb-2" />
+                <p className="font-bold mb-1">
                   {characterFilterId === 'ALL'
                     ? 'No conversations recorded yet'
                     : `No conversations with ${
@@ -2008,9 +1997,9 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                         characterFilterId
                       } yet`}
                 </p>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] opacity-70 m-0">
                   Review your{' '}
-                  <strong className="text-slate-300">Current Knowledge</strong>{' '}
+                  <strong className="text-[#41403e]">Current Knowledge</strong>{' '}
                   briefing on the right for key questions to explore, then
                   engage a participant.
                 </p>
@@ -2022,90 +2011,80 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
         {/* ------------------------------------------------------------------ */}
         {/* RIGHT PANE (COLS 9-12): Knowledge, Goals, Hand, Tokens & Policy     */}
         {/* ------------------------------------------------------------------ */}
-        <aside className="col-span-4 bg-slate-900/40 flex flex-col min-h-0">
-          <div className="grid grid-cols-5 border-b border-slate-800 bg-slate-900/80 text-[11px] shrink-0">
+        <aside className="col-span-4 bg-[#fffef0] flex flex-col min-h-0">
+          <div className="grid grid-cols-5 border-b-2 border-[#41403e] bg-amber-50/60 text-[11px] shrink-0 p-1 gap-1">
             <button
               onClick={() => setRightTab('KNOWLEDGE')}
-              className={`py-3 px-1.5 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1 ${
-                rightTab === 'KNOWLEDGE'
-                  ? 'border-sky-500 text-sky-400 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'KNOWLEDGE' ? 'btn-primary' : ''
               }`}
-              title="AI Intelligence Briefing & Investigative Questions"
+              title="AI Intelligence Briefing &amp; Investigative Questions"
             >
-              <FileText className="w-3.5 h-3.5 shrink-0" />
+              <FileText className="w-3.5 h-3.5 inline mr-0.5" />
               <span className="truncate">Knowledge</span>
             </button>
 
             <button
               onClick={() => setRightTab('GOALS')}
-              className={`py-3 px-1.5 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1 ${
-                rightTab === 'GOALS'
-                  ? 'border-sky-500 text-sky-400 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'GOALS' ? 'btn-primary' : ''
               }`}
             >
-              <Compass className="w-3.5 h-3.5 shrink-0" />
+              <Compass className="w-3.5 h-3.5 inline mr-0.5" />
               <span className="truncate">Goals</span>
             </button>
 
             <button
               onClick={() => setRightTab('CARDS')}
-              className={`py-3 px-1.5 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1 ${
-                rightTab === 'CARDS'
-                  ? 'border-sky-500 text-sky-400 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'CARDS' ? 'btn-primary' : ''
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5 shrink-0" />
+              <BookOpen className="w-3.5 h-3.5 inline mr-0.5" />
               <span className="truncate">Hand ({ownedCards.length})</span>
             </button>
 
             <button
               onClick={() => setRightTab('TOKENS')}
-              className={`py-3 px-1.5 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1 ${
-                rightTab === 'TOKENS'
-                  ? 'border-sky-500 text-sky-400 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'TOKENS' ? 'btn-primary' : ''
               }`}
             >
-              <Zap className="w-3.5 h-3.5 shrink-0" />
+              <Zap className="w-3.5 h-3.5 inline mr-0.5" />
               <span className="truncate">Tokens</span>
             </button>
 
             <button
               onClick={() => setRightTab('POLICY')}
-              className={`py-3 px-1.5 font-semibold text-center border-b-2 transition-colors flex items-center justify-center gap-1 ${
-                rightTab === 'POLICY'
-                  ? 'border-sky-500 text-sky-400 bg-slate-950/40'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+              className={`paper-btn btn-small ${
+                rightTab === 'POLICY' ? 'btn-primary' : ''
               }`}
             >
-              <Shield className="w-3.5 h-3.5 shrink-0" />
+              <Shield className="w-3.5 h-3.5 inline mr-0.5" />
               <span className="truncate">Policy</span>
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 min-h-0 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 min-h-0 space-y-3">
             {/* TAB 1: CURRENT KNOWLEDGE */}
             {rightTab === 'KNOWLEDGE' && (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-sky-400" />
-                    <h4 className="font-bold text-xs text-slate-100">
-                      Current Knowledge & Situation Briefing
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-sky-800" />
+                    <h4 className="font-bold text-xs text-[#41403e] m-0">
+                      Current Knowledge Briefing
                     </h4>
                   </div>
 
                   <button
                     onClick={() => synthesizeKnowledgeBriefing(true)}
                     disabled={isGeneratingKnowledge}
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 transition-colors disabled:opacity-50"
+                    className="paper-btn btn-small"
                   >
                     <RefreshCw
-                      className={`w-3 h-3 ${
-                        isGeneratingKnowledge ? 'animate-spin text-sky-400' : ''
+                      className={`w-3 h-3 inline mr-1 ${
+                        isGeneratingKnowledge ? 'animate-spin' : ''
                       }`}
                     />
                     {isGeneratingKnowledge ? 'Synthesizing...' : 'Refresh'}
@@ -2113,54 +2092,52 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                 </div>
 
                 {isGeneratingKnowledge && !cachedBriefing ? (
-                  <div className="p-8 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col items-center justify-center text-center space-y-3">
-                    <Loader2 className="w-6 h-6 text-sky-400 animate-spin" />
-                    <div className="text-xs font-medium text-slate-200">
+                  <div className="p-6 rounded card bg-white border-2 border-[#41403e] flex flex-col items-center justify-center text-center space-y-2">
+                    <Loader2 className="w-6 h-6 animate-spin text-sky-800" />
+                    <div className="text-xs font-bold">
                       Compiling your personal intelligence narrative...
                     </div>
-                    <p className="text-[11px] text-slate-400 max-w-xs leading-relaxed">
+                    <p className="text-[11px] opacity-70 max-w-xs leading-relaxed m-0">
                       Weaving scenario background with the {ownedCards.length}{' '}
-                      intelligence records currently in your possession.
+                      records in your possession.
                     </p>
                   </div>
                 ) : cachedBriefing ? (
                   <>
                     {isGeneratingKnowledge && (
-                      <div className="px-3 py-2 rounded-lg bg-sky-950/40 border border-sky-800/60 flex items-center gap-2 text-[11px] text-sky-200">
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-400 shrink-0" />
+                      <div className="alert alert-primary text-xs p-2 flex items-center gap-2">
+                        <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
                         Updating briefing with newly acquired intelligence...
                       </div>
                     )}
 
-                    <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800 space-y-3">
-                      <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-sky-400 font-semibold">
+                    <div className="card bg-white p-3 rounded border-2 border-[#41403e] space-y-2">
+                      <div className="flex items-center justify-between text-[10px] uppercase font-bold opacity-70">
                         <span>What You Know So Far</span>
-                        <span className="text-slate-500 normal-case font-normal">
-                          Based on {ownedCards.length} known{' '}
-                          {ownedCards.length === 1 ? 'record' : 'records'}
+                        <span className="normal-case font-normal">
+                          Based on {ownedCards.length} known records
                         </span>
                       </div>
 
-                      <div className="space-y-3 text-xs text-slate-200 leading-relaxed">
+                      <div className="space-y-2 text-xs leading-relaxed">
                         {cachedBriefing.narrative
                           .split(/\n\n+/)
                           .filter((p) => p.trim().length > 0)
                           .map((paragraph, idx) => (
-                            <p key={idx}>{paragraph.trim()}</p>
+                            <p key={idx} className="m-0">{paragraph.trim()}</p>
                           ))}
                       </div>
                     </div>
 
-                    <div className="bg-slate-950/80 p-4 rounded-xl border border-amber-900/40 space-y-3">
+                    <div className="card bg-[#fffef0] p-3 rounded border-2 border-[#41403e] space-y-2">
                       <div className="flex items-center gap-2">
-                        <HelpCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                        <HelpCircle className="w-4 h-4 text-amber-700 shrink-0" />
                         <div>
-                          <h5 className="font-bold text-xs text-amber-200">
+                          <h5 className="font-bold text-xs m-0">
                             Key Questions to Pursue
                           </h5>
-                          <p className="text-[10px] text-slate-400">
-                            Unresolved threads to inquire further about or press
-                            on in interrogations
+                          <p className="text-[10px] opacity-70 m-0">
+                            Unresolved threads to inquire further about
                           </p>
                         </div>
                       </div>
@@ -2169,14 +2146,14 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                         {cachedBriefing.keyQuestions.map((question, idx) => (
                           <div
                             key={idx}
-                            className="p-3 rounded-lg bg-slate-900/80 border border-slate-800 hover:border-amber-700/50 transition-colors group"
+                            className="p-2.5 rounded bg-white border border-[#41403e]/40"
                           >
-                            <p className="text-xs text-slate-200 leading-relaxed">
+                            <p className="text-xs leading-relaxed m-0">
                               {question}
                             </p>
                             <button
                               onClick={() => setInitiatorPrompt(question)}
-                              className="mt-2 text-[10px] text-sky-400 hover:text-sky-300 font-medium opacity-80 group-hover:opacity-100 transition-opacity"
+                              className="mt-1 text-[10px] text-sky-800 hover:underline font-bold cursor-pointer"
                             >
                               Use as conversation opener →
                             </button>
@@ -2191,12 +2168,12 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
             {/* TAB 2: GOALS */}
             {rightTab === 'GOALS' && (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">
+                  <span className="font-bold">
                     Your Objectives
                   </span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] opacity-70">
                     {visibleGoals.length} Active
                   </span>
                 </div>
@@ -2216,7 +2193,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
             {/* TAB 3: HAND */}
             {rightTab === 'CARDS' && (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {(() => {
                   const guardedCount =
                     activeChar.defensivePolicy.protectedCardIds
@@ -2228,63 +2205,52 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   );
 
                   return (
-                    <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5 text-xs">
+                    <div className="p-2.5 rounded card bg-white border-2 border-[#41403e] space-y-1 text-xs">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[11px] font-semibold text-rose-300">
+                        <span className="text-[11px] font-bold text-rose-800">
                           Guarded: {guardedCount} / {MAX_GUARDED_CARDS} max
                         </span>
-                        <span className="text-[11px] font-semibold text-emerald-300">
-                          Shareable: {shareableCount} ({MIN_SHAREABLE_CARDS} min
-                          required)
+                        <span className="text-[11px] font-bold text-emerald-800">
+                          Shareable: {shareableCount} ({MIN_SHAREABLE_CARDS} min required)
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 leading-relaxed">
+                      <p className="text-[11px] opacity-70 leading-relaxed m-0">
                         You may guard at most 1 card from being shared, and at
                         least 1 card must remain labelled{' '}
-                        <strong className="text-emerald-300">Shareable</strong>.
-                        Each card marked Shareable increases your likelihood of
-                        garnering new information in exchanges.
+                        <strong className="text-emerald-800">Shareable</strong>.
                       </p>
                     </div>
                   );
                 })()}
 
-                <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+                <div className="flex items-center gap-1 bg-white p-1 rounded border border-[#41403e]/40 text-xs">
                   <button
                     onClick={() => setCardTierFilter('ALL')}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                      cardTierFilter === 'ALL'
-                        ? 'bg-slate-800 text-white font-bold'
-                        : 'text-slate-400 hover:text-slate-200'
+                    className={`paper-btn btn-small flex-1 ${
+                      cardTierFilter === 'ALL' ? 'btn-primary' : ''
                     }`}
                   >
                     All ({ownedCards.length})
                   </button>
                   <button
                     onClick={() => setCardTierFilter('ATOMIC')}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                      cardTierFilter === 'ATOMIC'
-                        ? 'bg-slate-800 text-white font-bold'
-                        : 'text-slate-400 hover:text-slate-200'
+                    className={`paper-btn btn-small flex-1 ${
+                      cardTierFilter === 'ATOMIC' ? 'btn-primary' : ''
                     }`}
                   >
-                    Records (
-                    {ownedCards.filter((c) => c.tier === 'ATOMIC').length})
+                    Records ({ownedCards.filter((c) => c.tier === 'ATOMIC').length})
                   </button>
                   <button
                     onClick={() => setCardTierFilter('COMPOSITE')}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                      cardTierFilter === 'COMPOSITE'
-                        ? 'bg-purple-900/60 text-purple-200 font-bold'
-                        : 'text-slate-400 hover:text-slate-200'
+                    className={`paper-btn btn-small flex-1 ${
+                      cardTierFilter === 'COMPOSITE' ? 'btn-secondary' : ''
                     }`}
                   >
-                    Dossiers (
-                    {ownedCards.filter((c) => c.tier === 'COMPOSITE').length})
+                    Dossiers ({ownedCards.filter((c) => c.tier === 'COMPOSITE').length})
                   </button>
                 </div>
 
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {filteredOwnedCards.map((card) => {
                     const controls = getCardPolicyControls(
                       activeChar,
@@ -2314,19 +2280,19 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
             {/* TAB 4: CONNECTION TOKENS */}
             {rightTab === 'TOKENS' && (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">
-                    Personal Leverage & Warrants
+                  <span className="font-bold">
+                    Personal Leverage &amp; Warrants
                   </span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] opacity-70">
                     {activePlayerTokens.filter((t) => !t.isConsumed).length}{' '}
                     Available
                   </span>
                 </div>
 
                 {tokenNotice && (
-                  <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-600/50 text-amber-200 text-xs leading-relaxed">
+                  <div className="alert alert-warning text-xs leading-relaxed p-2.5">
                     {tokenNotice}
                   </div>
                 )}
@@ -2346,8 +2312,8 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                     );
                   })
                 ) : (
-                  <div className="p-6 text-center text-slate-500 text-xs bg-slate-950/40 rounded-lg border border-slate-800">
-                    <Zap className="w-6 h-6 mx-auto mb-2 text-slate-600" />
+                  <div className="p-6 text-center opacity-60 text-xs bg-white rounded border border-[#41403e]/40">
+                    <Zap className="w-6 h-6 mx-auto mb-2 opacity-50" />
                     You hold no active leverage tokens at this time.
                   </div>
                 )}
@@ -2356,20 +2322,20 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
 
             {/* TAB 5: POLICY */}
             {rightTab === 'POLICY' && (
-              <div className="space-y-4 text-xs">
-                <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-3">
+              <div className="space-y-3 text-xs">
+                <div className="card bg-white p-3 rounded border-2 border-[#41403e] space-y-2">
                   <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-amber-400" />
-                    <h4 className="font-bold text-slate-200">
+                    <Shield className="w-4 h-4 text-amber-700" />
+                    <h4 className="font-bold text-[#41403e] m-0">
                       Personal Dispositions
                     </h4>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                  <p className="text-[11px] opacity-70 leading-relaxed m-0">
                     Set how receptive or guarded you remain when each person
                     approaches you for information.
                   </p>
 
-                  <div className="space-y-2.5 pt-2 border-t border-slate-800">
+                  <div className="space-y-2 pt-1 border-t border-[#41403e]/20">
                     {otherCharacters.map((other) => {
                       const currentStance =
                         activeChar.defensivePolicy.stanceByPlayerId[
@@ -2378,13 +2344,13 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                       return (
                         <div
                           key={other.playerId}
-                          className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between gap-2"
+                          className="p-2 rounded bg-[#fffef0] border border-[#41403e]/30 flex items-center justify-between gap-2"
                         >
                           <div className="min-w-0">
-                            <div className="font-semibold text-slate-200 truncate">
+                            <div className="font-bold truncate">
                               {other.characterName}
                             </div>
-                            <div className="text-[10px] text-slate-500 truncate">
+                            <div className="text-[10px] opacity-60 truncate">
                               {other.publicRole}
                             </div>
                           </div>
@@ -2403,11 +2369,11 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                                 onClick={() =>
                                   handleChangeStance(other.playerId, stance)
                                 }
-                                className={`px-1.5 py-0.5 text-[9px] rounded font-mono transition-colors ${
+                                className={`px-1.5 py-0.5 text-[9px] rounded font-mono cursor-pointer transition-colors ${
                                   currentStance === stance
                                     ? STANCE_BADGE_STYLES[stance] +
                                       ' font-bold ring-1'
-                                    : 'bg-slate-950 text-slate-500 hover:text-slate-300'
+                                    : 'opacity-50 hover:opacity-100'
                                 }`}
                               >
                                 {stance.slice(0, 4)}
@@ -2420,16 +2386,16 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                <div className="card bg-white p-2.5 rounded border border-[#41403e]/30 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-300">
+                    <span className="font-bold">
                       Guarded Card (Max 1)
                     </span>
-                    <span className="text-[10px] text-rose-400">
+                    <span className="text-[10px] text-rose-800 font-bold">
                       Protected from Sharing
                     </span>
                   </div>
-                  <div className="text-[11px] text-slate-400 leading-relaxed">
+                  <div className="text-[11px] opacity-80 leading-relaxed">
                     {activeChar.defensivePolicy.protectedCardIds.slice(
                       0,
                       MAX_GUARDED_CARDS
@@ -2445,12 +2411,12 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                <div className="card bg-white p-2.5 rounded border border-[#41403e]/30 space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-300">
+                    <span className="font-bold">
                       Shareable Cards (Min 1 Required)
                     </span>
-                    <span className="text-[10px] text-emerald-400">
+                    <span className="text-[10px] text-emerald-800 font-bold">
                       {getShareableCardCount(activeChar, state.cards) >= 3
                         ? 'High Exchange Leverage'
                         : getShareableCardCount(activeChar, state.cards) === 2
@@ -2458,7 +2424,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                         : 'Baseline Exchange Leverage'}
                     </span>
                   </div>
-                  <div className="text-[11px] text-slate-400 leading-relaxed">
+                  <div className="text-[11px] opacity-80 leading-relaxed">
                     {activeChar.defensivePolicy.tradeableCardIds
                       .filter(
                         (id) =>
@@ -2470,7 +2436,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                       .map((id) => state.cards[id]?.title ?? 'Record')
                       .join(' • ')}
                   </div>
-                  <p className="text-[10px] text-slate-500 pt-1 border-t border-slate-900">
+                  <p className="text-[10px] opacity-60 pt-1 border-t border-[#41403e]/10 m-0">
                     Marking additional cards Shareable in your Hand improves
                     your odds of uncovering new intelligence in conversations.
                   </p>
@@ -2527,3 +2493,4 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
     </div>
   );
 };
+

@@ -106,31 +106,31 @@ export const UserSeatInviteModal: React.FC<UserSeatInviteModalProps> = ({
   };
 
   return (
-    <div className="modal modal-open">
-      <div className="modal-box bg-base-200 border border-base-300 p-5 max-w-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+      <div className="paper max-w-lg w-full bg-[#fffef0] border-2 border-[#41403e] shadow-2xl p-5 space-y-4">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-base-300">
+        <div className="flex items-center justify-between pb-3 border-b border-dashed border-[#ccc]">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-primary/20 text-primary">
-              {isTransfer ? <ArrowRightLeft className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
+            <div className="text-secondary">
+              {isTransfer ? <ArrowRightLeft className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
             </div>
             <div>
-              <h3 className="font-bold text-sm">
+              <h3 className="font-bold text-base m-0">
                 {isTransfer ? 'Transfer Role' : 'Invite Player'}
               </h3>
-              <p className="text-xs text-base-content/70">
-                Play as <strong className="text-base-content">{character.characterName}</strong> ({character.publicRole})
+              <p className="text-xs text-[#666] m-0">
+                Play as <strong>{character.characterName}</strong> ({character.publicRole})
               </p>
             </div>
           </div>
-          <button type="button" onClick={onClose} className="btn btn-ghost btn-xs btn-circle">
+          <button type="button" onClick={onClose} className="paper-btn btn-small py-1 px-2">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Existing Pending Invite */}
         {pendingInvite && (
-          <div className="alert alert-warning text-xs py-2 my-3 flex justify-between items-center">
+          <div className="alert alert-warning text-xs py-2 my-2 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Clock className="w-3.5 h-3.5" />
               <span>Invite waiting for @{pendingInvite.toUsername}</span>
@@ -138,7 +138,7 @@ export const UserSeatInviteModal: React.FC<UserSeatInviteModalProps> = ({
             <button
               type="button"
               onClick={() => handleCancelInvite(pendingInvite.id)}
-              className="btn btn-ghost btn-xs text-error"
+              className="paper-btn btn-small btn-danger py-0.5 px-2 text-xs"
             >
               Cancel
             </button>
@@ -148,27 +148,27 @@ export const UserSeatInviteModal: React.FC<UserSeatInviteModalProps> = ({
         {/* Feedback Alert */}
         {feedback && (
           <div
-            className={`alert text-xs py-2 my-3 ${
-              feedback.type === 'ok' ? 'alert-success' : 'alert-error'
+            className={`alert text-xs py-2 my-2 ${
+              feedback.type === 'ok' ? 'alert-success' : 'alert-danger'
             }`}
           >
             <span>{feedback.msg}</span>
-            <button type="button" onClick={() => setFeedback(null)} className="btn btn-ghost btn-xs">
+            <button type="button" onClick={() => setFeedback(null)} className="float-right font-bold ml-2">
               ✕
             </button>
           </div>
         )}
 
         {/* Search Bar */}
-        <div className="my-3">
+        <div className="my-2">
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#777]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by username or name..."
-              className="input input-bordered input-sm w-full pl-9"
+              className="w-full text-sm pl-9"
               autoFocus
             />
           </div>
@@ -180,33 +180,30 @@ export const UserSeatInviteModal: React.FC<UserSeatInviteModalProps> = ({
             matchingUsers.map((targetUser) => {
               const isAlreadyAssigned = character.assignedUserId === targetUser.id;
               const hasActiveInvite = pendingInvite?.toUserId === targetUser.id;
-              const roleBadge = ROLE_BADGE_INFO[targetUser.accountRole] ?? ROLE_BADGE_INFO.PLAYER;
 
               return (
                 <div
                   key={targetUser.id}
-                  className="flex items-center justify-between p-2 rounded-lg bg-base-100 border border-base-300 text-xs"
+                  className="flex items-center justify-between p-2 rounded bg-white border border-[#ccc] text-xs"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className="avatar placeholder">
-                      <div className="bg-primary/20 text-primary w-6 h-6 rounded text-xs">
-                        <span>{targetUser.displayName[0]}</span>
-                      </div>
-                    </div>
+                    <span className="badge secondary text-xs w-6 h-6 flex items-center justify-center p-0">
+                      {targetUser.displayName[0]}
+                    </span>
                     <div className="truncate">
                       <div className="font-bold truncate">{targetUser.displayName}</div>
-                      <div className="text-[10px] text-base-content/60">@{targetUser.username}</div>
+                      <div className="text-[10px] text-[#777]">@{targetUser.username}</div>
                     </div>
                   </div>
 
                   <div>
                     {isAlreadyAssigned ? (
-                      <span className="badge badge-sm badge-success gap-1">
-                        <UserCheck className="w-3 h-3" />
+                      <span className="badge success gap-1">
+                        <UserCheck className="w-3 h-3 inline mr-1" />
                         Current Player
                       </span>
                     ) : hasActiveInvite ? (
-                      <span className="badge badge-sm badge-warning">
+                      <span className="badge warning">
                         Invite Sent
                       </span>
                     ) : (
@@ -214,7 +211,7 @@ export const UserSeatInviteModal: React.FC<UserSeatInviteModalProps> = ({
                         type="button"
                         disabled={isSending}
                         onClick={() => handleSendInvite(targetUser)}
-                        className="btn btn-primary btn-xs gap-1"
+                        className="paper-btn btn-small btn-primary py-0.5 px-2 inline-flex items-center gap-1"
                       >
                         <Send className="w-3 h-3" />
                         {isTransfer ? 'Transfer' : 'Invite'}
@@ -225,20 +222,19 @@ export const UserSeatInviteModal: React.FC<UserSeatInviteModalProps> = ({
               );
             })
           ) : (
-            <div className="text-center py-6 text-xs text-base-content/50">
+            <div className="text-center py-6 text-xs text-[#777]">
               No users found matching &ldquo;{searchQuery}&rdquo;.
             </div>
           )}
         </div>
 
         {/* Modal Action Footer */}
-        <div className="modal-action mt-4 pt-3 border-t border-base-300">
-          <button type="button" onClick={onClose} className="btn btn-sm btn-ghost">
+        <div className="pt-3 border-t border-dashed border-[#ccc] flex justify-end">
+          <button type="button" onClick={onClose} className="paper-btn btn-small">
             Close
           </button>
         </div>
       </div>
-      <div className="modal-backdrop bg-black/50" onClick={onClose} />
     </div>
   );
 };

@@ -22,29 +22,29 @@ export const ROLE_BADGE_INFO: Record<
     label: 'Player Only',
     shortLabel: 'Player',
     description:
-      'Access only to Operative Profile and playing inside Simulation Rooms.',
-    badgeClass: 'bg-sky-500/15 text-sky-300 border-sky-500/35',
+      'Access only to profile and playing inside game rooms.',
+    badgeClass: 'badge secondary',
   },
   STUDIO_CREATOR: {
     label: 'Studio Creator',
     shortLabel: 'Studio',
     description:
-      'Access to Simulation Authoring Studio (DAG Compiler & Validator) plus Player Rooms.',
-    badgeClass: 'bg-purple-500/15 text-purple-300 border-purple-500/35',
+      'Access to create stories, cards, and characters.',
+    badgeClass: 'badge',
   },
   SIMULATION_ADMIN: {
-    label: 'Simulation Admin (Single Game)',
-    shortLabel: 'Sim Admin',
+    label: 'Game Admin',
+    shortLabel: 'Game Admin',
     description:
-      'Runs and administers a single assigned simulation without global multi-game admin or Studio access.',
-    badgeClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35',
+      'Runs and administers a single assigned game.',
+    badgeClass: 'badge success',
   },
   ADMIN: {
-    label: 'Global Administrator',
-    shortLabel: 'Global Admin',
+    label: 'Platform Admin',
+    shortLabel: 'Admin',
     description:
-      'Full access to Multi-Game Admin Overview, all Simulation Admin Dashboards, Authoring Studio, and Role Management.',
-    badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/45',
+      'Full access to all games, users, and creator studio.',
+    badgeClass: 'badge warning',
   },
 };
 

@@ -13,6 +13,7 @@
     "@google/genai": "^2.32.0",
     "daisyui": "^5.7.50",
     "lucide-react": "^1.16.0",
+    "papercss": "^1.9.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

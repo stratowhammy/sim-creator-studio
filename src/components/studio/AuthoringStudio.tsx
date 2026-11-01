@@ -959,15 +959,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
   );
 
   return (
-    <div className="flex flex-col h-full bg-base-100 text-base-content overflow-y-auto p-4 sm:p-6 font-sans">
+    <div className="flex flex-col h-full bg-[#fffef0] text-[#41403e] overflow-y-auto p-4 sm:p-6">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-base-300 mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b-2 border-dashed border-[#ccc] mb-6">
         <div className="flex items-center gap-3">
           {onExitStudio && (
             <button
               type="button"
               onClick={onExitStudio}
-              className="btn btn-ghost btn-sm gap-1"
+              className="paper-btn btn-small gap-1 inline-flex items-center"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               {exitLabel}
@@ -975,15 +975,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           )}
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <Layers className="w-5 h-5 text-primary" />
-              <h1 className="text-lg font-bold tracking-tight">
+              <Layers className="w-5 h-5 text-secondary" />
+              <h2 className="text-xl font-bold tracking-tight m-0">
                 Story Studio
-              </h1>
+              </h2>
               {simulations && onSelectSimulation && (
                 <select
                   value={simulationState.id}
                   onChange={(e) => onSelectSimulation(e.target.value)}
-                  className="select select-bordered select-xs font-semibold"
+                  className="text-xs font-bold py-1 px-2"
                 >
                   {Object.values(simulations).map((s) => (
                     <option key={s.id} value={s.id}>
@@ -993,7 +993,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 </select>
               )}
             </div>
-            <p className="text-xs text-base-content/70 mt-0.5">
+            <p className="text-xs text-[#666] m-0 mt-0.5">
               Write your story, pick characters, and let AI build secret clues.
             </p>
           </div>
@@ -1001,16 +1001,16 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
         <div className="flex items-center gap-2 flex-wrap">
           {currentUser && (
-            <div className="badge badge-warning badge-outline font-mono gap-1 text-xs py-2 px-3">
-              <Coins className="w-3.5 h-3.5" />
+            <span className="badge warning font-bold gap-1 text-xs py-1 px-3">
+              <Coins className="w-3.5 h-3.5 inline mr-1" />
               <span>{currentUser.simsBalance ?? 0} Sims</span>
-            </div>
+            </span>
           )}
 
           <button
             type="button"
             onClick={handleCreateNewSimulation}
-            className="btn btn-primary btn-sm gap-1"
+            className="paper-btn btn-small btn-primary gap-1 inline-flex items-center"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>New Game</span>
@@ -1019,7 +1019,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           <button
             type="button"
             onClick={() => setShowLibraryModal(true)}
-            className="btn btn-outline btn-sm gap-1"
+            className="paper-btn btn-small gap-1 inline-flex items-center"
           >
             <FolderOpen className="w-3.5 h-3.5" />
             <span>Library</span>
@@ -1028,7 +1028,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           <button
             type="button"
             onClick={() => handleMakeCopy()}
-            className="btn btn-outline btn-sm gap-1"
+            className="paper-btn btn-small gap-1 inline-flex items-center"
           >
             <Copy className="w-3.5 h-3.5" />
             <span>Copy</span>
@@ -1036,7 +1036,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
           <button
             onClick={handleResetToHeliosPreset}
-            className="btn btn-ghost btn-sm gap-1"
+            className="paper-btn btn-small gap-1 inline-flex items-center"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Demo</span>
@@ -1046,7 +1046,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             <button
               onClick={handlePublishToCollection}
               disabled={!hasStoryBeenGenerated}
-              className="btn btn-secondary btn-sm gap-1"
+              className="paper-btn btn-small btn-secondary gap-1 inline-flex items-center"
             >
               <Globe className="w-3.5 h-3.5" />
               <span>Publish</span>
@@ -1056,7 +1056,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           <button
             onClick={onLaunchSimulation}
             disabled={!hasStoryBeenGenerated}
-            className="btn btn-primary btn-sm gap-1"
+            className="paper-btn btn-small btn-primary gap-1 inline-flex items-center"
           >
             <Play className="w-3.5 h-3.5 fill-current" />
             <span>Play Game</span>
@@ -1065,12 +1065,12 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       </div>
 
       {studioError && (
-        <div className="mb-5 p-3 rounded-xl bg-rose-950/50 border border-rose-500/50 text-xs text-rose-200 flex items-center justify-between">
+        <div className="alert alert-danger text-xs mb-4 flex items-center justify-between">
           <span>{studioError}</span>
           <button
             type="button"
             onClick={() => setStudioError(null)}
-            className="text-rose-300 hover:text-white ml-4"
+            className="float-right font-bold ml-2"
           >
             ✕
           </button>
@@ -1078,12 +1078,12 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
       )}
 
       {studioNotice && (
-        <div className="mb-5 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-xs text-emerald-200 flex items-center justify-between">
+        <div className="alert alert-success text-xs mb-4 flex items-center justify-between">
           <span>{studioNotice}</span>
           <button
             type="button"
             onClick={() => setStudioNotice(null)}
-            className="text-slate-400 hover:text-white ml-4"
+            className="float-right font-bold ml-2"
           >
             ✕
           </button>
@@ -1094,15 +1094,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
         {/* Left Column: Story Settings & Narrative Input */}
         <div className="col-span-12 lg:col-span-7 space-y-4">
           {/* 1. Game Complexity & AI Model */}
-          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+          <div className="card p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <Coins className="w-4 h-4 text-warning" />
-                <h2 className="text-sm font-bold">
+                <h3 className="text-sm font-bold m-0">
                   1. Game Complexity &amp; AI Model
-                </h2>
+                </h3>
               </div>
-              <span className="badge badge-sm badge-warning badge-outline font-mono">
+              <span className="badge warning">
                 +{nominalCollectionPlayCostSims} Sims / Unlock
               </span>
             </div>
@@ -1121,15 +1121,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         setComplexityTier(tierKey);
                         setPaidCurrentDraft(false);
                       }}
-                      className={`btn btn-sm h-auto py-2.5 flex-col items-start normal-case text-left ${
-                        active ? 'btn-primary' : 'btn-outline border-base-300'
+                      className={`paper-btn btn-small flex flex-col items-start text-left m-0 py-2 px-3 ${
+                        active ? 'btn-primary' : ''
                       }`}
                     >
                       <div className="flex items-center justify-between w-full">
                         <span className="font-bold text-xs">{cfg.shortLabel}</span>
-                        <span className="badge badge-xs font-mono">{cfg.costSims} Sims</span>
+                        <span className="badge">{cfg.costSims} Sims</span>
                       </div>
-                      <div className="text-[10px] opacity-80 mt-0.5">
+                      <div className="text-[10px] opacity-80 mt-1">
                         {cfg.cardRange[0]}–{cfg.cardRange[1]} Clues
                       </div>
                     </button>
@@ -1139,14 +1139,14 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             </div>
 
             {/* V4 Pro Paid Toggle */}
-            <div className="flex items-center justify-between gap-4 p-2.5 rounded-lg bg-base-100 border border-base-300">
+            <div className="flex items-center justify-between gap-4 p-2.5 rounded bg-white border border-[#ccc]">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
                   <Cpu className="w-3.5 h-3.5 text-secondary" />
                   <span className="text-xs font-bold">Use AI Pro Model</span>
-                  <span className="badge badge-xs badge-secondary">+{V4_PRO_CREATION_COST_SIMS} Sims</span>
+                  <span className="badge secondary">+{V4_PRO_CREATION_COST_SIMS} Sims</span>
                 </div>
-                <p className="text-[11px] text-base-content/70">
+                <p className="text-[11px] text-[#666] m-0">
                   Makes story writing smarter and more detailed.
                 </p>
               </div>
@@ -1158,7 +1158,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   setUseV4ProForCreation((prev) => !prev);
                   setPaidCurrentDraft(false);
                 }}
-                className={`btn btn-xs ${useV4ProForCreation ? 'btn-secondary' : 'btn-ghost border-base-300'}`}
+                className={`paper-btn btn-small py-0.5 px-2 text-xs ${useV4ProForCreation ? 'btn-secondary' : ''}`}
               >
                 {useV4ProForCreation ? 'Pro: ON' : 'Pro: OFF'}
               </button>
@@ -1166,15 +1166,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           </div>
 
           {/* 2. Reading Level */}
-          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+          <div className="card p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-primary" />
-                <h2 className="text-sm font-bold">
+                <h3 className="text-sm font-bold m-0">
                   2. Reading Level
-                </h2>
+                </h3>
               </div>
-              <span className="badge badge-xs badge-ghost">Required</span>
+              <span className="badge">Required</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -1190,15 +1190,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         setReadabilityLevel(levelKey);
                         setPaidCurrentDraft(false);
                       }}
-                      className={`btn btn-sm h-auto py-2.5 flex-col items-start normal-case text-left ${
-                        active ? 'btn-primary' : 'btn-outline border-base-300'
+                      className={`paper-btn btn-small flex flex-col items-start text-left m-0 py-2 px-3 ${
+                        active ? 'btn-primary' : ''
                       }`}
                     >
                       <div className="flex items-center justify-between w-full">
                         <span className="font-bold text-xs">{cfg.label}</span>
-                        <span className="badge badge-xs">{cfg.gradeLevel}</span>
+                        <span className="badge">{cfg.gradeLevel}</span>
                       </div>
-                      <p className="text-[10px] opacity-70 mt-0.5 line-clamp-1">
+                      <p className="text-[10px] opacity-70 mt-1 line-clamp-1 m-0">
                         {cfg.description}
                       </p>
                     </button>
@@ -1209,15 +1209,15 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           </div>
 
           {/* 3. Number of Characters */}
-          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-2">
+          <div className="card p-4 space-y-2">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-secondary" />
-                <h2 className="text-sm font-bold">
+                <h3 className="text-sm font-bold m-0">
                   3. Number of Characters
-                </h2>
+                </h3>
               </div>
-              <span className="badge badge-xs badge-ghost font-mono">
+              <span className="badge">
                 4 default • +10 Sims each extra
               </span>
             </div>
@@ -1234,13 +1234,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                       setCharacterCount(count);
                       setPaidCurrentDraft(false);
                     }}
-                    className={`btn btn-sm h-auto py-2 flex-col items-center ${
-                      active ? 'btn-primary' : 'btn-outline border-base-300'
+                    className={`paper-btn btn-small flex flex-col items-center justify-center m-0 py-1 px-1 ${
+                      active ? 'btn-primary' : ''
                     }`}
                   >
                     <span className="text-sm font-bold">{count}</span>
                     <span className="text-[10px] opacity-70">
-                      {extraCost > 0 ? `+${extraCost} Sims` : 'Free'}
+                      {extraCost > 0 ? `+${extraCost}` : 'Free'}
                     </span>
                   </button>
                 );
@@ -1249,24 +1249,24 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
           </div>
 
           {/* 4. AI Voice & Style */}
-          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+          <div className="card p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <Mic className="w-4 h-4 text-secondary" />
-                <h2 className="text-sm font-bold">
+                <h3 className="text-sm font-bold m-0">
                   4. Story Voice &amp; Style
-                </h2>
+                </h3>
               </div>
 
-              <div className="join">
+              <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => {
                     setVoiceMode('COLLECTION');
                     setPaidCurrentDraft(false);
                   }}
-                  className={`join-item btn btn-xs ${
-                    voiceMode === 'COLLECTION' ? 'btn-primary' : 'btn-ghost'
+                  className={`paper-btn btn-small py-0.5 px-2 ${
+                    voiceMode === 'COLLECTION' ? 'btn-primary' : ''
                   }`}
                 >
                   Standard Voices (Free)
@@ -1277,12 +1277,12 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     setVoiceMode('CUSTOM');
                     setPaidCurrentDraft(false);
                   }}
-                  className={`join-item btn btn-xs ${
-                    voiceMode === 'CUSTOM' ? 'btn-secondary' : 'btn-ghost'
+                  className={`paper-btn btn-small py-0.5 px-2 inline-flex items-center gap-1 ${
+                    voiceMode === 'CUSTOM' ? 'btn-secondary' : ''
                   }`}
                 >
                   <Wand2 className="w-3 h-3" />
-                  Custom Voice (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims)
+                  Custom (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims)
                 </button>
               </div>
             </div>
@@ -1300,24 +1300,22 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                           setSelectedVoiceId(voice.id);
                           setPaidCurrentDraft(false);
                         }}
-                        className={`card bg-base-100 border p-3 text-left transition-all hover:border-primary/50 ${
-                          isSelected
-                            ? 'border-primary ring-1 ring-primary'
-                            : 'border-base-300'
+                        className={`paper p-3 text-left m-0 cursor-pointer transition-all ${
+                          isSelected ? 'border-2 border-primary bg-[#fffbf0]' : 'bg-white'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <span className="text-xs font-bold">{voice.name}</span>
                           {voice.authorInspiration && (
-                            <span className="badge badge-xs badge-ghost">
+                            <span className="badge text-[10px]">
                               {voice.authorInspiration}
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-base-content/80 mb-1">
+                        <p className="text-[11px] text-[#555] mb-1 m-0">
                           {voice.tagline}
                         </p>
-                        <p className="text-[10px] italic text-base-content/60 line-clamp-1">
+                        <p className="text-[10px] italic text-[#777] line-clamp-1 m-0">
                           {voice.sampleLine}
                         </p>
                       </button>
@@ -1325,17 +1323,17 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   })}
                 </div>
                 {activeCollectionVoice && (
-                  <div className="flex items-center justify-between gap-3 pt-1 text-xs text-base-content/70">
+                  <div className="flex items-center justify-between gap-3 pt-1 text-xs text-[#666]">
                     <span>
                       Selected Voice:{' '}
-                      <strong className="text-primary">
+                      <strong className="text-secondary">
                         {activeCollectionVoice.name}
                       </strong>
                     </span>
                     <button
                       type="button"
                       onClick={handleApplyCollectionVoicePreview}
-                      className="btn btn-xs btn-outline"
+                      className="paper-btn btn-small py-0.5 px-2"
                     >
                       Use in Current Game
                     </button>
@@ -1343,7 +1341,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 )}
               </div>
             ) : (
-              <div className="card bg-base-100 border border-secondary/30 p-3 space-y-2">
+              <div className="paper bg-white p-3 space-y-2 m-0 border-2">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-secondary">
                     Custom Author Style (+{CUSTOM_VOICE_CREATION_COST_SIMS} Sims)
@@ -1355,14 +1353,14 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     value={customVoiceName}
                     onChange={(e) => setCustomVoiceName(e.target.value)}
                     placeholder="Style Name (e.g. Cyberpunk Noir)"
-                    className="input input-bordered input-sm bg-base-200"
+                    className="w-full text-xs"
                   />
                   <input
                     type="text"
                     value={customVoiceGenre}
                     onChange={(e) => setCustomVoiceGenre(e.target.value)}
                     placeholder="Genre (e.g. Sci-Fi)"
-                    className="input input-bordered input-sm bg-base-200"
+                    className="w-full text-xs"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -1371,14 +1369,14 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     value={customVoiceAuthor}
                     onChange={(e) => setCustomVoiceAuthor(e.target.value)}
                     placeholder="Author (e.g. William Gibson)"
-                    className="input input-bordered input-sm bg-base-200"
+                    className="w-full text-xs"
                   />
                   <input
                     type="text"
                     value={customVoiceTagline}
                     onChange={(e) => setCustomVoiceTagline(e.target.value)}
                     placeholder="Short description"
-                    className="input input-bordered input-sm bg-base-200"
+                    className="w-full text-xs"
                   />
                 </div>
                 <textarea
@@ -1386,33 +1384,33 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   onChange={(e) => setCustomVoiceDirective(e.target.value)}
                   rows={2}
                   placeholder="Instructions for how the AI should write dialogue and story..."
-                  className="textarea textarea-bordered bg-base-200 text-xs resize-none"
+                  className="w-full text-xs resize-none"
                 />
                 <input
                   type="text"
                   value={customVoiceSample}
                   onChange={(e) => setCustomVoiceSample(e.target.value)}
                   placeholder="Sample sentence spoken by a character..."
-                  className="input input-bordered input-sm bg-base-200"
+                  className="w-full text-xs"
                 />
               </div>
             )}
           </div>
 
           {/* 5. Story Title & Lore */}
-          <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+          <div className="card p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-primary" />
-                <h2 className="text-sm font-bold">
+                <h3 className="text-sm font-bold m-0">
                   5. Story Title &amp; Lore
-                </h2>
+                </h3>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   onClick={() => handleOpenRevisionModal('ALL')}
-                  className="btn btn-outline btn-sm gap-1"
+                  className="paper-btn btn-small gap-1 inline-flex items-center"
                 >
                   <Wand2 className="w-3.5 h-3.5 text-secondary" />
                   <span>Ask AI to Revise</span>
@@ -1420,7 +1418,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 <button
                   onClick={handleRecompile}
                   disabled={isCompiling}
-                  className="btn btn-primary btn-sm gap-1"
+                  className="paper-btn btn-small btn-primary gap-1 inline-flex items-center"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   {isCompiling
@@ -1430,11 +1428,11 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-base-content/70 p-2 rounded-lg bg-base-100 border border-base-300">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[#666] p-2 rounded bg-white border border-[#ccc]">
               <span>
-                Cost: <span className="font-semibold text-base-content">{buildCostBreakdownLabel()}</span>
+                Cost: <span className="font-bold text-[#333]">{buildCostBreakdownLabel()}</span>
               </span>
-              <span className="badge badge-sm badge-success badge-outline">
+              <span className="badge success">
                 Earn {nominalCollectionPlayCostSims} Sims per play
               </span>
             </div>
@@ -1442,13 +1440,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             {/* Storyline Title Field */}
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold">
+                <label className="text-xs font-bold block">
                   Story Title
                 </label>
                 <button
                   type="button"
                   onClick={() => handleOpenRevisionModal('TITLE')}
-                  className="btn btn-ghost btn-xs text-secondary gap-1"
+                  className="text-secondary text-xs hover:underline inline-flex items-center gap-1 bg-transparent border-0 p-0"
                 >
                   <Sparkles className="w-3 h-3" />
                   Revise Title
@@ -1459,20 +1457,20 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 value={scenarioTitle}
                 onChange={(e) => setScenarioTitle(e.target.value)}
                 placeholder="Story title (e.g. Mystery on Mars)..."
-                className="input input-bordered input-sm w-full bg-base-100 font-semibold"
+                className="w-full text-sm font-bold"
               />
             </div>
 
             {/* Master Narrative Lore Field */}
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold">
+                <label className="text-xs font-bold block">
                   Story Lore &amp; Background
                 </label>
                 <button
                   type="button"
                   onClick={() => handleOpenRevisionModal('LORE')}
-                  className="btn btn-ghost btn-xs text-secondary gap-1"
+                  className="text-secondary text-xs hover:underline inline-flex items-center gap-1 bg-transparent border-0 p-0"
                 >
                   <Sparkles className="w-3 h-3" />
                   Revise Lore
@@ -1482,7 +1480,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 value={masterText}
                 onChange={(e) => setMasterText(e.target.value)}
                 rows={5}
-                className="textarea textarea-bordered w-full bg-base-100 text-xs leading-relaxed resize-none"
+                className="w-full text-xs leading-relaxed resize-none"
                 placeholder="Write your story setup here, or click 'Ask AI to Revise' to generate one..."
               />
             </div>
@@ -1492,48 +1490,48 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
         {/* Right Column: Character Dossier & Inspector */}
         <div className="col-span-12 lg:col-span-5 space-y-4">
           {!hasStoryBeenGenerated ? (
-            <div className="card bg-base-200 border border-base-300 p-6 text-center shadow space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto text-primary">
+            <div className="card p-6 text-center space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-sky-50 border border-secondary flex items-center justify-center mx-auto text-secondary">
                 <Lock className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-sm font-bold">
+                <h3 className="text-sm font-bold m-0">
                   Character List Locked
                 </h3>
-                <p className="text-xs text-base-content/70 max-w-sm mx-auto">
+                <p className="text-xs text-[#666] max-w-sm mx-auto m-0">
                   Click "Create Story" above to build your characters, goals, and secret clues.
                 </p>
               </div>
 
-              <div className="card bg-base-100 border border-base-300 p-3 max-w-sm mx-auto text-left space-y-1.5 text-xs">
-                <div className="flex items-center justify-between text-base-content/70">
+              <div className="paper bg-white p-3 max-w-sm mx-auto text-left space-y-1.5 text-xs m-0">
+                <div className="flex items-center justify-between text-[#666]">
                   <span>Reading Level:</span>
-                  <span className="font-semibold text-primary">
+                  <span className="font-bold text-secondary">
                     {READABILITY_CONFIG[readabilityLevel]?.label} ({READABILITY_CONFIG[readabilityLevel]?.gradeLevel})
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-base-content/70">
+                <div className="flex items-center justify-between text-[#666]">
                   <span>Characters:</span>
-                  <span className="font-semibold text-secondary">
+                  <span className="font-bold text-primary">
                     {characterCount} Characters
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-base-content/70">
+                <div className="flex items-center justify-between text-[#666]">
                   <span>Story Lore:</span>
-                  <span className="font-semibold">
+                  <span className="font-bold">
                     {masterText.trim() ? 'Ready' : 'Not entered yet'}
                   </span>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="card bg-base-200 border border-base-300 p-4 shadow space-y-3">
+            <div className="card p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-primary" />
-                  <h2 className="text-sm font-bold">
+                  <h3 className="text-sm font-bold m-0">
                     Characters ({Object.keys(simulationState.characters).length})
-                  </h2>
+                  </h3>
                 </div>
               </div>
 
@@ -1550,24 +1548,22 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     <button
                       key={char.playerId}
                       onClick={() => setSelectedCharacterId(char.playerId)}
-                      className={`btn btn-sm h-auto py-2 flex-col items-start normal-case text-left ${
-                        isSelected
-                          ? 'btn-primary'
-                          : 'btn-outline border-base-300 bg-base-100'
+                      className={`paper-btn btn-small flex flex-col items-start text-left m-0 py-1.5 px-2 ${
+                        isSelected ? 'btn-primary' : 'bg-white'
                       }`}
                     >
                       <div className="font-bold text-xs flex items-center justify-between w-full">
                         <span className="truncate">{char.characterName}</span>
                         {char.assignedUsername ? (
-                          <span className="badge badge-xs badge-success">
+                          <span className="badge success text-[9px] py-0 px-1">
                             @{char.assignedUsername}
                           </span>
                         ) : seatInvite ? (
-                          <span className="badge badge-xs badge-warning">
+                          <span className="badge warning text-[9px] py-0 px-1">
                             Invited
                           </span>
                         ) : char.isAiControlled ? (
-                          <span className="badge badge-xs badge-secondary">
+                          <span className="badge secondary text-[9px] py-0 px-1">
                             AI
                           </span>
                         ) : null}
@@ -1583,14 +1579,14 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
               {selectedChar && (
                 <div className="space-y-3 text-xs">
                   {/* Seat Assignment Card */}
-                  <div className="card bg-base-100 border border-base-300 p-3 flex flex-row items-center justify-between gap-2">
+                  <div className="paper bg-white p-3 flex flex-row items-center justify-between gap-2 m-0 border">
                     <div className="min-w-0">
-                      <div className="text-[10px] text-base-content/60 font-medium">
+                      <div className="text-[10px] text-[#777] font-medium">
                         Player Seat
                       </div>
                       <div className="font-bold flex items-center gap-1.5 mt-0.5">
                         {selectedChar.assignedUserId ? (
-                          <span className="text-success flex items-center gap-1">
+                          <span className="text-emerald-700 flex items-center gap-1">
                             <UserCheck className="w-3.5 h-3.5" />
                             @{selectedChar.assignedUsername}
                           </span>
@@ -1600,13 +1596,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                             AI Controlled
                           </span>
                         ) : (
-                          <span className="text-base-content/60 flex items-center gap-1">
+                          <span className="text-[#666] flex items-center gap-1">
                             <User className="w-3.5 h-3.5" />
                             Open Seat
                           </span>
                         )}
                         {getPendingInvitationForSeat(simulationState.id, selectedChar.playerId) && (
-                          <span className="badge badge-xs badge-warning">
+                          <span className="badge warning text-[10px]">
                             Invite pending
                           </span>
                         )}
@@ -1616,7 +1612,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                     <button
                       type="button"
                       onClick={() => setInviteModalCharId(selectedChar.playerId)}
-                      className="btn btn-xs btn-primary gap-1"
+                      className="paper-btn btn-small btn-primary py-0.5 px-2 inline-flex items-center gap-1"
                     >
                       <UserPlus className="w-3 h-3" />
                       <span>{selectedChar.assignedUserId ? 'Reassign' : 'Invite Player'}</span>
@@ -1624,32 +1620,32 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   </div>
 
                   {/* Character Skills */}
-                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1.5">
-                    <div className="text-[11px] font-semibold text-base-content/70">
+                  <div className="paper bg-white p-3 space-y-1.5 m-0 border">
+                    <div className="text-[11px] font-bold text-[#666]">
                       Skills
                     </div>
                     <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                      <div className="p-1 rounded bg-[#f5f4e6] flex justify-between">
                         <span className="opacity-70">Inquiry:</span>
                         <span className="font-bold">{selectedChar.hiddenStats.inquiry.toFixed(1)}</span>
                       </div>
-                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                      <div className="p-1 rounded bg-[#f5f4e6] flex justify-between">
                         <span className="opacity-70">Pressure:</span>
                         <span className="font-bold">{selectedChar.hiddenStats.coercion.toFixed(1)}</span>
                       </div>
-                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                      <div className="p-1 rounded bg-[#f5f4e6] flex justify-between">
                         <span className="opacity-70">Bargain:</span>
                         <span className="font-bold">{selectedChar.hiddenStats.negotiation.toFixed(1)}</span>
                       </div>
-                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                      <div className="p-1 rounded bg-[#f5f4e6] flex justify-between">
                         <span className="opacity-70">Trick:</span>
                         <span className="font-bold">{selectedChar.hiddenStats.deception.toFixed(1)}</span>
                       </div>
-                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                      <div className="p-1 rounded bg-[#f5f4e6] flex justify-between">
                         <span className="opacity-70">Calm:</span>
                         <span className="font-bold">{selectedChar.hiddenStats.composure.toFixed(1)}</span>
                       </div>
-                      <div className="p-1 rounded bg-base-200 flex justify-between">
+                      <div className="p-1 rounded bg-[#f5f4e6] flex justify-between">
                         <span className="opacity-70">Insight:</span>
                         <span className="font-bold">{selectedChar.hiddenStats.insight.toFixed(1)}</span>
                       </div>
@@ -1657,28 +1653,28 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   </div>
 
                   {/* Character Secret Bio */}
-                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1">
-                    <span className="text-[11px] font-semibold text-base-content/70">
+                  <div className="paper bg-white p-3 space-y-1 m-0 border">
+                    <span className="text-[11px] font-bold text-[#666]">
                       Secret Bio
                     </span>
-                    <p className="text-base-content/80 italic text-xs leading-relaxed">
+                    <p className="italic text-xs leading-relaxed text-[#444] m-0">
                       "{selectedChar.privateNarrativeBio}"
                     </p>
                   </div>
 
                   {/* Starting Clues */}
-                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1.5">
-                    <span className="text-[11px] font-semibold text-base-content/70">
+                  <div className="paper bg-white p-3 space-y-1.5 m-0 border">
+                    <span className="text-[11px] font-bold text-[#666]">
                       Starting Clues ({charCards.length})
                     </span>
                     <div className="space-y-1 max-h-36 overflow-y-auto">
                       {charCards.map((c) => (
                         <div
                           key={c.id}
-                          className="p-1.5 rounded bg-base-200 text-xs flex justify-between items-center"
+                          className="p-1.5 rounded bg-[#f5f4e6] text-xs flex justify-between items-center"
                         >
                           <span className="font-medium truncate">{c.title}</span>
-                          <span className="badge badge-xs badge-ghost shrink-0">
+                          <span className="badge text-[10px] shrink-0">
                             {c.secrecy}
                           </span>
                         </div>
@@ -1694,17 +1690,17 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
       {/* STORY LIBRARY MODAL */}
       {showLibraryModal && (
-        <div className="modal modal-open">
-          <div className="modal-box max-w-4xl bg-base-200 border border-base-300 p-0 overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="paper max-w-4xl w-full bg-[#fffef0] border-2 border-[#41403e] shadow-2xl p-0 overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="p-4 border-b border-base-300 flex items-center justify-between gap-4 bg-base-300/40">
+            <div className="p-4 border-b-2 border-dashed border-[#ccc] flex items-center justify-between gap-4 bg-[#f8f7ea]">
               <div className="flex items-center gap-2">
-                <FolderOpen className="w-5 h-5 text-primary" />
+                <FolderOpen className="w-5 h-5 text-secondary" />
                 <div>
-                  <h2 className="text-base font-bold">
+                  <h3 className="text-base font-bold m-0">
                     Story Library
-                  </h2>
-                  <p className="text-xs text-base-content/70">
+                  </h3>
+                  <p className="text-xs text-[#666] m-0">
                     Pick a story to edit or copy.
                   </p>
                 </div>
@@ -1714,7 +1710,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 <button
                   type="button"
                   onClick={handleCreateNewSimulation}
-                  className="btn btn-primary btn-sm gap-1"
+                  className="paper-btn btn-small btn-primary gap-1 inline-flex items-center"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>New Story</span>
@@ -1722,7 +1718,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowLibraryModal(false)}
-                  className="btn btn-ghost btn-sm btn-square"
+                  className="paper-btn btn-small py-0.5 px-2"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -1730,24 +1726,24 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             </div>
 
             {/* Search & Filter Bar */}
-            <div className="p-3 border-b border-base-300 bg-base-100 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="p-3 border-b border-[#ccc] bg-white flex flex-col sm:flex-row items-center justify-between gap-2">
               <div className="relative w-full sm:w-64">
-                <Search className="w-4 h-4 text-base-content/50 absolute left-3 top-2" />
+                <Search className="w-4 h-4 text-[#777] absolute left-3 top-2.5" />
                 <input
                   type="text"
                   value={librarySearchQuery}
                   onChange={(e) => setLibrarySearchQuery(e.target.value)}
                   placeholder="Search stories..."
-                  className="input input-bordered input-sm pl-9 w-full bg-base-200"
+                  className="pl-9 w-full text-xs"
                 />
               </div>
 
-              <div className="join">
+              <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => setLibraryFilter('ALL')}
-                  className={`join-item btn btn-xs ${
-                    libraryFilter === 'ALL' ? 'btn-primary' : 'btn-ghost'
+                  className={`paper-btn btn-small py-0.5 px-2 ${
+                    libraryFilter === 'ALL' ? 'btn-primary' : ''
                   }`}
                 >
                   All ({allSimulationsList.length})
@@ -1755,8 +1751,8 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 <button
                   type="button"
                   onClick={() => setLibraryFilter('MY_STORIES')}
-                  className={`join-item btn btn-xs ${
-                    libraryFilter === 'MY_STORIES' ? 'btn-primary' : 'btn-ghost'
+                  className={`paper-btn btn-small py-0.5 px-2 ${
+                    libraryFilter === 'MY_STORIES' ? 'btn-primary' : ''
                   }`}
                 >
                   My Stories
@@ -1764,8 +1760,8 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                 <button
                   type="button"
                   onClick={() => setLibraryFilter('DEFAULT')}
-                  className={`join-item btn btn-xs ${
-                    libraryFilter === 'DEFAULT' ? 'btn-primary' : 'btn-ghost'
+                  className={`paper-btn btn-small py-0.5 px-2 ${
+                    libraryFilter === 'DEFAULT' ? 'btn-primary' : ''
                   }`}
                 >
                   Starter Stories
@@ -1776,7 +1772,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
             {/* Story Cards Grid */}
             <div className="p-4 overflow-y-auto max-h-[60vh] space-y-2">
               {filteredLibrarySimulations.length === 0 ? (
-                <div className="p-8 text-center text-base-content/50 text-xs">
+                <div className="p-8 text-center text-[#777] text-xs">
                   No stories found.
                 </div>
               ) : (
@@ -1792,10 +1788,10 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   return (
                     <div
                       key={sim.id}
-                      className={`card bg-base-100 border p-3 transition-all ${
+                      className={`paper p-3 transition-all m-0 border-2 ${
                         isCurrent
-                          ? 'border-primary ring-1 ring-primary'
-                          : 'border-base-300'
+                          ? 'border-primary bg-[#fffbf0]'
+                          : 'bg-white'
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1805,27 +1801,27 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                               {sim.title}
                             </span>
                             {isCurrent && (
-                              <span className="badge badge-xs badge-primary">
+                              <span className="badge primary">
                                 Current
                               </span>
                             )}
                             {isBuiltIn && (
-                              <span className="badge badge-xs badge-ghost">
+                              <span className="badge">
                                 Starter
                               </span>
                             )}
                             {sim.voiceStyle && (
-                              <span className="badge badge-xs badge-secondary">
+                              <span className="badge secondary">
                                 {sim.voiceStyle.name}
                               </span>
                             )}
                           </div>
 
-                          <p className="text-xs text-base-content/70 line-clamp-1">
+                          <p className="text-xs text-[#555] line-clamp-1 m-0">
                             {sim.masterNarrative || 'No story details yet.'}
                           </p>
 
-                          <div className="flex items-center gap-2 text-[11px] text-base-content/50">
+                          <div className="flex items-center gap-2 text-[11px] text-[#777]">
                             <span>{Object.keys(sim.cards).length} Clues</span>
                             <span>•</span>
                             <span>{Object.keys(sim.characters).length} Characters</span>
@@ -1836,7 +1832,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                           <button
                             type="button"
                             onClick={() => handleMakeCopy(sim)}
-                            className="btn btn-outline btn-xs gap-1"
+                            className="paper-btn btn-small gap-1 inline-flex items-center"
                           >
                             <Copy className="w-3 h-3" />
                             <span>Copy</span>
@@ -1846,8 +1842,8 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                             type="button"
                             onClick={() => handleOpenStorylineFromLibrary(sim)}
                             disabled={isCurrent}
-                            className={`btn btn-xs ${
-                              isCurrent ? 'btn-disabled' : 'btn-primary'
+                            className={`paper-btn btn-small inline-flex items-center gap-1 ${
+                              isCurrent ? 'disabled' : 'btn-primary'
                             }`}
                           >
                             <Edit3 className="w-3 h-3" />
@@ -1866,17 +1862,17 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
 
       {/* AI STORY REVISION MODAL */}
       {showRevisionModal && (
-        <div className="modal modal-open">
-          <div className="modal-box max-w-3xl bg-base-200 border border-base-300 p-0 overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="paper max-w-3xl w-full bg-[#fffef0] border-2 border-[#41403e] shadow-2xl p-0 overflow-hidden flex flex-col">
             {/* Header */}
-            <div className="p-4 border-b border-base-300 flex items-center justify-between gap-4 bg-base-300/40">
+            <div className="p-4 border-b-2 border-dashed border-[#ccc] flex items-center justify-between gap-4 bg-[#f8f7ea]">
               <div className="flex items-center gap-2">
                 <Wand2 className="w-5 h-5 text-secondary" />
                 <div>
-                  <h2 className="text-base font-bold flex items-center gap-2">
-                    <span>Ask AI to Revise Story</span>
-                  </h2>
-                  <p className="text-xs text-base-content/70">
+                  <h3 className="text-base font-bold m-0">
+                    Ask AI to Revise Story
+                  </h3>
+                  <p className="text-xs text-[#666] m-0">
                     Tell the AI what changes you want in your story.
                   </p>
                 </div>
@@ -1888,7 +1884,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   setShowRevisionModal(false);
                   setRevisionResult(null);
                 }}
-                className="btn btn-ghost btn-sm btn-square"
+                className="paper-btn btn-small py-0.5 px-2"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1898,20 +1894,20 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
               {!revisionResult ? (
                 /* PHASE 1: PROMPT INPUT */
                 <div className="space-y-3">
-                  <div className="card bg-base-100 border border-base-300 p-3 space-y-1 text-xs">
-                    <span className="font-semibold text-base-content/60">
+                  <div className="paper bg-white p-3 space-y-1 text-xs m-0 border">
+                    <span className="font-bold text-[#666]">
                       Current Story
                     </span>
                     <div className="font-bold text-sm">
                       {scenarioTitle || 'Untitled Story'}
                     </div>
-                    <p className="text-base-content/70 italic text-xs line-clamp-2">
+                    <p className="italic text-xs line-clamp-2 text-[#555] m-0">
                       "{masterText || 'No story details yet.'}"
                     </p>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-bold">
+                    <label className="text-xs font-bold block">
                       What changes would you like?
                     </label>
                     <textarea
@@ -1919,13 +1915,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                       onChange={(e) => setRevisionUserPrompt(e.target.value)}
                       rows={3}
                       placeholder="e.g. Add a secret traitor, make the setting a snowy mountain lodge, and add more suspense..."
-                      className="textarea textarea-bordered w-full bg-base-100 text-xs resize-none"
+                      className="w-full text-xs resize-none"
                     />
                   </div>
 
                   {/* Quick Ideas */}
                   <div className="space-y-1">
-                    <span className="text-[11px] text-base-content/60">
+                    <span className="text-[11px] text-[#777]">
                       Quick ideas:
                     </span>
                     <div className="flex flex-wrap gap-1">
@@ -1944,7 +1940,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                               prev ? `${prev}. ${chip}` : chip
                             )
                           }
-                          className="btn btn-xs btn-outline font-normal"
+                          className="paper-btn btn-small py-0.5 px-2 text-xs"
                         >
                           + {chip}
                         </button>
@@ -1953,12 +1949,12 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   </div>
 
                   {/* Action Row */}
-                  <div className="pt-2 border-t border-base-300 flex items-center justify-end">
+                  <div className="pt-2 border-t border-dashed border-[#ccc] flex items-center justify-end">
                     <button
                       type="button"
                       onClick={handleExecuteStorylineRevision}
                       disabled={isRevisingStoryline || !revisionUserPrompt.trim()}
-                      className="btn btn-primary btn-sm gap-1"
+                      className="paper-btn btn-primary btn-small gap-1 inline-flex items-center"
                     >
                       {isRevisingStoryline ? (
                         <>
@@ -1977,19 +1973,19 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
               ) : (
                 /* PHASE 2: REVIEW & APPROVE */
                 <div className="space-y-3">
-                  <div className="card bg-base-100 border border-success/40 p-3 space-y-1">
-                    <div className="flex items-center gap-1.5 text-success text-xs font-bold">
+                  <div className="alert alert-success p-3 space-y-1 text-xs">
+                    <div className="flex items-center gap-1.5 font-bold">
                       <CheckCircle className="w-4 h-4" />
                       <span>Changes Ready for Review</span>
                     </div>
-                    <p className="text-xs text-base-content/80">
+                    <p className="text-xs m-0">
                       {revisionResult.changeSummary}
                     </p>
                   </div>
 
                   <div className="space-y-2">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold">
+                      <label className="text-xs font-bold block">
                         New Title
                       </label>
                       <input
@@ -1998,13 +1994,13 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         onChange={(e) =>
                           setEditableRevisedTitle(e.target.value)
                         }
-                        className="input input-bordered input-sm w-full bg-base-100 font-semibold"
+                        className="w-full text-sm font-bold"
                       />
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <label className="text-xs font-bold">
+                        <label className="text-xs font-bold block">
                           New Story Lore
                         </label>
                         <button
@@ -2012,7 +2008,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                           onClick={() =>
                             setShowOriginalComparison((prev) => !prev)
                           }
-                          className="btn btn-ghost btn-xs text-secondary"
+                          className="text-secondary text-xs hover:underline bg-transparent border-0 p-0"
                         >
                           {showOriginalComparison ? 'Hide Old' : 'Compare Old'}
                         </button>
@@ -2023,16 +2019,16 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                           setEditableRevisedLore(e.target.value)
                         }
                         rows={5}
-                        className="textarea textarea-bordered w-full bg-base-100 text-xs resize-none"
+                        className="w-full text-xs resize-none"
                       />
                     </div>
 
                     {showOriginalComparison && (
-                      <div className="card bg-base-100 border border-base-300 p-2 text-xs">
-                        <span className="text-[10px] text-base-content/50 uppercase">
+                      <div className="paper bg-white p-2 text-xs m-0 border">
+                        <span className="text-[10px] text-[#777] uppercase block font-bold">
                           Old Story
                         </span>
-                        <p className="text-base-content/70 italic text-xs">
+                        <p className="italic text-xs text-[#555] m-0">
                           "{masterText || 'None'}"
                         </p>
                       </div>
@@ -2040,11 +2036,11 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                   </div>
 
                   {/* Buttons */}
-                  <div className="pt-2 border-t border-base-300 flex items-center justify-between gap-2">
+                  <div className="pt-2 border-t border-dashed border-[#ccc] flex items-center justify-between gap-2">
                     <button
                       type="button"
                       onClick={() => setRevisionResult(null)}
-                      className="btn btn-ghost btn-xs gap-1"
+                      className="paper-btn btn-small gap-1 inline-flex items-center"
                     >
                       <ArrowLeft className="w-3.5 h-3.5" />
                       <span>Change Prompt</span>
@@ -2054,7 +2050,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                       <button
                         type="button"
                         onClick={handleApproveStorylineToStudio}
-                        className="btn btn-outline btn-sm gap-1"
+                        className="paper-btn btn-small gap-1 inline-flex items-center"
                       >
                         <Check className="w-3.5 h-3.5" />
                         <span>Accept Story</span>
@@ -2064,7 +2060,7 @@ export const AuthoringStudio: React.FC<AuthoringStudioProps> = ({
                         type="button"
                         onClick={handleApproveAndDiceIntoCards}
                         disabled={isCompiling}
-                        className="btn btn-primary btn-sm gap-1"
+                        className="paper-btn btn-small btn-primary gap-1 inline-flex items-center"
                       >
                         <Sparkles className="w-3.5 h-3.5" />
                         <span>Accept &amp; Create Characters</span>

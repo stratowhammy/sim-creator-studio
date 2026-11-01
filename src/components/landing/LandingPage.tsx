@@ -3,13 +3,11 @@ import { SimulationState, SpeechStyle } from '../../types/simulation';
 import { UserAccount } from '../../types/user';
 import {
   ArrowRight,
-  Coins,
   LogIn,
   Mic,
   Play,
   Sparkles,
   UserPlus,
-  Users,
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -47,110 +45,107 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen w-screen overflow-y-auto bg-base-100 text-base-content select-text font-sans">
+    <div className="min-h-screen w-screen overflow-y-auto bg-[#fffef0] text-[#41403e] select-text">
       {/* ==================================================================== */}
-      {/* DAISYUI NAVBAR                                                       */}
+      {/* PAPER.CSS NAVBAR                                                     */}
       {/* ==================================================================== */}
-      <header className="navbar bg-base-200/90 backdrop-blur border-b border-base-300 sticky top-0 z-30 px-4 sm:px-8">
-        <div className="navbar-start gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center font-bold">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <span className="font-bold text-lg tracking-tight">Sim Creator Studio</span>
+      <nav className="border split-nav sticky top-0 z-30 bg-[#fffef0] px-4 py-2">
+        <div className="nav-brand flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-secondary" />
+          <h3 className="m-0 font-bold tracking-tight">Sim Creator Studio</h3>
         </div>
 
-        <div className="navbar-center hidden md:flex">
-          <ul className="menu menu-horizontal px-1 gap-2 text-sm">
-            <li><a href="#how-it-works" className="rounded-lg">How It Works</a></li>
-            <li><a href="#voices" className="rounded-lg">Voices</a></li>
-            <li><a href="#games" className="rounded-lg">Games</a></li>
+        <div className="collapsible">
+          <ul className="inline flex items-center gap-2 m-0 p-0">
+            <li><a href="#how-it-works" className="text-sm">How It Works</a></li>
+            <li><a href="#voices" className="text-sm">Voices</a></li>
+            <li><a href="#games" className="text-sm">Games</a></li>
+            <li>
+              <a
+                href="/?portal=login"
+                onClick={(e) => handleLinkClick(e, onNavigateLogin)}
+                className="paper-btn btn-small btn-secondary-outline inline-flex items-center gap-1"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                Sign In
+              </a>
+            </li>
+            {!currentUser && (
+              <li>
+                <a
+                  href="/?portal=register"
+                  onClick={(e) => handleLinkClick(e, onNavigateRegister)}
+                  className="paper-btn btn-small inline-flex items-center gap-1"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  Sign Up
+                </a>
+              </li>
+            )}
+            <li>
+              <a
+                href="/?portal=app"
+                onClick={(e) => handleLinkClick(e, onLaunchApp)}
+                className="paper-btn btn-small btn-primary inline-flex items-center gap-1"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                {currentUser ? 'Open App' : 'Launch App'}
+              </a>
+            </li>
           </ul>
         </div>
-
-        <div className="navbar-end gap-2">
-          <a
-            href="/?portal=login"
-            onClick={(e) => handleLinkClick(e, onNavigateLogin)}
-            className="btn btn-ghost btn-sm"
-          >
-            <LogIn className="w-4 h-4" />
-            Sign In
-          </a>
-
-          {!currentUser && (
-            <a
-              href="/?portal=register"
-              onClick={(e) => handleLinkClick(e, onNavigateRegister)}
-              className="btn btn-outline btn-sm hidden sm:inline-flex"
-            >
-              <UserPlus className="w-4 h-4" />
-              Sign Up
-            </a>
-          )}
-
-          <a
-            href="/?portal=app"
-            onClick={(e) => handleLinkClick(e, onLaunchApp)}
-            className="btn btn-primary btn-sm"
-          >
-            <Play className="w-3.5 h-3.5 fill-current" />
-            {currentUser ? 'Open App' : 'Launch App'}
-          </a>
-        </div>
-      </header>
+      </nav>
 
       {/* ==================================================================== */}
       {/* HERO SECTION                                                         */}
       {/* ==================================================================== */}
-      <section className="hero py-12 sm:py-20 px-4 sm:px-8 max-w-6xl mx-auto">
-        <div className="hero-content text-center flex-col max-w-3xl">
-          <div className="badge badge-primary badge-outline gap-1.5 py-3 px-4 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            Story &amp; Mystery Games
+      <section className="py-12 sm:py-16 px-4 sm:px-8 max-w-5xl mx-auto text-center">
+        <span className="badge secondary gap-1 text-sm py-1 px-3">
+          <Sparkles className="w-3.5 h-3.5 inline mr-1" />
+          Story &amp; Mystery Games
+        </span>
+
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mt-4 mb-3">
+          Build and Play Story Games with Friends
+        </h1>
+
+        <p className="text-lg text-[#555] max-w-xl mx-auto mb-6">
+          Create mystery games, take on character roles, and trade secret clues to solve the story together.
+        </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+          <a
+            href="/?portal=app"
+            onClick={(e) => handleLinkClick(e, onLaunchApp)}
+            className="paper-btn btn-primary inline-flex items-center gap-2 text-base px-5 py-2"
+          >
+            <Play className="w-4 h-4 fill-current" />
+            {currentUser ? `Play as @${currentUser.username}` : 'Start Playing'}
+          </a>
+
+          <a
+            href="/?portal=login"
+            onClick={(e) => handleLinkClick(e, onNavigateLogin)}
+            className="paper-btn btn-secondary inline-flex items-center gap-2 text-base px-5 py-2"
+          >
+            <LogIn className="w-4 h-4" />
+            Demo Sign In
+          </a>
+        </div>
+
+        {/* Paper Quick Stats */}
+        <div className="paper max-w-2xl mx-auto grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div className="text-xs uppercase tracking-wider text-[#777]">Ready Games</div>
+            <div className="text-3xl font-bold text-primary">{publishedSims.length}</div>
           </div>
-
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight mt-2">
-            Build and Play Story Games with Friends
-          </h1>
-
-          <p className="text-base sm:text-lg text-base-content/80 max-w-xl leading-relaxed">
-            Create mystery games, take on character roles, and trade secret clues to solve the story together.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
-            <a
-              href="/?portal=app"
-              onClick={(e) => handleLinkClick(e, onLaunchApp)}
-              className="btn btn-primary btn-md gap-2"
-            >
-              <Play className="w-4 h-4 fill-current" />
-              {currentUser ? `Play as @${currentUser.username}` : 'Start Playing'}
-            </a>
-
-            <a
-              href="/?portal=login"
-              onClick={(e) => handleLinkClick(e, onNavigateLogin)}
-              className="btn btn-outline btn-md gap-2"
-            >
-              <LogIn className="w-4 h-4" />
-              Demo Sign In
-            </a>
+          <div>
+            <div className="text-xs uppercase tracking-wider text-[#777]">Author Voices</div>
+            <div className="text-3xl font-bold text-secondary">{voices.length}</div>
           </div>
-
-          {/* Clean Quick Stats */}
-          <div className="stats shadow bg-base-200 border border-base-300 mt-8 w-full max-w-xl">
-            <div className="stat place-items-center py-3">
-              <div className="stat-title text-xs">Ready Games</div>
-              <div className="stat-value text-2xl text-primary">{publishedSims.length}</div>
-            </div>
-            <div className="stat place-items-center py-3">
-              <div className="stat-title text-xs">Author Voices</div>
-              <div className="stat-value text-2xl text-secondary">{voices.length}</div>
-            </div>
-            <div className="stat place-items-center py-3">
-              <div className="stat-title text-xs">Starting Sims</div>
-              <div className="stat-value text-2xl text-accent">100</div>
-            </div>
+          <div>
+            <div className="text-xs uppercase tracking-wider text-[#777]">Starting Sims</div>
+            <div className="text-3xl font-bold text-success">100</div>
           </div>
         </div>
       </section>
@@ -158,38 +153,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ==================================================================== */}
       {/* 3 HOW IT WORKS CARDS                                                 */}
       {/* ==================================================================== */}
-      <section id="how-it-works" className="max-w-6xl mx-auto px-4 sm:px-8 py-10">
+      <section id="how-it-works" className="max-w-5xl mx-auto px-4 sm:px-8 py-10">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold">How It Works</h2>
-          <p className="text-sm text-base-content/70 mt-1">Simple steps to create and play.</p>
+          <h2 className="text-3xl font-bold">How It Works</h2>
+          <p className="text-sm text-[#666] mt-1">Simple steps to create and play.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="card bg-base-200 border border-base-300 shadow">
+          <div className="card">
             <div className="card-body">
-              <span className="badge badge-primary">1. Create</span>
-              <h3 className="card-title text-base mt-2">Write Your Story</h3>
-              <p className="text-xs text-base-content/70 leading-relaxed">
+              <span className="badge primary self-start">1. Create</span>
+              <h4 className="card-title text-lg mt-2">Write Your Story</h4>
+              <p className="card-text text-sm text-[#555]">
                 Type an idea or let AI write one for you. Choose how many characters will play.
               </p>
             </div>
           </div>
 
-          <div className="card bg-base-200 border border-base-300 shadow">
+          <div className="card">
             <div className="card-body">
-              <span className="badge badge-secondary">2. Play</span>
-              <h3 className="card-title text-base mt-2">Trade Secret Clues</h3>
-              <p className="text-xs text-base-content/70 leading-relaxed">
+              <span className="badge secondary self-start">2. Play</span>
+              <h4 className="card-title text-lg mt-2">Trade Secret Clues</h4>
+              <p className="card-text text-sm text-[#555]">
                 Each character gets their own clues. Talk with other players to trade info and complete your goal.
               </p>
             </div>
           </div>
 
-          <div className="card bg-base-200 border border-base-300 shadow">
+          <div className="card">
             <div className="card-body">
-              <span className="badge badge-accent">3. Invite</span>
-              <h3 className="card-title text-base mt-2">Invite Players</h3>
-              <p className="text-xs text-base-content/70 leading-relaxed">
+              <span className="badge success self-start">3. Invite</span>
+              <h4 className="card-title text-lg mt-2">Invite Players</h4>
+              <p className="card-text text-sm text-[#555]">
                 Search friends by username to fill a character seat, or transfer your seat to another user anytime.
               </p>
             </div>
@@ -200,13 +195,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ==================================================================== */}
       {/* AI AUTHOR VOICES SECTION                                             */}
       {/* ==================================================================== */}
-      <section id="voices" className="max-w-6xl mx-auto px-4 sm:px-8 py-10 border-t border-base-300">
+      <section id="voices" className="max-w-5xl mx-auto px-4 sm:px-8 py-10 border-t-2 border-dashed border-[#ccc]">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold">Writing Voices</h2>
-          <p className="text-sm text-base-content/70 mt-1">Choose how the AI speaks in your game.</p>
+          <h2 className="text-3xl font-bold">Writing Voices</h2>
+          <p className="text-sm text-[#666] mt-1">Choose how the AI speaks in your game.</p>
         </div>
 
-        <div className="card bg-base-200 border border-base-300 shadow max-w-3xl mx-auto">
+        <div className="card max-w-3xl mx-auto">
           <div className="card-body space-y-4">
             <div className="flex flex-wrap gap-2 justify-center">
               {voices.map((v) => (
@@ -214,24 +209,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   key={v.id}
                   type="button"
                   onClick={() => setSelectedVoiceId(v.id)}
-                  className={`btn btn-sm ${
-                    v.id === selectedVoiceId ? 'btn-primary' : 'btn-ghost border-base-300'
+                  className={`paper-btn btn-small ${
+                    v.id === selectedVoiceId ? 'btn-primary' : 'btn-secondary-outline'
                   }`}
                 >
-                  <Mic className="w-3.5 h-3.5" />
+                  <Mic className="w-3.5 h-3.5 inline mr-1" />
                   {v.name}
                 </button>
               ))}
             </div>
 
             {activeVoice && (
-              <div className="p-4 rounded-xl bg-base-100 border border-base-300 space-y-2">
+              <div className="paper bg-white p-4 space-y-2 border">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm text-primary">{activeVoice.name}</span>
-                  <span className="badge badge-sm badge-outline">{activeVoice.genre}</span>
+                  <span className="font-bold text-base text-primary">{activeVoice.name}</span>
+                  <span className="badge secondary">{activeVoice.genre}</span>
                 </div>
-                <p className="text-xs text-base-content/70">{activeVoice.tagline}</p>
-                <div className="p-3 rounded-lg bg-base-200 text-xs italic text-base-content/90 border border-base-300">
+                <p className="text-sm text-[#666] m-0">{activeVoice.tagline}</p>
+                <div className="p-3 bg-[#faf9ee] border border-dashed rounded text-sm italic text-[#444] mt-2">
                   &ldquo;{activeVoice.sampleLine}&rdquo;
                 </div>
               </div>
@@ -243,17 +238,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ==================================================================== */}
       {/* AVAILABLE GAMES LIBRARY                                              */}
       {/* ==================================================================== */}
-      <section id="games" className="max-w-6xl mx-auto px-4 sm:px-8 py-10 border-t border-base-300">
+      <section id="games" className="max-w-5xl mx-auto px-4 sm:px-8 py-10 border-t-2 border-dashed border-[#ccc]">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold">Available Games</h2>
-            <p className="text-sm text-base-content/70 mt-1">Pick a game to start playing.</p>
+            <h2 className="text-3xl font-bold">Available Games</h2>
+            <p className="text-sm text-[#666] mt-1">Pick a game to start playing.</p>
           </div>
 
           <a
             href="/?portal=app"
             onClick={(e) => handleLinkClick(e, onLaunchApp)}
-            className="btn btn-outline btn-sm"
+            className="paper-btn btn-small btn-secondary inline-flex items-center gap-1"
           >
             View All in App
             <ArrowRight className="w-3.5 h-3.5" />
@@ -262,34 +257,36 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {publishedSims.map((sim) => (
-            <div key={sim.id} className="card bg-base-200 border border-base-300 shadow">
-              <div className="card-body">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="badge badge-sm badge-secondary">
-                    {sim.complexityTier ?? 'STANDARD'}
-                  </span>
-                  <span className="badge badge-sm badge-ghost font-mono">
-                    {sim.usageCostSims ?? 4} Sims
-                  </span>
+            <div key={sim.id} className="card">
+              <div className="card-body flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="badge secondary">
+                      {sim.complexityTier ?? 'STANDARD'}
+                    </span>
+                    <span className="badge">
+                      {sim.usageCostSims ?? 4} Sims
+                    </span>
+                  </div>
+
+                  <h4 className="card-title text-lg mb-1">{sim.title}</h4>
+
+                  {sim.voiceStyle && (
+                    <div className="text-xs text-secondary font-bold mb-2">
+                      Voice: {sim.voiceStyle.name}
+                    </div>
+                  )}
+
+                  <p className="card-text text-sm text-[#555] line-clamp-3">
+                    {sim.masterNarrative}
+                  </p>
                 </div>
 
-                <h3 className="card-title text-base mt-1">{sim.title}</h3>
-
-                {sim.voiceStyle && (
-                  <span className="text-[11px] text-primary font-medium">
-                    Voice: {sim.voiceStyle.name}
-                  </span>
-                )}
-
-                <p className="text-xs text-base-content/70 line-clamp-3">
-                  {sim.masterNarrative}
-                </p>
-
-                <div className="card-actions justify-end mt-4 pt-3 border-t border-base-300">
+                <div className="mt-4 pt-3 border-t border-dashed border-[#ddd] flex justify-end">
                   <a
                     href="/?portal=app"
                     onClick={(e) => handleLinkClick(e, onLaunchApp)}
-                    className="btn btn-primary btn-xs"
+                    className="paper-btn btn-small btn-primary"
                   >
                     Play Game
                   </a>
@@ -303,17 +300,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ==================================================================== */}
       {/* SIMPLE FOOTER                                                        */}
       {/* ==================================================================== */}
-      <footer className="footer footer-center p-6 bg-base-200 text-base-content/60 border-t border-base-300 text-xs">
-        <div className="flex flex-wrap items-center justify-between w-full max-w-6xl mx-auto gap-4">
-          <p>Sim Creator Studio — Story &amp; Mystery Games</p>
+      <footer className="border-t-2 border-[#41403e] py-6 px-4 bg-[#f8f7ea] text-sm text-[#666] mt-12">
+        <div className="flex flex-wrap items-center justify-between max-w-5xl mx-auto gap-4">
+          <p className="m-0 font-bold">Sim Creator Studio — Story &amp; Mystery Games</p>
           <div className="flex gap-4">
-            <a href="/?portal=login" onClick={(e) => handleLinkClick(e, onNavigateLogin)} className="link link-hover">
+            <a href="/?portal=login" onClick={(e) => handleLinkClick(e, onNavigateLogin)} className="hover:underline">
               Sign In
             </a>
-            <a href="/?portal=register" onClick={(e) => handleLinkClick(e, onNavigateRegister)} className="link link-hover">
+            <a href="/?portal=register" onClick={(e) => handleLinkClick(e, onNavigateRegister)} className="hover:underline">
               Create Account
             </a>
-            <a href="/?portal=app" onClick={(e) => handleLinkClick(e, onLaunchApp)} className="link link-hover font-bold text-primary">
+            <a href="/?portal=app" onClick={(e) => handleLinkClick(e, onLaunchApp)} className="hover:underline font-bold text-secondary">
               Launch App
             </a>
           </div>

@@ -38,57 +38,57 @@ export const GoalTrackerCard: React.FC<GoalTrackerCardProps> = ({
     const isPersonalGoal = !currentPlayerId || goal.assignedPlayerId === currentPlayerId;
     return (
       <div
-        className={`rounded-lg border p-4 transition-all text-xs ${
+        className={`paper p-4 m-0 transition-all text-xs bg-white border-2 ${
           isCompletedByCurrent
-            ? 'bg-emerald-950/20 border-emerald-700/60'
-            : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+            ? 'border-emerald-600 bg-emerald-50/40'
+            : 'border-[#41403e]'
         }`}
       >
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center gap-1.5">
-            <Compass className="w-4 h-4 text-sky-400" />
-            <span className="font-semibold text-slate-200 text-xs">
+            <Compass className="w-4 h-4 text-secondary" />
+            <span className="font-bold text-xs">
               {isPersonalGoal ? 'Personal Mystery Objective' : 'Uncovered Objective'}
             </span>
           </div>
 
           {isCompletedByCurrent ? (
-            <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="badge success gap-1 font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5 inline mr-1" />
               RESOLVED
             </span>
           ) : (
-            <span className="text-[11px] font-medium text-sky-300 bg-sky-950/60 px-2 py-0.5 rounded border border-sky-800/60">
+            <span className="badge secondary">
               Active Investigation
             </span>
           )}
         </div>
 
-        <p className="text-slate-200 font-sans leading-relaxed mb-3.5 italic">
+        <p className="leading-relaxed mb-3.5 italic text-[#444] text-xs">
           "{goal.veiledPrompt}"
         </p>
 
         {/* Progress Bar */}
         <div className="mb-3">
-          <div className="flex justify-between text-[11px] text-slate-400 mb-1">
+          <div className="flex justify-between text-[11px] text-[#666] mb-1">
             <span>Corroborating Leads Uncovered</span>
-            <span className={ownedCount === totalRequired ? 'text-emerald-400 font-bold' : 'text-slate-300'}>
+            <span className={ownedCount === totalRequired ? 'text-emerald-700 font-bold' : 'font-bold'}>
               {ownedCount} of {totalRequired}
             </span>
           </div>
-          <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+          <div className="progress w-full h-3 bg-[#e8e6d1] border border-[#41403e] rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
-                isCompletedByCurrent ? 'bg-emerald-500' : 'bg-sky-500'
+                isCompletedByCurrent ? 'bg-emerald-600' : 'bg-secondary'
               }`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
 
-        {/* Player-Safe Leads List (Never reveals unknown card IDs or titles) */}
-        <div className="space-y-1.5 bg-slate-950/40 p-2.5 rounded border border-slate-800/80">
-          <span className="text-[10px] uppercase tracking-wider text-slate-400 block mb-1">
+        {/* Player-Safe Leads List */}
+        <div className="space-y-1.5 bg-[#fdfbf2] p-2.5 rounded border border-[#ddd]">
+          <span className="text-[10px] uppercase font-bold text-[#777] block mb-1">
             Evidence Trail:
           </span>
           {goal.requiredCardIds.map((reqId, index) => {
@@ -97,22 +97,22 @@ export const GoalTrackerCard: React.FC<GoalTrackerCardProps> = ({
             return (
               <div
                 key={index}
-                className={`flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded ${
+                className={`flex items-center justify-between text-[11px] px-2.5 py-1.5 rounded border ${
                   isOwned
-                    ? 'bg-emerald-950/30 text-emerald-200 border border-emerald-800/40'
-                    : 'bg-slate-900/60 text-slate-500 border border-slate-800/80 italic'
+                    ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold'
+                    : 'bg-white border-[#e5e5e5] text-[#888]'
                 }`}
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2 truncate">
                   {isOwned ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <KeyRound className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                   ) : (
-                    <Circle className="w-3.5 h-3.5 text-slate-600 shrink-0" />
+                    <Circle className="w-3 h-3 text-[#aaa] shrink-0" />
                   )}
-                  <span>{cardTitle}</span>
-                </span>
-                <span className="text-[10px] text-slate-400 not-italic">
-                  {isOwned ? 'Confirmed' : 'Unknown'}
+                  <span className="truncate">{cardTitle}</span>
+                </div>
+                <span className="text-[10px] uppercase font-bold shrink-0">
+                  {isOwned ? 'Confirmed' : 'Pending'}
                 </span>
               </div>
             );
@@ -122,143 +122,77 @@ export const GoalTrackerCard: React.FC<GoalTrackerCardProps> = ({
     );
   }
 
-  // ADMIN VIEW: Full server-side Goal telemetry
-  const assignedName = characterNamesById[goal.assignedPlayerId] ?? goal.assignedPlayerId;
-
+  // Admin View
   return (
     <div
-      className={`rounded-lg border p-3.5 transition-all text-xs ${
+      className={`paper p-3.5 m-0 transition-all text-xs bg-white border-2 ${
         isCompletedByCurrent
-          ? 'bg-emerald-950/20 border-emerald-700/60'
-          : progressPercent === 100
-          ? 'bg-amber-950/20 border-amber-500/60'
-          : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+          ? 'border-emerald-600 bg-emerald-50/40'
+          : 'border-[#41403e]'
       }`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <KeyRound className="w-4 h-4 text-sky-400" />
-          <span className="font-semibold text-slate-200 text-xs">Mystery Goal</span>
-          <span className="text-[10px] font-mono text-slate-500">#{goal.id}</span>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-sky-300">
-            Assigned: {assignedName}
+          <span className="badge secondary font-bold">
+            Assigned: {characterNamesById[goal.assignedPlayerId] ?? goal.assignedPlayerId}
           </span>
+          <span className="text-[10px] text-[#777]">#{goal.id}</span>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          {isCompletedByCurrent ? (
-            <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              SOLVED
-            </span>
-          ) : (
-            <span className="flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
-              <Award className="w-3.5 h-3.5" />
-              {currentAvailableVp} VP
-            </span>
-          )}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="badge warning font-bold">
+            <Award className="w-3 h-3 inline mr-1 text-amber-700" />
+            {currentAvailableVp} VP
+          </span>
         </div>
       </div>
 
-      <p className="text-slate-300 font-sans leading-relaxed mb-3 italic">
+      <p className="leading-relaxed mb-2 italic text-[#444] text-xs">
         "{goal.veiledPrompt}"
       </p>
 
-      {/* Progress Bar */}
-      <div className="mb-2.5">
-        <div className="flex justify-between text-[11px] text-slate-400 mb-1 font-mono">
-          <span>Clue Cards Gathered (Selected Player)</span>
-          <span className={ownedCount === totalRequired ? 'text-emerald-400 font-bold' : 'text-slate-300'}>
+      {/* Progress */}
+      <div className="mb-2">
+        <div className="flex justify-between text-[11px] text-[#666] mb-1">
+          <span>Required Clues Collected</span>
+          <span className="font-bold">
             {ownedCount} / {totalRequired} ({progressPercent}%)
           </span>
         </div>
-        <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+        <div className="progress w-full h-2.5 bg-[#e8e6d1] border border-[#41403e] rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-300 ${
-              isCompletedByCurrent
-                ? 'bg-emerald-500'
-                : progressPercent === 100
-                ? 'bg-amber-400 animate-pulse'
-                : 'bg-sky-500'
+              isCompletedByCurrent ? 'bg-emerald-600' : 'bg-secondary'
             }`}
             style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
-      {/* Requirements Matrix (Admin Full IDs) */}
-      <div className="space-y-1 mb-2.5 bg-slate-950/40 p-2 rounded border border-slate-800/80">
-        <span className="text-[10px] uppercase tracking-wider text-slate-400 font-mono block mb-1">
-          Required Cards (DAG Dependencies):
-        </span>
-        <div className="grid grid-cols-1 gap-1">
-          {goal.requiredCardIds.map((reqId) => {
-            const isOwned = ownedCardIds.includes(reqId);
-            const cardObj = cardsById[reqId];
-            return (
-              <div
-                key={reqId}
-                className={`flex items-center justify-between text-[11px] px-2 py-1 rounded font-mono ${
-                  isOwned
-                    ? 'bg-emerald-950/30 text-emerald-300 border border-emerald-800/40'
-                    : 'bg-slate-900/60 text-slate-400 border border-slate-800'
-                }`}
-              >
-                <span className="flex items-center gap-1.5 truncate">
-                  {isOwned ? (
-                    <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
-                  ) : (
-                    <Circle className="w-3 h-3 text-slate-600 shrink-0" />
-                  )}
-                  <span className="truncate">
-                    #{reqId} {cardObj ? `(${cardObj.title})` : ''}
-                  </span>
-                </span>
-                <span className="text-[10px] text-slate-400 font-sans shrink-0 ml-2">
-                  {isOwned ? 'In Hand' : 'Missing'}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Exclusivity Decay Tiers */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 text-[10px] text-slate-400 font-mono">
-        <span className="flex items-center gap-1">
-          <Clock className="w-3 h-3 text-slate-500" />
-          Decay Tiers:
-        </span>
-        <div className="flex items-center gap-1.5">
-          {goal.decayMultipliers.map((mult, idx) => {
-            const isCurrent = idx === currentMultiplierIndex;
-            const isPast = idx < currentMultiplierIndex;
-            return (
-              <span
-                key={idx}
-                className={`px-1.5 py-0.5 rounded text-[10px] ${
-                  isCurrent
-                    ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40'
-                    : isPast
-                    ? 'text-slate-400 line-through'
-                    : 'text-slate-400 bg-slate-900'
-                }`}
-              >
-                #{idx + 1}: {Math.round(goal.baseVpValue * mult)} VP
+      {/* Clues Table */}
+      <div className="space-y-1 bg-[#fdfbf2] p-2 rounded border border-[#ddd]">
+        {goal.requiredCardIds.map((reqId) => {
+          const isOwned = ownedCardIds.includes(reqId);
+          const card = cardsById[reqId];
+          return (
+            <div
+              key={reqId}
+              className={`flex items-center justify-between text-[11px] px-2 py-1 rounded border ${
+                isOwned
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold'
+                  : 'bg-white border-[#e5e5e5] text-[#777]'
+              }`}
+            >
+              <span className="truncate">
+                #{reqId} — {card?.title ?? 'Card'}
               </span>
-            );
-          })}
-        </div>
+              <span className="text-[10px] font-bold">
+                {isOwned ? 'HELD' : 'MISSING'}
+              </span>
+            </div>
+          );
+        })}
       </div>
-
-      {goal.completedByPlayerIds.length > 0 && (
-        <div className="mt-2 pt-2 border-t border-slate-800/60 text-[10px] text-slate-400">
-          Solved by:{' '}
-          <span className="text-slate-300 font-mono">
-            {goal.completedByPlayerIds.map((pid) => characterNamesById[pid] ?? pid).join(', ')}
-          </span>
-        </div>
-      )}
     </div>
   );
 };

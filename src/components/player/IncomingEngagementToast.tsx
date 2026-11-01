@@ -46,12 +46,12 @@ export const IncomingEngagementToast: React.FC<IncomingEngagementToastProps> = (
   const isUrgent = secondsRemaining <= 10;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 w-96 max-w-[calc(100vw-2.5rem)] rounded-2xl bg-slate-900/95 backdrop-blur-md border-2 border-sky-500/80 shadow-2xl shadow-sky-950/80 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+    <div className="fixed bottom-5 right-5 z-50 w-96 max-w-[calc(100vw-2.5rem)] paper bg-[#fffef0] border-2 border-[#41403e] shadow-2xl p-0 overflow-hidden m-0">
       {/* 30-Second Countdown Progress Bar */}
-      <div className="h-1.5 w-full bg-slate-800">
+      <div className="h-2 w-full bg-[#e8e6d1] border-b border-[#41403e]">
         <div
           className={`h-full transition-all duration-200 ${
-            isUrgent ? 'bg-rose-500' : 'bg-sky-400'
+            isUrgent ? 'bg-rose-600' : 'bg-secondary'
           }`}
           style={{ width: `${pctRemaining}%` }}
         />
@@ -61,24 +61,24 @@ export const IncomingEngagementToast: React.FC<IncomingEngagementToastProps> = (
         {/* Top Row: Alert Badge + Live 30s Countdown */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center">
-              <BellRing className="w-4 h-4 text-sky-300 animate-bounce" />
+            <span className="w-7 h-7 rounded border border-[#41403e] flex items-center justify-center bg-[#fdfbf2]">
+              <BellRing className="w-4 h-4 text-secondary animate-bounce" />
             </span>
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-secondary">
                 Incoming Conversation
               </div>
-              <div className="text-xs font-bold text-white">
+              <div className="text-xs font-bold text-[#222]">
                 {initiator?.characterName ?? engagement.initiatorPlayerId}
               </div>
             </div>
           </div>
 
           <div
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border font-mono text-xs font-bold ${
+            className={`flex items-center gap-1 px-2.5 py-0.5 rounded border font-mono text-xs font-bold ${
               isUrgent
-                ? 'bg-rose-950/70 border-rose-500/60 text-rose-200 animate-pulse'
-                : 'bg-slate-950 border-slate-700 text-amber-300'
+                ? 'badge danger'
+                : 'badge warning'
             }`}
           >
             <Clock className="w-3.5 h-3.5" />
@@ -87,22 +87,22 @@ export const IncomingEngagementToast: React.FC<IncomingEngagementToastProps> = (
         </div>
 
         {/* Initiator Role & Opening Statement Preview */}
-        <div className="rounded-xl bg-slate-950/90 border border-slate-800 p-3 space-y-1.5">
+        <div className="rounded bg-white border border-[#ccc] p-3 space-y-1.5">
           <div className="flex items-center justify-between text-[10px]">
-            <span className="text-slate-400">
+            <span className="text-[#666]">
               {initiator?.publicRole ?? 'Participant'}
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-slate-800 text-sky-300 font-semibold">
+            <span className="badge secondary text-[10px]">
               {APPROACH_LABELS[engagement.interactionType]}
             </span>
           </div>
-          <p className="text-xs text-slate-200 italic line-clamp-2 leading-relaxed">
+          <p className="text-xs text-[#333] italic line-clamp-2 leading-relaxed m-0">
             "{engagement.initiatorPrompt}"
           </p>
         </div>
 
         {additionalQueuedCount > 0 && (
-          <div className="flex items-center gap-1.5 text-[11px] text-amber-300 bg-amber-950/30 border border-amber-800/40 rounded-lg px-2.5 py-1.5">
+          <div className="flex items-center gap-1.5 text-[11px] text-amber-900 bg-amber-50 border border-amber-300 rounded p-2">
             <Users className="w-3.5 h-3.5 shrink-0" />
             <span>
               +{additionalQueuedCount} other{' '}
@@ -112,17 +112,17 @@ export const IncomingEngagementToast: React.FC<IncomingEngagementToastProps> = (
         )}
 
         <div className="flex items-center justify-between gap-3 pt-0.5">
-          <span className="text-[10px] text-slate-400 leading-tight">
-            Ignore for {secondsRemaining}s to let AI respond automatically
+          <span className="text-[10px] text-[#777] leading-tight">
+            Ignore for {secondsRemaining}s to let AI respond
           </span>
 
           <button
             type="button"
             onClick={() => onFocusConversation(engagement.id)}
-            className="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-md shrink-0"
+            className="paper-btn btn-small btn-primary py-1 px-3 text-xs inline-flex items-center gap-1 shrink-0"
           >
             <MessageSquare className="w-3.5 h-3.5" />
-            Focus & Respond
+            Respond
           </button>
         </div>
       </div>
