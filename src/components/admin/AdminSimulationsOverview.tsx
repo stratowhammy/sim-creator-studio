@@ -306,33 +306,33 @@ export const AdminSimulationsOverview: React.FC<AdminSimulationsOverviewProps> =
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+      <main className="w-full max-w-[96vw] xl:max-w-[94vw] mx-auto px-2 sm:px-4 lg:px-[1.5vw] py-4 lg:py-[1.5vw] space-y-4 lg:space-y-[1.5vw]">
         {/* ================================================================== */}
         {/* QUICK STATS BAR                                                    */}
         {/* ================================================================== */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
-            <div className="text-xs uppercase opacity-70 font-semibold">Active Games</div>
-            <div className="text-2xl font-bold text-emerald-700">{activeSims.length}</div>
+        <div className="flex flex-row flex-nowrap items-stretch gap-[1vw] w-full my-2">
+          <div className="flex-1 w-[22.5vw] min-w-0 p-[0.7vw] text-center border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+            <div className="text-xs lg:text-[0.75vw] uppercase opacity-70 font-bold tracking-wider">Active Games</div>
+            <div className="text-2xl lg:text-[1.8vw] font-bold text-emerald-700 leading-tight mt-0.5">{activeSims.length}</div>
           </div>
 
-          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
-            <div className="text-xs uppercase opacity-70 font-semibold">Library Games</div>
-            <div className="text-2xl font-bold text-amber-700">{publishedCollectionSims.length}</div>
+          <div className="flex-1 w-[22.5vw] min-w-0 p-[0.7vw] text-center border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+            <div className="text-xs lg:text-[0.75vw] uppercase opacity-70 font-bold tracking-wider">Library Games</div>
+            <div className="text-2xl lg:text-[1.8vw] font-bold text-amber-700 leading-tight mt-0.5">{publishedCollectionSims.length}</div>
           </div>
 
-          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
-            <div className="text-xs uppercase opacity-70 font-semibold">Players Online</div>
-            <div className="text-2xl font-bold text-sky-700">{platformStats.onlineCount}</div>
+          <div className="flex-1 w-[22.5vw] min-w-0 p-[0.7vw] text-center border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+            <div className="text-xs lg:text-[0.75vw] uppercase opacity-70 font-bold tracking-wider">Players Online</div>
+            <div className="text-2xl lg:text-[1.8vw] font-bold text-sky-700 leading-tight mt-0.5">{platformStats.onlineCount}</div>
           </div>
 
-          <div className="paper p-3 text-center border-2 border-[#41403e] bg-white">
-            <div className="text-xs uppercase opacity-70 font-semibold">AI Model</div>
-            <div className="text-lg font-mono font-bold pt-1 text-purple-700">
+          <div className="flex-1 w-[22.5vw] min-w-0 p-[0.7vw] text-center border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+            <div className="text-xs lg:text-[0.75vw] uppercase opacity-70 font-bold tracking-wider">AI Model</div>
+            <div className="text-lg lg:text-[1.4vw] font-mono font-bold pt-0.5 text-purple-700 leading-tight">
               {testV4Pro ? 'v4-pro' : 'flash'}
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ================================================================== */}
         {/* TABS                                                               */}

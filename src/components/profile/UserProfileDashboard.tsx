@@ -468,7 +468,7 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
       {/* ==================================================================== */}
       {/* MAIN PROFILE CONTENT                                                 */}
       {/* ==================================================================== */}
-      <main className="max-w-6xl mx-auto px-6 py-7 space-y-8">
+      <main className="w-full max-w-[96vw] xl:max-w-[94vw] mx-auto px-4 sm:px-6 py-6 space-y-6">
         {collectionFeedback && (
           <div
             className={`alert ${
@@ -542,57 +542,57 @@ export const UserProfileDashboard: React.FC<UserProfileDashboardProps> = ({
             </div>
 
             {/* Career & Sims Stat Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 shrink-0">
+            <div className="flex flex-row flex-nowrap items-stretch gap-[0.8vw] w-full shrink-0">
               <button
                 type="button"
                 onClick={() => setShowSimsWalletModal(true)}
-                className="paper p-2 text-center transition-all cursor-pointer m-0 border-2 hover:bg-[#fff9d9]"
+                className="flex-1 w-[18vw] min-w-0 p-[0.6vw] text-center transition-all cursor-pointer m-0 border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] hover:bg-[#fff9d9] flex flex-col justify-center items-center"
               >
-                <div className="text-[10px] uppercase font-bold text-amber-800 mb-0.5 flex items-center justify-center gap-1">
-                  <Coins className="w-3.5 h-3.5" />
+                <div className="text-[10px] lg:text-[0.7vw] uppercase font-bold text-amber-800 mb-0.5 flex items-center justify-center gap-1">
+                  <Coins className="w-3.5 h-3.5 lg:w-[0.9vw] lg:h-[0.9vw]" />
                   Sims
                 </div>
-                <div className="text-lg font-bold text-amber-800">
+                <div className="text-lg lg:text-[1.4vw] font-bold text-amber-800 leading-tight">
                   {user.simsBalance ?? 0}
                 </div>
               </button>
 
-              <div className="paper p-2 text-center m-0 border-2">
-                <div className="text-[10px] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
-                  <Trophy className="w-3.5 h-3.5 text-secondary" />
+              <div className="flex-1 w-[18vw] min-w-0 p-[0.6vw] text-center m-0 border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+                <div className="text-[10px] lg:text-[0.7vw] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
+                  <Trophy className="w-3.5 h-3.5 lg:w-[0.9vw] lg:h-[0.9vw] text-secondary" />
                   Points
                 </div>
-                <div className="text-lg font-bold">
+                <div className="text-lg lg:text-[1.4vw] font-bold leading-tight">
                   {totalVictoryPoints.toLocaleString()}
                 </div>
               </div>
 
-              <div className="paper p-2 text-center m-0 border-2">
-                <div className="text-[10px] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
-                  <Play className="w-3.5 h-3.5 text-success" />
+              <div className="flex-1 w-[18vw] min-w-0 p-[0.6vw] text-center m-0 border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+                <div className="text-[10px] lg:text-[0.7vw] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
+                  <Play className="w-3.5 h-3.5 lg:w-[0.9vw] lg:h-[0.9vw] text-success" />
                   Active
                 </div>
-                <div className="text-lg font-bold text-success">
+                <div className="text-lg lg:text-[1.4vw] font-bold text-success leading-tight">
                   {activeSimulations.length}
                 </div>
               </div>
 
-              <div className="paper p-2 text-center m-0 border-2">
-                <div className="text-[10px] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-secondary" />
+              <div className="flex-1 w-[18vw] min-w-0 p-[0.6vw] text-center m-0 border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+                <div className="text-[10px] lg:text-[0.7vw] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 lg:w-[0.9vw] lg:h-[0.9vw] text-secondary" />
                   Done
                 </div>
-                <div className="text-lg font-bold text-secondary">
+                <div className="text-lg lg:text-[1.4vw] font-bold text-secondary leading-tight">
                   {completedSimulations.length}
                 </div>
               </div>
 
-              <div className="paper p-2 text-center m-0 border-2">
-                <div className="text-[10px] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <div className="flex-1 w-[18vw] min-w-0 p-[0.6vw] text-center m-0 border-2 border-[#41403e] bg-white rounded shadow-[2px_2px_0px_0px_rgba(65,64,62,0.25)] flex flex-col justify-center items-center">
+                <div className="text-[10px] lg:text-[0.7vw] uppercase font-semibold text-[#777] mb-0.5 flex items-center justify-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 lg:w-[0.9vw] lg:h-[0.9vw] text-primary" />
                   Best
                 </div>
-                <div className="text-lg font-bold text-primary">
+                <div className="text-lg lg:text-[1.4vw] font-bold text-primary leading-tight">
                   {highestVp.toLocaleString()}
                 </div>
               </div>

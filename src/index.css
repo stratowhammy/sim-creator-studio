@@ -45,6 +45,7 @@
   .card,
   .paper {
     padding: 0.75rem;
+    margin: 0;
     box-shadow: 3px 3px 0px 0px rgba(65, 64, 62, 0.2);
     border-width: 1.5px;
   }
@@ -87,6 +88,7 @@
   .card,
   .paper {
     padding: 0.55rem;
+    margin: 0;
     box-shadow: 2px 2px 0px 0px rgba(65, 64, 62, 0.2);
   }
 
@@ -145,4 +147,23 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #c5c1a5;
+}
+
+/* Ensure semantic HTML tags obey Tailwind display utilities over PaperCSS element defaults */
+section.grid,
+div.grid,
+header.grid,
+nav.grid,
+aside.grid,
+article.grid {
+  display: grid;
+}
+
+section.flex,
+header.flex,
+div.flex,
+nav.flex,
+aside.flex,
+article.flex {
+  display: flex;
 }

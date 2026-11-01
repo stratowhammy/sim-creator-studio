@@ -51,14 +51,12 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
   const [regUsername, setRegUsername] = useState<string>('');
   const [regEmail, setRegEmail] = useState<string>('');
   const [regCallsign, setRegCallsign] = useState<string>('');
-  const [regPreferredRole, setRegPreferredRole] = useState<string>('vance');
   const [regPassword, setRegPassword] = useState<string>('');
   const [regConfirmPassword, setRegConfirmPassword] = useState<string>('');
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const existingUsers = loadAllUsers();
-  const heliosSim = simulations['sim_helios_001'];
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +85,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
         email: regEmail,
         password: regPassword,
         callsign: regCallsign,
-        preferredCharacterId: regPreferredRole,
       },
       simulations
     );
@@ -270,23 +267,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                     />
                   </div>
                 </div>
-
-                {heliosSim && (
-                  <div className="form-group mb-1">
-                    <label className="block text-xs font-bold mb-1">Choose Your Character</label>
-                    <select
-                      value={regPreferredRole}
-                      onChange={(e) => setRegPreferredRole(e.target.value)}
-                      className="w-full text-sm"
-                    >
-                      {Object.values(heliosSim.characters).map((c) => (
-                        <option key={c.playerId} value={c.playerId}>
-                          {c.characterName} — {c.publicRole}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
 
                 <div className="grid grid-cols-2 gap-2">
                   <div className="form-group mb-1">

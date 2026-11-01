@@ -789,26 +789,27 @@ export function registerNewUser(
     return { ok: false, error: 'An account with that email already exists.' };
   }
 
-  const helios = simulations['sim_helios_001'];
-  const preferredRole = payload.preferredCharacterId || 'vance';
-  const char =
-    helios?.characters[preferredRole] ??
-    (helios ? Object.values(helios.characters)[0] : undefined);
-
   const initialParticipations: SimulationParticipation[] = [];
-  if (helios && char) {
-    initialParticipations.push({
-      simulationId: helios.id,
-      simulationTitle: helios.title,
-      scenarioSummary: helios.masterNarrative,
-      characterId: char.playerId,
-      characterName: char.characterName,
-      publicRole: char.publicRole,
-      status: helios.status === 'COMPLETED' ? 'COMPLETED' : 'ACTIVE',
-      victoryPointsEarned: char.victoryPoints,
-      roundsParticipated: helios.currentTurnOrTick,
-      joinedAt: new Date().toISOString().slice(0, 10),
-    });
+  if (payload.preferredCharacterId) {
+    const helios = simulations['sim_helios_001'];
+    const char =
+      helios?.characters[payload.preferredCharacterId] ??
+      (helios ? Object.values(helios.characters)[0] : undefined);
+
+    if (helios && char) {
+      initialParticipations.push({
+        simulationId: helios.id,
+        simulationTitle: helios.title,
+        scenarioSummary: helios.masterNarrative,
+        characterId: char.playerId,
+        characterName: char.characterName,
+        publicRole: char.publicRole,
+        status: helios.status === 'COMPLETED' ? 'COMPLETED' : 'ACTIVE',
+        victoryPointsEarned: char.victoryPoints,
+        roundsParticipated: helios.currentTurnOrTick,
+        joinedAt: new Date().toISOString().slice(0, 10),
+      });
+    }
   }
 
   const avatarPalette = [

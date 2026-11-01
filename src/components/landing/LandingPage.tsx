@@ -134,18 +134,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
 
         {/* Paper Quick Stats */}
-        <div className="paper max-w-2xl mx-auto grid grid-cols-3 gap-4 text-center">
-          <div>
-            <div className="text-xs uppercase tracking-wider text-[#777]">Ready Games</div>
-            <div className="text-3xl font-bold text-primary">{publishedSims.length}</div>
+        <div className="paper max-w-2xl mx-auto flex flex-row flex-nowrap justify-around items-center gap-[1.5vw] text-center p-3 sm:p-4">
+          <div className="flex-1 min-w-0">
+            <div className="text-xs lg:text-[0.8vw] uppercase tracking-wider text-[#777]">Ready Games</div>
+            <div className="text-2xl lg:text-[2vw] font-bold text-primary leading-tight mt-1">{publishedSims.length}</div>
           </div>
-          <div>
-            <div className="text-xs uppercase tracking-wider text-[#777]">Author Voices</div>
-            <div className="text-3xl font-bold text-secondary">{voices.length}</div>
+          <div className="flex-1 min-w-0 border-x border-[#41403e]/20 px-2">
+            <div className="text-xs lg:text-[0.8vw] uppercase tracking-wider text-[#777]">Author Voices</div>
+            <div className="text-2xl lg:text-[2vw] font-bold text-secondary leading-tight mt-1">{voices.length}</div>
           </div>
-          <div>
-            <div className="text-xs uppercase tracking-wider text-[#777]">Starting Sims</div>
-            <div className="text-3xl font-bold text-success">100</div>
+          <div className="flex-1 min-w-0">
+            <div className="text-xs lg:text-[0.8vw] uppercase tracking-wider text-[#777]">Starting Sims</div>
+            <div className="text-2xl lg:text-[2vw] font-bold text-success leading-tight mt-1">100</div>
           </div>
         </div>
       </section>
