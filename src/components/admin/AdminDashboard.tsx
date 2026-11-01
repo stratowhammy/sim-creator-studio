@@ -852,46 +852,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 {/* Action Bar */}
-                <div className="flex items-center gap-1 flex-wrap">
+                <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleSelectActingPlayer(char.playerId)}
-                    className={`paper-btn btn-small flex-1 ${
+                    className={`paper-btn btn-small btn-xs flex-1 ${
                       isActing ? 'btn-primary' : ''
                     }`}
                   >
-                    <UserCheck className="w-3 h-3 inline mr-1" />
+                    <UserCheck className="w-3 h-3 inline mr-0.5" />
                     {isActing ? `Active (${knownCount})` : 'Select'}
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleToggleAiControl(char.playerId)}
-                    className="paper-btn btn-small"
+                    className="paper-btn btn-small btn-xs"
                   >
-                    <Bot className="w-3 h-3 inline mr-1" />
+                    <Bot className="w-3 h-3 inline mr-0.5" />
                     {char.isAiControlled ? 'AI' : 'Human'}
                   </button>
 
                   <button
                     onClick={() => onOpenPlayerView(char.playerId)}
-                    className="paper-btn btn-small btn-secondary"
+                    className="paper-btn btn-small btn-xs btn-secondary"
                   >
-                    <Eye className="w-3 h-3 inline mr-1" />
+                    <Eye className="w-3 h-3 inline mr-0.5" />
                     View
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setInviteModalCharId(char.playerId)}
-                    className="paper-btn btn-small"
+                    className="paper-btn btn-small btn-xs"
                   >
-                    <UserPlus className="w-3 h-3 inline mr-1" />
+                    <UserPlus className="w-3 h-3 inline mr-0.5" />
                     {char.assignedUserId ? 'Reassign' : 'Invite'}
                   </button>
 
                   <button
                     onClick={() => handleOpenPlayerInNewTab(char.playerId)}
-                    className="paper-btn btn-small"
+                    className="paper-btn btn-small btn-xs"
                     title="Open in new tab"
                   >
                     <ExternalLink className="w-3 h-3" />
@@ -984,7 +984,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                                 <button
                                   key={st}
                                   onClick={() => handleChangeStance(other.playerId, st)}
-                                  className={`px-1 py-0.5 text-[9px] rounded font-mono cursor-pointer ${
+                                  className={`btn-xs px-1.5 py-0.5 text-[9px] rounded font-mono cursor-pointer ${
                                     currentStance === st
                                       ? STANCE_BADGE_STYLES[st] + ' font-bold ring-1'
                                       : 'opacity-50 hover:opacity-100'

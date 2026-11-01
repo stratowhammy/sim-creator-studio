@@ -2369,7 +2369,7 @@ export const PlayerDashboard: React.FC<PlayerDashboardProps> = ({
                                 onClick={() =>
                                   handleChangeStance(other.playerId, stance)
                                 }
-                                className={`px-1.5 py-0.5 text-[9px] rounded font-mono cursor-pointer transition-colors ${
+                                className={`btn-xs px-1.5 py-0.5 text-[9px] rounded font-mono cursor-pointer transition-colors ${
                                   currentStance === stance
                                     ? STANCE_BADGE_STYLES[stance] +
                                       ' font-bold ring-1'
